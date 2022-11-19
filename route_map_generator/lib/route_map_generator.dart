@@ -13,4 +13,4 @@ Builder routeMapBuilder(BuilderOptions options) {
 
 Builder routeMapConfigBuilder(BuilderOptions options) =>
     LibraryBuilder(RouteMapConfigGenerator(),
-        generatedExtension: ".config.dart");
+        generatedExtension: ".routes.dart");
