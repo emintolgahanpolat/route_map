@@ -1,6 +1,9 @@
 # Route Map
 Ek açıklama kullanaran Flutter Navigator 2 için rota yolları haritası oluşturun.
 
+
+<a href="https://www.buymeacoffee.com/emintpolat" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ## Bağımlılıklar
         dependencies:  
             route_map:  
