@@ -4,7 +4,7 @@ builders:
     builder_factories: ["routeMapBuilder"]
     build_extensions: { ".dart": [".map.json"] }
     auto_apply: dependents
-    runs_before: ["route_map_generator|route_map_config_builder"]
+    runs_before: ["route_map_config_builder"]
     build_to: cache
     
   route_map_config_builder:
