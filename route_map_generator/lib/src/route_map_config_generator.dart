@@ -55,7 +55,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
     buffer.writeln("});");
     buffer.writeln("}");
 
-    buffer.writeln("class EasyRoutes{");
+    buffer.writeln("class RouteMaps{");
     for (var element in jsonData) {
       if (element.name == "/") {
         buffer.write("static String root = \"/\";");
@@ -65,19 +65,6 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
       }
     }
     buffer.writeln("}");
-    // buffer.writeln("enum EasyRoutes{");
-    // for (var element in jsonData) {
-    //   if (element.name == "/") {
-    //     buffer.write("root(\"/\")");
-    //   } else {
-    //     buffer.write(
-    //         "${element.name.replaceFirst("/", "").toCamelCase()}(\"${element.name}\")");
-    //   }
-    //   buffer.writeln(element == jsonData.last ? ";" : ",");
-    // }
-    // buffer.writeln("const EasyRoutes(this.name);");
-    // buffer.writeln("final String name;");
-    // buffer.writeln("}");
 
     buffer.writeln("final Map<String, RouteModel> _routes = {");
     for (var element in jsonData) {

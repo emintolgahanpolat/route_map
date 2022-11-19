@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamed(EasyRoutes.detailPage, arguments: "Merhaba");
+                    .pushNamed(RouteMaps.detailPage, arguments: "Merhaba");
               },
               child: const Text("detailPage")),
           ElevatedButton(

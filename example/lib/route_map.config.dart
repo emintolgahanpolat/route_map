@@ -28,7 +28,7 @@ class RouteModel {
   });
 }
 
-class EasyRoutes {
+class RouteMaps {
   static String root = "/";
   static String detailPage = "/detail_page";
   static String ara = "/ara";
