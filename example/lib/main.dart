@@ -1,4 +1,3 @@
-import 'package:example/route_map.config.dart';
 import 'package:example/route_map.dart';
 import 'package:flutter/material.dart';
 
