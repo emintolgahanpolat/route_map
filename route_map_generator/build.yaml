@@ -10,7 +10,7 @@ builders:
   route_map_config_builder:
     import: "package:route_map_generator/route_map_generator.dart"
     builder_factories: ["routeMapConfigBuilder"]
-    build_extensions: { ".dart": [".config.dart"] }
+    build_extensions: { ".dart": [".routes.dart"] }
     auto_apply: dependents
     build_to: source
 
