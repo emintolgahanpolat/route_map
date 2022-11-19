@@ -16,6 +16,8 @@ dependencies:
     sdk: flutter
   glob: ^2.1.1
   source_gen: ^1.2.6
+
+dependency_overrides:
   route_map:
     path: ../route_map
 
