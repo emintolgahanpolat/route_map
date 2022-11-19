@@ -3,7 +3,7 @@ import 'package:route_map_generator/src/route_map_config_generator.dart';
 import 'package:route_map_generator/src/route_map_generator.dart';
 import 'package:source_gen/source_gen.dart';
 
-Builder easyRouteBuilder(BuilderOptions options) {
+Builder routeMapBuilder(BuilderOptions options) {
   return LibraryBuilder(
     RouteMapGenerator(),
     formatOutput: (generated) => generated.replaceAll(RegExp(r'//.*|\s'), ''),
@@ -11,6 +11,6 @@ Builder easyRouteBuilder(BuilderOptions options) {
   );
 }
 
-Builder easyRouteConfigBuilder(BuilderOptions options) =>
+Builder routeMapConfigBuilder(BuilderOptions options) =>
     LibraryBuilder(RouteMapConfigGenerator(),
         generatedExtension: ".config.dart");
