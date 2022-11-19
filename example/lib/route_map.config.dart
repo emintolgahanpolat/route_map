@@ -35,13 +35,13 @@ class RouteMaps {
 }
 
 final Map<String, RouteModel> _routes = {
-  "/": RouteModel(
+  RouteMaps.root: RouteModel(
     (_) => const HomePage(),
   ),
-  "/detail_page": RouteModel(
+  RouteMaps.detailPage: RouteModel(
     (_) => const DetailPage(),
   ),
-  "/ara": RouteModel(
+  RouteMaps.ara: RouteModel(
     (_) => const SearchPage(),
     fullscreenDialog: true,
   ),

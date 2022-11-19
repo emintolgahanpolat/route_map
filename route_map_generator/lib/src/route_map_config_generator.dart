@@ -68,7 +68,13 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
 
     buffer.writeln("final Map<String, RouteModel> _routes = {");
     for (var element in jsonData) {
-      buffer.writeln('"${element.name}": RouteModel(');
+      if (element.name == "/") {
+        buffer.writeln('RouteMaps.root : RouteModel(');
+      } else {
+        buffer.writeln(
+            'RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
+      }
+
       buffer.writeln(" (_) => const ${element.clazz}(),");
       if (element.fullScreenDialog) {
         buffer.writeln("  fullscreenDialog: true,");
