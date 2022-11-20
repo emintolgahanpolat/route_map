@@ -13,14 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(useMaterial3: true),
       onGenerateRoute: onGenerateRoute,
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
             builder: (_) => Scaffold(
-                  appBar: AppBar(title: Text("unknown")),
+                  appBar: AppBar(title: const Text("unknown")),
                 ));
       },
     );
