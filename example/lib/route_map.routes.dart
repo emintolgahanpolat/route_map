@@ -46,7 +46,10 @@ final Map<String, RouteModel> _routes = {
     (_) => const RootPage(),
   ),
   RouteMaps.detailPage: RouteModel(
-    (_) => const DetailPage(),
+    (c) => DetailPage(
+      id: c.routeArgs()["id"],
+      name: c.routeArgs()["name"],
+    ),
   ),
   RouteMaps.ara: RouteModel(
     (_) => const SearchPage(),

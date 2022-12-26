@@ -16,16 +16,19 @@ class RouteMapConfig {
 
 class RouteConfig extends RouteMapConfig {
   final String name;
+  final List<String>? params;
   final bool fullScreenDialog;
 
   RouteConfig(
       {required this.name,
+      this.params,
       this.fullScreenDialog = false,
       required super.clazz,
       required super.import});
 
   factory RouteConfig.fromJson(Map<String, dynamic> json) => RouteConfig(
         name: json['name'] as String,
+        params: (json['params'] as List?)?.map((e) => "$e").toList(),
         fullScreenDialog: json['fullScreenDialog'] as bool,
         clazz: json['clazz'] as String,
         import: json['import'] as String,
@@ -35,6 +38,7 @@ class RouteConfig extends RouteMapConfig {
   Map<String, dynamic> toJson() => {
         'import': import,
         'name': name,
+        'params': params,
         'fullScreenDialog': fullScreenDialog,
         'clazz': clazz
       };

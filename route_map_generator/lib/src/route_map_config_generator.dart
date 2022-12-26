@@ -74,8 +74,17 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         buffer.writeln(
             'RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
       }
+      if (element.params == null) {
+        buffer.writeln(" (_) => const ${element.clazz}(),");
+      } else {
+        buffer.writeln(" (c) =>");
+        buffer.writeln("${element.clazz}(");
+        (element.params?.forEach((element) {
+          buffer.writeln("$element: c.routeArgs()[\"$element\"],");
+        }));
+        buffer.writeln("),");
+      }
 
-      buffer.writeln(" (_) => const ${element.clazz}(),");
       if (element.fullScreenDialog) {
         buffer.writeln("  fullscreenDialog: true,");
       }

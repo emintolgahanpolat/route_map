@@ -2,9 +2,14 @@ import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
-@RouteMap(name: "detailPage")
+@RouteMap(name: "detailPage", params: ["id", "name"])
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String? isShow;
+  const DetailPage(
+      {Key? key, required this.id, required this.name, this.isShow})
+      : super(key: key);
 
   @override
   State<DetailPage> createState() => _DetailPageState();
