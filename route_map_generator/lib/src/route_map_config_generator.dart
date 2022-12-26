@@ -74,7 +74,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         buffer.writeln(
             'RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
       }
-      if (element.params == null) {
+      if (element.params == null || element.params!.isEmpty) {
         buffer.writeln(" (_) => const ${element.clazz}(),");
       } else {
         buffer.writeln(" (c) =>");

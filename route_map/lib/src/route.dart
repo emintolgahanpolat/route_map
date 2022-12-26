@@ -1,8 +1,7 @@
 class RouteMap {
   final String? name;
-  final List<String>? params;
   final bool fullScreenDialog;
-  const RouteMap({this.name, this.params, this.fullScreenDialog = false});
+  const RouteMap({this.name, this.fullScreenDialog = false});
 }
 
 class RouteMapInit {

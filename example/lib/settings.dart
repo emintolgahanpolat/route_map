@@ -12,4 +12,6 @@ class SettingsPage extends StatelessWidget {
       ),
     );
   }
+
+  login() {}
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
 import 'package:route_map/route_map.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
@@ -19,15 +19,12 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
       name = annotation.read("name").stringValue;
     }
 
-    List<String>? params;
-    if (annotation.read("params").isList) {
-      params = annotation
-          .read("params")
-          .listValue
-          .map((e) => "${e.toStringValue()}")
-          .toList();
+    List<String>? params = [];
+    final visitor = ModelVisitor();
+    element.visitChildren(visitor);
+    for (final field in visitor.fields.keys) {
+      params.add(field);
     }
-
     var rc = RouteConfig(
         import: importPath,
         name: name,
@@ -36,5 +33,27 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
         fullScreenDialog: annotation.read("fullScreenDialog").boolValue);
 
     return jsonEncode(rc.toJson());
+  }
+}
+
+class ModelVisitor extends SimpleElementVisitor<void> {
+  // 2
+  late String className;
+  final fields = <String, dynamic>{};
+
+  // 3
+  @override
+  void visitConstructorElement(ConstructorElement element) {
+    final elementReturnType = element.type.returnType.toString();
+    // 4
+    className = elementReturnType.replaceFirst('*', '');
+  }
+
+  // 5
+  @override
+  void visitFieldElement(FieldElement element) {
+    final elementType = element.type.toString();
+    // 7
+    fields[element.name] = elementType.replaceFirst('*', '');
   }
 }

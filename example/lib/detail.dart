@@ -2,7 +2,7 @@ import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
-@RouteMap(name: "detailPage", params: ["id", "name"])
+@RouteMap(name: "detailPage")
 class DetailPage extends StatefulWidget {
   final String id;
   final String name;

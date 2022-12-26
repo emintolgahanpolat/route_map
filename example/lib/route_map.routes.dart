@@ -49,6 +49,7 @@ final Map<String, RouteModel> _routes = {
     (c) => DetailPage(
       id: c.routeArgs()["id"],
       name: c.routeArgs()["name"],
+      isShow: c.routeArgs()["isShow"],
     ),
   ),
   RouteMaps.ara: RouteModel(
