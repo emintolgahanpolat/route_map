@@ -64,6 +64,34 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
             "static String ${element.name.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
       }
     }
+
+    for (var element in jsonData) {
+      buffer.write("static Future<T?>");
+      if (element.name == "/") {
+        buffer.write('rootNavigate');
+      } else {
+        buffer.write(
+            "${element.name.replaceFirst("/", "").toCamelCase()}Navigate");
+      }
+
+      buffer.write("<T extends Object?>(BuildContext context");
+      if (element.params != null && element.params!.isNotEmpty) {
+        buffer.write(",{");
+        (element.params?.forEach((element) {
+          buffer.write("dynamic $element,");
+        }));
+        buffer.write("}");
+      }
+      buffer.write(") =>  Navigator.of(context).pushNamed(");
+      if (element.name == "/") {
+        buffer.write("RouteMaps.root");
+      } else {
+        buffer.write(
+            "RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()}");
+      }
+      buffer.writeln(");");
+    }
+
     buffer.writeln("}");
 
     buffer.writeln("final Map<String, RouteModel> _routes = {");

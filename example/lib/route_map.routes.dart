@@ -33,9 +33,24 @@ class RouteModel {
 class RouteMaps {
   static String home = "home";
   static String root = "/";
-  static String detailPage = "detailPage";
+  static String detailPage = "/detail_page";
   static String ara = "/ara";
   static String settings = "settings";
+  static Future<T?> homeNavigate<T extends Object?>(BuildContext context) =>
+      Navigator.of(context).pushNamed(RouteMaps.home);
+  static Future<T?> rootNavigate<T extends Object?>(BuildContext context) =>
+      Navigator.of(context).pushNamed(RouteMaps.root);
+  static Future<T?> detailPageNavigate<T extends Object?>(
+    BuildContext context, {
+    dynamic id,
+    dynamic name,
+    dynamic isShow,
+  }) =>
+      Navigator.of(context).pushNamed(RouteMaps.detailPage);
+  static Future<T?> araNavigate<T extends Object?>(BuildContext context) =>
+      Navigator.of(context).pushNamed(RouteMaps.ara);
+  static Future<T?> settingsNavigate<T extends Object?>(BuildContext context) =>
+      Navigator.of(context).pushNamed(RouteMaps.settings);
 }
 
 final Map<String, RouteModel> _routes = {

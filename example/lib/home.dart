@@ -27,8 +27,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(RouteMaps.detailPage, arguments: "Merhaba");
+                RouteMaps.detailPageNavigate(context);
+                Navigator.of(context).pushNamed(RouteMaps.detailPage,
+                    arguments: {"id": "1", "name": "tolga"});
               },
               child: const Text("detailPage")),
           ElevatedButton(

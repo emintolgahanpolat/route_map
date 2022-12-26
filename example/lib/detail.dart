@@ -2,11 +2,11 @@ import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
-@RouteMap(name: "detailPage")
+@RouteMap()
 class DetailPage extends StatefulWidget {
   final String id;
   final String name;
-  final String? isShow;
+  final bool? isShow;
   const DetailPage(
       {Key? key, required this.id, required this.name, this.isShow})
       : super(key: key);
@@ -16,13 +16,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  @override
-  void didChangeDependencies() {
-    String? name = context.routeArgs();
-    print(name);
-    super.didChangeDependencies();
-  }
-
   int _counter = 0;
   @override
   Widget build(BuildContext context) {
@@ -32,6 +25,9 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: ListView(
         children: [
+          Text(widget.id),
+          Text(widget.name),
+          Text(widget.isShow.toString()),
           Text("$_counter"),
           ElevatedButton(
               onPressed: () {
