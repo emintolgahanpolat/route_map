@@ -1,3 +1,4 @@
+import 'package:example/detail.dart';
 import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
@@ -27,9 +28,11 @@ class _HomePageState extends State<HomePage> {
         children: [
           ElevatedButton(
               onPressed: () {
-                RouteMaps.detailPageNavigate(context);
-                Navigator.of(context).pushNamed(RouteMaps.detailPage,
-                    arguments: {"id": "1", "name": "tolga"});
+                // RouteMaps.detailPageNavigate(context);
+                // Navigator.of(context).pushNamed(RouteMaps.detailPage,
+                //     arguments: {"id": "1", "name": "tolga"});
+
+                DetailPage.newInstance("1", "2").show(context);
               },
               child: const Text("detailPage")),
           ElevatedButton(
@@ -40,5 +43,11 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+}
+
+extension StatefullPageEx on StatefullPage {
+  Future<T?> show<T extends Object?>(BuildContext context) {
+    return Navigator.of(context).push(MaterialPageRoute(builder: (_) => this));
   }
 }

@@ -65,29 +65,35 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
       }
     }
 
-    for (var element in jsonData) {
+    for (var page in jsonData) {
       buffer.write("static Future<T?>");
-      if (element.name == "/") {
+      if (page.name == "/") {
         buffer.write('rootNavigate');
       } else {
-        buffer.write(
-            "${element.name.replaceFirst("/", "").toCamelCase()}Navigate");
+        buffer
+            .write("${page.name.replaceFirst("/", "").toCamelCase()}Navigate");
       }
 
       buffer.write("<T extends Object?>(BuildContext context");
-      if (element.params != null && element.params!.isNotEmpty) {
-        buffer.write(",{");
-        (element.params?.forEach((element) {
-          buffer.write("dynamic $element,");
-        }));
-        buffer.write("}");
-      }
-      buffer.write(") =>  Navigator.of(context).pushNamed(");
-      if (element.name == "/") {
+      // if (page.params != null && page.params!.isNotEmpty) {
+      buffer.write(",{");
+      buffer.write("bool rootNavigator = false,");
+      (page.params?.forEach((param) {
+        if (param.type!.contains("?")) {
+          buffer.write("${param.type} ${param.name},");
+        } else {
+          buffer.write("required ${param.type} ${param.name},");
+        }
+      }));
+      buffer.write("}");
+      // }
+      buffer.write(
+          ") =>  Navigator.of(context,rootNavigator:rootNavigator).pushNamed(");
+      if (page.name == "/") {
         buffer.write("RouteMaps.root");
       } else {
         buffer.write(
-            "RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()}");
+            "RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()}");
       }
       buffer.writeln(");");
     }
@@ -95,25 +101,25 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
     buffer.writeln("}");
 
     buffer.writeln("final Map<String, RouteModel> _routes = {");
-    for (var element in jsonData) {
-      if (element.name == "/") {
+    for (var page in jsonData) {
+      if (page.name == "/") {
         buffer.writeln('RouteMaps.root : RouteModel(');
       } else {
         buffer.writeln(
-            'RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
+            'RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
       }
-      if (element.params == null || element.params!.isEmpty) {
-        buffer.writeln(" (_) => const ${element.clazz}(),");
+      if (page.params == null || page.params!.isEmpty) {
+        buffer.writeln(" (_) => const ${page.clazz}(),");
       } else {
         buffer.writeln(" (c) =>");
-        buffer.writeln("${element.clazz}(");
-        (element.params?.forEach((element) {
-          buffer.writeln("$element: c.routeArgs()[\"$element\"],");
+        buffer.writeln("${page.clazz}(");
+        (page.params?.forEach((param) {
+          buffer.writeln("${param.name}: c.routeArgs()[\"${param.name}\"],");
         }));
         buffer.writeln("),");
       }
 
-      if (element.fullScreenDialog) {
+      if (page.fullScreenDialog) {
         buffer.writeln("  fullscreenDialog: true,");
       }
       buffer.writeln("),");

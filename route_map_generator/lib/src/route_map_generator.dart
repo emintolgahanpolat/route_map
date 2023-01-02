@@ -19,11 +19,11 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
       name = annotation.read("name").stringValue;
     }
 
-    List<String>? params = [];
+    List<Param>? params = [];
     final visitor = ModelVisitor();
     element.visitChildren(visitor);
-    for (final field in visitor.fields.keys) {
-      params.add(field);
+    for (final field in visitor.fields.entries) {
+      params.add(Param(type: field.value, name: field.key));
     }
     var rc = RouteConfig(
         import: importPath,

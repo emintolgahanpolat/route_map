@@ -1,9 +1,12 @@
-import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
+abstract class StatefullPage extends StatefulWidget {
+  const StatefullPage({super.key});
+}
+
 @RouteMap()
-class DetailPage extends StatefulWidget {
+class DetailPage extends StatefullPage {
   final String id;
   final String name;
   final bool? isShow;
@@ -13,6 +16,10 @@ class DetailPage extends StatefulWidget {
 
   @override
   State<DetailPage> createState() => _DetailPageState();
+
+  static DetailPage newInstance(String id, String name, {bool? isShow}) {
+    return DetailPage(id: id, name: name, isShow: isShow);
+  }
 }
 
 class _DetailPageState extends State<DetailPage> {
