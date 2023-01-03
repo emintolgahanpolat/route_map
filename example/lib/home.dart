@@ -28,11 +28,14 @@ class _HomePageState extends State<HomePage> {
         children: [
           ElevatedButton(
               onPressed: () {
-                // RouteMaps.detailPageNavigate(context);
+                RouteMaps.detailPageNavigate(context,
+                    id: "1", name: "2", rootNavigator: true);
+
+                RouteMaps.detailPageNavigate(context, id: "1", name: "2");
                 // Navigator.of(context).pushNamed(RouteMaps.detailPage,
                 //     arguments: {"id": "1", "name": "tolga"});
 
-                DetailPage.newInstance("1", "2").show(context);
+                // DetailPage.newInstance("1", "2").show(context);
               },
               child: const Text("detailPage")),
           ElevatedButton(

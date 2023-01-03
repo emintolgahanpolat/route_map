@@ -78,13 +78,13 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
       // if (page.params != null && page.params!.isNotEmpty) {
       buffer.write(",{");
       buffer.write("bool rootNavigator = false,");
-      (page.params?.forEach((param) {
+      page.params?.forEach((param) {
         if (param.type!.contains("?")) {
           buffer.write("${param.type} ${param.name},");
         } else {
           buffer.write("required ${param.type} ${param.name},");
         }
-      }));
+      });
       buffer.write("}");
       // }
       buffer.write(
@@ -95,6 +95,14 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         buffer.write(
             "RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()}");
       }
+      if (page.params != null && page.params!.isNotEmpty) {
+        buffer.write(",arguments: {");
+        page.params?.forEach((param) {
+          buffer.write(" \"${param.name}\": ${param.name},");
+        });
+        buffer.write("},");
+      }
+
       buffer.writeln(");");
     }
 

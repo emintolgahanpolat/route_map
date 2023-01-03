@@ -55,8 +55,14 @@ class RouteMaps {
     required String name,
     bool? isShow,
   }) =>
-      Navigator.of(context, rootNavigator: rootNavigator)
-          .pushNamed(RouteMaps.detailPage);
+      Navigator.of(context, rootNavigator: rootNavigator).pushNamed(
+        RouteMaps.detailPage,
+        arguments: {
+          "id": id,
+          "name": name,
+          "isShow": isShow,
+        },
+      );
   static Future<T?> araNavigate<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -91,6 +97,7 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.settings: RouteModel(
     (_) => const SettingsPage(),
+    fullscreenDialog: true,
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings) {

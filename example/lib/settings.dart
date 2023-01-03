@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
-@RouteMap(name: "settings")
+@RouteMap(name: "settings", fullScreenDialog: true)
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
   @override
