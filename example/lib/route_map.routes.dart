@@ -64,6 +64,12 @@ extension HomePageEx on HomePage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamedAndRemoveUntil(RouteMaps.home, predicate);
+  String restorablePush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamed(RouteMaps.home);
 }
 
 extension RootPageEx on RootPage {
@@ -92,20 +98,27 @@ extension RootPageEx on RootPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamedAndRemoveUntil(RouteMaps.root, predicate);
+  String restorablePush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamed(RouteMaps.root);
 }
 
 extension DetailPageEx on DetailPage {
+  Object get _args => {
+        "id": id,
+        "name": name,
+        "isShow": isShow,
+      };
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushNamed(
         RouteMaps.detailPage,
-        arguments: {
-          "id": id,
-          "name": name,
-          "isShow": isShow,
-        },
+        arguments: _args,
       );
   Future<T?> pushReplacement<T extends Object?>(
     BuildContext context, {
@@ -113,11 +126,7 @@ extension DetailPageEx on DetailPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushReplacementNamed(
         RouteMaps.detailPage,
-        arguments: {
-          "id": id,
-          "name": name,
-          "isShow": isShow,
-        },
+        arguments: _args,
       );
   Future<T?> popAndPush<T extends Object?>(
     BuildContext context, {
@@ -125,11 +134,7 @@ extension DetailPageEx on DetailPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).popAndPushNamed(
         RouteMaps.detailPage,
-        arguments: {
-          "id": id,
-          "name": name,
-          "isShow": isShow,
-        },
+        arguments: _args,
       );
   Future<T?> pushAndRemoveUntil<T extends Object?>(
     BuildContext context,
@@ -140,11 +145,15 @@ extension DetailPageEx on DetailPage {
           .pushNamedAndRemoveUntil(
         RouteMaps.detailPage,
         predicate,
-        arguments: {
-          "id": id,
-          "name": name,
-          "isShow": isShow,
-        },
+        arguments: _args,
+      );
+  String restorablePush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).restorablePushNamed(
+        RouteMaps.detailPage,
+        arguments: _args,
       );
 }
 
@@ -174,18 +183,25 @@ extension SearchPageEx on SearchPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamedAndRemoveUntil(RouteMaps.ara, predicate);
+  String restorablePush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamed(RouteMaps.ara);
 }
 
 extension SettingsPageEx on SettingsPage {
+  Object get _args => {
+        "name": name,
+      };
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushNamed(
         RouteMaps.settings,
-        arguments: {
-          "name": name,
-        },
+        arguments: _args,
       );
   Future<T?> pushReplacement<T extends Object?>(
     BuildContext context, {
@@ -193,9 +209,7 @@ extension SettingsPageEx on SettingsPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushReplacementNamed(
         RouteMaps.settings,
-        arguments: {
-          "name": name,
-        },
+        arguments: _args,
       );
   Future<T?> popAndPush<T extends Object?>(
     BuildContext context, {
@@ -203,9 +217,7 @@ extension SettingsPageEx on SettingsPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).popAndPushNamed(
         RouteMaps.settings,
-        arguments: {
-          "name": name,
-        },
+        arguments: _args,
       );
   Future<T?> pushAndRemoveUntil<T extends Object?>(
     BuildContext context,
@@ -216,9 +228,15 @@ extension SettingsPageEx on SettingsPage {
           .pushNamedAndRemoveUntil(
         RouteMaps.settings,
         predicate,
-        arguments: {
-          "name": name,
-        },
+        arguments: _args,
+      );
+  String restorablePush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).restorablePushNamed(
+        RouteMaps.settings,
+        arguments: _args,
       );
 }
 
