@@ -6,6 +6,7 @@ import 'package:change_case/change_case.dart';
 import 'package:glob/glob.dart';
 import 'package:route_map/route_map.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
+import 'package:route_map_generator/src/until.dart';
 import 'package:source_gen/source_gen.dart';
 
 class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
@@ -65,48 +66,9 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
       }
     }
 
-    for (var page in jsonData) {
-      buffer.write("static Future<T?>");
-      if (page.name == "/") {
-        buffer.write('rootNavigate');
-      } else {
-        buffer
-            .write("${page.name.replaceFirst("/", "").toCamelCase()}Navigate");
-      }
-
-      buffer.write("<T extends Object?>(BuildContext context");
-      // if (page.params != null && page.params!.isNotEmpty) {
-      buffer.write(",{");
-      buffer.write("bool rootNavigator = false,");
-      page.params?.forEach((param) {
-        if (param.type!.contains("?")) {
-          buffer.write("${param.type} ${param.name},");
-        } else {
-          buffer.write("required ${param.type} ${param.name},");
-        }
-      });
-      buffer.write("}");
-      // }
-      buffer.write(
-          ") =>  Navigator.of(context,rootNavigator:rootNavigator).pushNamed(");
-      if (page.name == "/") {
-        buffer.write("RouteMaps.root");
-      } else {
-        buffer.write(
-            "RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()}");
-      }
-      if (page.params != null && page.params!.isNotEmpty) {
-        buffer.write(",arguments: {");
-        page.params?.forEach((param) {
-          buffer.write(" \"${param.name}\": ${param.name},");
-        });
-        buffer.write("},");
-      }
-
-      buffer.writeln(");");
-    }
-
     buffer.writeln("}");
+
+    buildExtensions(buffer, jsonData);
 
     buffer.writeln("final Map<String, RouteModel> _routes = {");
     for (var page in jsonData) {

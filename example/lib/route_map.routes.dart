@@ -36,24 +36,68 @@ class RouteMaps {
   static String detailPage = "/detail_page";
   static String ara = "/ara";
   static String settings = "settings";
-  static Future<T?> homeNavigate<T extends Object?>(
+}
+
+extension HomePageEx on HomePage {
+  Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamed(RouteMaps.home);
-  static Future<T?> rootNavigate<T extends Object?>(
+  Future<T?> pushReplacement<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushReplacementNamed(RouteMaps.home);
+  Future<T?> popAndPush<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .popAndPushNamed(RouteMaps.home);
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushNamedAndRemoveUntil(RouteMaps.home, predicate);
+}
+
+extension RootPageEx on RootPage {
+  Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamed(RouteMaps.root);
-  static Future<T?> detailPageNavigate<T extends Object?>(
+  Future<T?> pushReplacement<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
-    required String id,
-    required String name,
-    bool? isShow,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushReplacementNamed(RouteMaps.root);
+  Future<T?> popAndPush<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .popAndPushNamed(RouteMaps.root);
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushNamedAndRemoveUntil(RouteMaps.root, predicate);
+}
+
+extension DetailPageEx on DetailPage {
+  Future<T?> push<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushNamed(
         RouteMaps.detailPage,
@@ -63,18 +107,119 @@ class RouteMaps {
           "isShow": isShow,
         },
       );
-  static Future<T?> araNavigate<T extends Object?>(
+  Future<T?> pushReplacement<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).pushReplacementNamed(
+        RouteMaps.detailPage,
+        arguments: {
+          "id": id,
+          "name": name,
+          "isShow": isShow,
+        },
+      );
+  Future<T?> popAndPush<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).popAndPushNamed(
+        RouteMaps.detailPage,
+        arguments: {
+          "id": id,
+          "name": name,
+          "isShow": isShow,
+        },
+      );
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushNamedAndRemoveUntil(
+        RouteMaps.detailPage,
+        predicate,
+        arguments: {
+          "id": id,
+          "name": name,
+          "isShow": isShow,
+        },
+      );
+}
+
+extension SearchPageEx on SearchPage {
+  Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamed(RouteMaps.ara);
-  static Future<T?> settingsNavigate<T extends Object?>(
+  Future<T?> pushReplacement<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
-          .pushNamed(RouteMaps.settings);
+          .pushReplacementNamed(RouteMaps.ara);
+  Future<T?> popAndPush<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .popAndPushNamed(RouteMaps.ara);
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushNamedAndRemoveUntil(RouteMaps.ara, predicate);
+}
+
+extension SettingsPageEx on SettingsPage {
+  Future<T?> push<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).pushNamed(
+        RouteMaps.settings,
+        arguments: {
+          "name": name,
+        },
+      );
+  Future<T?> pushReplacement<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).pushReplacementNamed(
+        RouteMaps.settings,
+        arguments: {
+          "name": name,
+        },
+      );
+  Future<T?> popAndPush<T extends Object?>(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator).popAndPushNamed(
+        RouteMaps.settings,
+        arguments: {
+          "name": name,
+        },
+      );
+  Future<T?> pushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .pushNamedAndRemoveUntil(
+        RouteMaps.settings,
+        predicate,
+        arguments: {
+          "name": name,
+        },
+      );
 }
 
 final Map<String, RouteModel> _routes = {
@@ -96,7 +241,9 @@ final Map<String, RouteModel> _routes = {
     fullscreenDialog: true,
   ),
   RouteMaps.settings: RouteModel(
-    (_) => const SettingsPage(),
+    (c) => SettingsPage(
+      name: c.routeArgs()["name"],
+    ),
     fullscreenDialog: true,
   ),
 };

@@ -3,7 +3,8 @@ import 'package:route_map/route_map.dart';
 
 @RouteMap(name: "settings", fullScreenDialog: true)
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  final String? name;
+  const SettingsPage({Key? key, this.name}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
