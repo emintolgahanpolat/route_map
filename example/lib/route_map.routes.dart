@@ -70,6 +70,25 @@ extension HomePageEx on HomePage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .restorablePushNamed(RouteMaps.home);
+  String restorablePushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamedAndRemoveUntil(RouteMaps.home, predicate);
+  String restorablePopAndPush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePopAndPushNamed(RouteMaps.home);
+  String restorablePushReplacement(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushReplacementNamed(RouteMaps.home);
 }
 
 extension RootPageEx on RootPage {
@@ -104,6 +123,25 @@ extension RootPageEx on RootPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .restorablePushNamed(RouteMaps.root);
+  String restorablePushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamedAndRemoveUntil(RouteMaps.root, predicate);
+  String restorablePopAndPush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePopAndPushNamed(RouteMaps.root);
+  String restorablePushReplacement(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushReplacementNamed(RouteMaps.root);
 }
 
 extension DetailPageEx on DetailPage {
@@ -155,6 +193,35 @@ extension DetailPageEx on DetailPage {
         RouteMaps.detailPage,
         arguments: _args,
       );
+  String restorablePushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamedAndRemoveUntil(
+        RouteMaps.detailPage,
+        predicate,
+        arguments: _args,
+      );
+  String restorablePopAndPush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePopAndPushNamed(
+        RouteMaps.detailPage,
+        arguments: _args,
+      );
+  String restorablePushReplacement(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushReplacementNamed(
+        RouteMaps.detailPage,
+        arguments: _args,
+      );
 }
 
 extension SearchPageEx on SearchPage {
@@ -189,6 +256,25 @@ extension SearchPageEx on SearchPage {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .restorablePushNamed(RouteMaps.ara);
+  String restorablePushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamedAndRemoveUntil(RouteMaps.ara, predicate);
+  String restorablePopAndPush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePopAndPushNamed(RouteMaps.ara);
+  String restorablePushReplacement(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushReplacementNamed(RouteMaps.ara);
 }
 
 extension SettingsPageEx on SettingsPage {
@@ -235,6 +321,35 @@ extension SettingsPageEx on SettingsPage {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).restorablePushNamed(
+        RouteMaps.settings,
+        arguments: _args,
+      );
+  String restorablePushAndRemoveUntil<T extends Object?>(
+    BuildContext context,
+    bool Function(Route<dynamic>) predicate, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushNamedAndRemoveUntil(
+        RouteMaps.settings,
+        predicate,
+        arguments: _args,
+      );
+  String restorablePopAndPush(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePopAndPushNamed(
+        RouteMaps.settings,
+        arguments: _args,
+      );
+  String restorablePushReplacement(
+    BuildContext context, {
+    bool rootNavigator = false,
+  }) =>
+      Navigator.of(context, rootNavigator: rootNavigator)
+          .restorablePushReplacementNamed(
         RouteMaps.settings,
         arguments: _args,
       );

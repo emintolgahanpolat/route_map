@@ -54,9 +54,29 @@ void buildExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
     // restorablePushNamed END
 
     // restorablePushNamedAndRemoveUntil START
+    buffer.write(
+        "String restorablePushAndRemoveUntil<T extends Object?>(BuildContext context,bool Function(Route<dynamic>) predicate,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePushNamedAndRemoveUntil(");
+    _buildBody(buffer, page);
+    buffer.write(",predicate");
+    _buildArgs(buffer, page);
+    buffer.writeln(");");
+    // restorablePushNamedAndRemoveUntil END
+
     // restorablePopAndPushNamed START
+    buffer.write(
+        "String restorablePopAndPush(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePopAndPushNamed(");
+    _buildBody(buffer, page);
+    _buildArgs(buffer, page);
+    buffer.writeln(");");
+    // restorablePopAndPushNamed END
     // restorablePushReplacementNamed START
+    buffer.write(
+        "String restorablePushReplacement(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePushReplacementNamed(");
+    _buildBody(buffer, page);
+    _buildArgs(buffer, page);
+    buffer.writeln(");");
     buffer.writeln("}");
+    // restorablePushReplacementNamed END
   }
 }
 
