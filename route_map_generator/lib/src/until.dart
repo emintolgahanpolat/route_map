@@ -5,6 +5,13 @@ void buildExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
   for (var page in jsonData) {
     buffer.write("extension ${page.clazz}Ex on ${page.clazz}{");
 
+    if (page.params != null && page.params!.isNotEmpty) {
+      buffer.write(" Object get _args => {");
+      page.params?.forEach((param) {
+        buffer.write(" \"${param.name}\": ${param.name},");
+      });
+      buffer.write("};");
+    }
     // pushNamed START
     buffer.write(
         "Future<T?> push<T extends Object?>(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).pushNamed(");
@@ -38,6 +45,17 @@ void buildExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
     buffer.writeln(");");
     // pushNamedAndRemoveUntil END
 
+    // restorablePushNamed START
+    buffer.write(
+        "String restorablePush(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePushNamed(");
+    _buildBody(buffer, page);
+    _buildArgs(buffer, page);
+    buffer.writeln(");");
+    // restorablePushNamed END
+
+    // restorablePushNamedAndRemoveUntil START
+    // restorablePopAndPushNamed START
+    // restorablePushReplacementNamed START
     buffer.writeln("}");
   }
 }
@@ -52,10 +70,6 @@ _buildBody(StringBuffer buffer, RouteConfig page) {
 
 _buildArgs(StringBuffer buffer, RouteConfig page) {
   if (page.params != null && page.params!.isNotEmpty) {
-    buffer.write(",arguments: {");
-    page.params?.forEach((param) {
-      buffer.write(" \"${param.name}\": ${param.name},");
-    });
-    buffer.write("},");
+    buffer.writeln(",arguments:_args,");
   }
 }

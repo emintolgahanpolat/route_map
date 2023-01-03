@@ -28,14 +28,20 @@ class _HomePageState extends State<HomePage> {
         children: [
           ElevatedButton(
               onPressed: () {
-                RouteMaps.detailPageNavigate(context,
-                    id: "1", name: "2", rootNavigator: true);
+                // RouteMaps.detailPageNavigate(context,
+                //     id: "1", name: "2", rootNavigator: true);
 
-                RouteMaps.detailPageNavigate(context, id: "1", name: "2");
-                // Navigator.of(context).pushNamed(RouteMaps.detailPage,
-                //     arguments: {"id": "1", "name": "tolga"});
+                Navigator.of(context).restorablePushReplacementNamed(
+                    RouteMaps.detailPage,
+                    arguments: {"id": "1", "name": "tolga"});
 
                 // DetailPage.newInstance("1", "2").show(context);
+
+                DetailPage(
+                  id: "1",
+                  name: "2",
+                  isShow: false,
+                ).push(context);
               },
               child: const Text("detailPage")),
           ElevatedButton(
@@ -46,11 +52,5 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-  }
-}
-
-extension StatefullPageEx on StatefullPage {
-  Future<T?> show<T extends Object?>(BuildContext context) {
-    return Navigator.of(context).push(MaterialPageRoute(builder: (_) => this));
   }
 }
