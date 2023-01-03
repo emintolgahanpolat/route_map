@@ -11,6 +11,50 @@ import 'package:example/detail.dart';
 import 'package:example/search.dart';
 import 'package:example/settings.dart';
 
+class RouteMaps {
+  static String home = "home";
+  static String root = "/";
+  static String detailPage = "/detail_page";
+  static String ara = "/ara";
+  static String settings = "settings";
+}
+
+final Map<String, RouteModel> _routes = {
+  RouteMaps.home: RouteModel(
+    (_) => const HomePage(),
+  ),
+  RouteMaps.root: RouteModel(
+    (_) => const RootPage(),
+  ),
+  RouteMaps.detailPage: RouteModel(
+    (c) => DetailPage(
+      id: c.routeArgs()["id"],
+      name: c.routeArgs()["name"],
+      isShow: c.routeArgs()["isShow"],
+    ),
+  ),
+  RouteMaps.ara: RouteModel(
+    (_) => const SearchPage(),
+    fullscreenDialog: true,
+  ),
+  RouteMaps.settings: RouteModel(
+    (c) => SettingsPage(
+      name: c.routeArgs()["name"],
+    ),
+    fullscreenDialog: true,
+  ),
+};
+Route? $onGenerateRoute(RouteSettings routeSettings) {
+  RouteModel? route = _routes[routeSettings.name];
+  if (route == null) {
+    return null;
+  }
+  return MaterialPageRoute(
+      builder: route.builder,
+      settings: routeSettings,
+      fullscreenDialog: route.fullscreenDialog);
+}
+
 extension RouteSettingsEx on RouteSettings {
   T routeArgs<T>() => arguments as T;
 }
@@ -28,14 +72,6 @@ class RouteModel {
     this.builder, {
     this.fullscreenDialog = false,
   });
-}
-
-class RouteMaps {
-  static String home = "home";
-  static String root = "/";
-  static String detailPage = "/detail_page";
-  static String ara = "/ara";
-  static String settings = "settings";
 }
 
 extension HomePageEx on HomePage {
@@ -353,40 +389,4 @@ extension SettingsPageEx on SettingsPage {
         RouteMaps.settings,
         arguments: _args,
       );
-}
-
-final Map<String, RouteModel> _routes = {
-  RouteMaps.home: RouteModel(
-    (_) => const HomePage(),
-  ),
-  RouteMaps.root: RouteModel(
-    (_) => const RootPage(),
-  ),
-  RouteMaps.detailPage: RouteModel(
-    (c) => DetailPage(
-      id: c.routeArgs()["id"],
-      name: c.routeArgs()["name"],
-      isShow: c.routeArgs()["isShow"],
-    ),
-  ),
-  RouteMaps.ara: RouteModel(
-    (_) => const SearchPage(),
-    fullscreenDialog: true,
-  ),
-  RouteMaps.settings: RouteModel(
-    (c) => SettingsPage(
-      name: c.routeArgs()["name"],
-    ),
-    fullscreenDialog: true,
-  ),
-};
-Route? $onGenerateRoute(RouteSettings routeSettings) {
-  RouteModel? route = _routes[routeSettings.name];
-  if (route == null) {
-    return null;
-  }
-  return MaterialPageRoute(
-      builder: route.builder,
-      settings: routeSettings,
-      fullscreenDialog: route.fullscreenDialog);
 }

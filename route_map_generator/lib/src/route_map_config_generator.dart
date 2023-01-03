@@ -30,32 +30,11 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
 
     var buffer = StringBuffer();
     buffer.writeln("import 'package:flutter/material.dart';");
-
+// imports
     for (var element in jsonData) {
       buffer.writeln(element.import);
     }
-
-    buffer.writeln("extension RouteSettingsEx on RouteSettings {");
-    buffer.writeln("T routeArgs<T>() => arguments as T;");
-    buffer.writeln("}");
-
-    buffer.writeln("extension BuildContextEx on BuildContext {");
-    buffer.writeln("NavigatorState navigator() => Navigator.of(this);");
-    buffer.writeln(
-        "NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);");
-    buffer.writeln(
-        "T routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;");
-    buffer.writeln("}");
-
-    buffer.writeln("class RouteModel {");
-    buffer.writeln("WidgetBuilder builder;");
-    buffer.writeln("bool fullscreenDialog;");
-    buffer.writeln("RouteModel(");
-    buffer.writeln("this.builder,");
-    buffer.writeln("{this.fullscreenDialog = false,");
-    buffer.writeln("});");
-    buffer.writeln("}");
-
+// route names
     buffer.writeln("class RouteMaps{");
     for (var element in jsonData) {
       if (element.name == "/") {
@@ -67,9 +46,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
     }
 
     buffer.writeln("}");
-
-    buildExtensions(buffer, jsonData);
-
+// route map
     buffer.writeln("final Map<String, RouteModel> _routes = {");
     for (var page in jsonData) {
       if (page.name == "/") {
@@ -96,20 +73,44 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
     }
 
     buffer.writeln("};");
-
+// reference code
     buffer.writeln(
         "Route? \$${element.displayName}(RouteSettings routeSettings) {");
+    buffer.writeln("""
+  RouteModel? route = _routes[routeSettings.name];
+  if (route == null) {
+    return null;
+  }
+  return MaterialPageRoute(
+      builder: route.builder,
+      settings: routeSettings,
+      fullscreenDialog: route.fullscreenDialog);
+}
+""");
 
-    buffer.writeln("RouteModel? route = _routes[routeSettings.name];");
-    buffer.writeln("if (route == null) {");
-    buffer.writeln("return null;");
-    buffer.writeln("  }");
-    buffer.writeln("return MaterialPageRoute(");
-    buffer.writeln("builder: route.builder,");
-    buffer.writeln("settings: routeSettings,");
-    buffer.writeln("fullscreenDialog: route.fullscreenDialog);");
-    buffer.writeln("}");
+// write extension
+    buffer.writeln("""
+extension RouteSettingsEx on RouteSettings {
+  T routeArgs<T>() => arguments as T;
+}
 
+extension BuildContextEx on BuildContext {
+  NavigatorState navigator() => Navigator.of(this);
+  NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
+  T routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
+}
+
+class RouteModel {
+  WidgetBuilder builder;
+  bool fullscreenDialog;
+  RouteModel(
+    this.builder, {
+    this.fullscreenDialog = false,
+  });
+}
+""");
+
+    buildExtensions(buffer, jsonData);
     return buffer.toString();
   }
 }
