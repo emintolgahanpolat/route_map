@@ -22,16 +22,18 @@ void buildExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
 
     // pushReplacementNamed START
     buffer.write(
-        "Future<T?> pushReplacement<T extends Object?>(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).pushReplacementNamed(");
+        "Future<T?> pushReplacement<T extends Object?, TO extends Object?>(BuildContext context,{bool rootNavigator = false,TO? result,}) =>  Navigator.of(context,rootNavigator:rootNavigator).pushReplacementNamed(");
     _buildBody(buffer, page);
+    buffer.writeln(",result:result");
     _buildArgs(buffer, page);
     buffer.writeln(");");
     // pushReplacementNamed END
 
     // popAndPushNamed START
     buffer.write(
-        "Future<T?> popAndPush<T extends Object?>(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).popAndPushNamed(");
+        "Future<T?> popAndPush<T extends Object?, TO extends Object?>(BuildContext context,{bool rootNavigator = false,TO? result,}) =>  Navigator.of(context,rootNavigator:rootNavigator).popAndPushNamed(");
     _buildBody(buffer, page);
+    buffer.writeln(",result:result");
     _buildArgs(buffer, page);
     buffer.writeln(");");
     // popAndPushNamed END
