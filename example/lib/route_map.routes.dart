@@ -28,9 +28,9 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.detailPage: RouteModel(
     (c) => DetailPage(
-      id: c.routeArgs()["id"],
-      name: c.routeArgs()["name"],
-      isShow: c.routeArgs()["isShow"],
+      id: c.routeArgs()?["id"],
+      name: c.routeArgs()?["name"],
+      isShow: c.routeArgs()?["isShow"],
     ),
   ),
   RouteMaps.ara: RouteModel(
@@ -39,7 +39,7 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.settings: RouteModel(
     (c) => SettingsPage(
-      name: c.routeArgs()["name"],
+      name: c.routeArgs()?["name"],
     ),
     fullscreenDialog: true,
   ),
@@ -56,13 +56,13 @@ Route? $onGenerateRoute(RouteSettings routeSettings) {
 }
 
 extension RouteSettingsEx on RouteSettings {
-  T routeArgs<T>() => arguments as T;
+  T? routeArgs<T>() => arguments as T;
 }
 
 extension BuildContextEx on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
-  T routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
+  T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
 }
 
 class RouteModel {

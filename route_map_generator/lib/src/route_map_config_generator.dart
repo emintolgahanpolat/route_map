@@ -61,7 +61,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         buffer.writeln(" (c) =>");
         buffer.writeln("${page.clazz}(");
         (page.params?.forEach((param) {
-          buffer.writeln("${param.name}: c.routeArgs()[\"${param.name}\"],");
+          buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
         }));
         buffer.writeln("),");
       }
@@ -91,13 +91,13 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
 // write extension
     buffer.writeln("""
 extension RouteSettingsEx on RouteSettings {
-  T routeArgs<T>() => arguments as T;
+  T? routeArgs<T>() => arguments as T;
 }
 
 extension BuildContextEx on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
-  T routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
+  T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
 }
 
 class RouteModel {
