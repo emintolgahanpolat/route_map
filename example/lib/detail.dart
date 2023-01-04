@@ -48,34 +48,43 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("Add")),
           ElevatedButton(
               onPressed: () async {
-                Navigator.of(context).pushNamed(RouteMaps.detailPage,
-                    arguments: {"id": "id", "name": "name"}).then((value) {
-                  print("pushNamed");
+                const DetailPage(id: "1", name: "push")
+                    .push(context)
+                    .then((value) {
+                  print("push");
                 });
               },
-              child: const Text("Next")),
+              child: const Text("push")),
           ElevatedButton(
               onPressed: () async {
-                Navigator.of(context).restorablePushNamed(RouteMaps.detailPage,
-                    arguments: {"id": "id", "name": "restorablePushNamed"});
+                const DetailPage(id: "2", name: "restorablePush")
+                    .restorablePush(context);
               },
               child: const Text("restorablePushNamed")),
           ElevatedButton(
               onPressed: () async {
-                Navigator.of(context).popAndPushNamed(RouteMaps.detailPage,
-                    arguments: {"id": "asd", "name": "dsfdf"}).then((value) {
-                  print("popAndPushNamed");
+                const DetailPage(id: "3", name: "popAndPush")
+                    .popAndPush(context)
+                    .then((value) {
+                  print("popAndPush");
                 });
               },
-              child: const Text("popAndPushNamed")),
+              child: const Text("popAndPush")),
           ElevatedButton(
               onPressed: () async {
-                Navigator.of(context).pushReplacementNamed(RouteMaps.detailPage,
-                    arguments: {"id": "asd", "name": "dsfdf"}).then((value) {
-                  print("pushReplacementNamed");
+                const DetailPage(id: "4", name: "pushReplacement")
+                    .pushReplacement(context)
+                    .then((value) {
+                  print("pushReplacement");
                 });
               },
-              child: const Text("pushReplacementNamed"))
+              child: const Text("pushReplacement")),
+          ElevatedButton(
+              onPressed: () async {
+                const DetailPage(id: "5", name: "restorablePushReplacement")
+                    .restorablePushReplacement(context);
+              },
+              child: const Text("restorablePushReplacement"))
         ],
       ),
     );

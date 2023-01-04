@@ -31,15 +31,11 @@ class _HomePageState extends State<HomePage> {
                 // RouteMaps.detailPageNavigate(context,
                 //     id: "1", name: "2", rootNavigator: true);
 
-                Navigator.of(context).restorablePushReplacementNamed(
-                    RouteMaps.detailPage,
-                    arguments: {"id": "1", "name": "tolga"});
-
                 // DetailPage.newInstance("1", "2").show(context);
 
-                DetailPage(
-                  id: "1",
-                  name: "2",
+                const DetailPage(
+                  id: "0",
+                  name: "push",
                   isShow: false,
                 ).push(context);
               },
