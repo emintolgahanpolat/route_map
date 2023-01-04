@@ -55,11 +55,11 @@ Route? $onGenerateRoute(RouteSettings routeSettings) {
       fullscreenDialog: route.fullscreenDialog);
 }
 
-extension RouteSettingsEx on RouteSettings {
+extension RouteSettingsExtension on RouteSettings {
   T? routeArgs<T>() => arguments as T;
 }
 
-extension BuildContextEx on BuildContext {
+extension BuildContextExtension on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
   T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
@@ -74,7 +74,7 @@ class RouteModel {
   });
 }
 
-extension HomePageEx on HomePage {
+extension HomePageExtension on HomePage {
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -129,7 +129,7 @@ extension HomePageEx on HomePage {
           .restorablePushReplacementNamed(RouteMaps.home);
 }
 
-extension RootPageEx on RootPage {
+extension RootPageExtension on RootPage {
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -184,7 +184,7 @@ extension RootPageEx on RootPage {
           .restorablePushReplacementNamed(RouteMaps.root);
 }
 
-extension DetailPageEx on DetailPage {
+extension DetailPageExtension on DetailPage {
   Object get _args => {
         "id": id,
         "name": name,
@@ -268,7 +268,7 @@ extension DetailPageEx on DetailPage {
       );
 }
 
-extension SearchPageEx on SearchPage {
+extension SearchPageExtension on SearchPage {
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -323,7 +323,7 @@ extension SearchPageEx on SearchPage {
           .restorablePushReplacementNamed(RouteMaps.ara);
 }
 
-extension SettingsPageEx on SettingsPage {
+extension SettingsPageExtension on SettingsPage {
   Object get _args => {
         "name": name,
       };

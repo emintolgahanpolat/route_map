@@ -1,9 +1,9 @@
 import 'package:change_case/change_case.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 
-void buildExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildNavigatorExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
   for (var page in jsonData) {
-    buffer.write("extension ${page.clazz}Ex on ${page.clazz}{");
+    buffer.write("extension ${page.clazz}Extension on ${page.clazz}{");
 
     if (page.params != null && page.params!.isNotEmpty) {
       buffer.write(" Object get _args => {");

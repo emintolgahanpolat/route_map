@@ -6,7 +6,7 @@ import 'package:change_case/change_case.dart';
 import 'package:glob/glob.dart';
 import 'package:route_map/route_map.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
-import 'package:route_map_generator/src/until.dart';
+import 'package:route_map_generator/src/helper.dart';
 import 'package:source_gen/source_gen.dart';
 
 class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
@@ -90,11 +90,11 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
 
 // write extension
     buffer.writeln("""
-extension RouteSettingsEx on RouteSettings {
+extension RouteSettingsExtension on RouteSettings {
   T? routeArgs<T>() => arguments as T;
 }
 
-extension BuildContextEx on BuildContext {
+extension BuildContextExtension on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
   T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
@@ -110,7 +110,7 @@ class RouteModel {
 }
 """);
 
-    buildExtensions(buffer, jsonData);
+    buildNavigatorExtensions(buffer, jsonData);
     return buffer.toString();
   }
 }
