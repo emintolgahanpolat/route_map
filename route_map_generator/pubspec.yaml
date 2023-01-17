@@ -2,7 +2,6 @@ name: route_map_generator
 description: Create route map quickly by annotation.
 version: 0.0.1
 homepage: https://github.com/emintolgahanpolat/route_map
-publish_to: none
 
 environment:
   sdk: '>=2.18.4 <3.0.0'
