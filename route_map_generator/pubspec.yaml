@@ -15,16 +15,11 @@ dependencies:
   flutter:
     sdk: flutter
   glob: ^2.1.1
+  route_map: ^0.0.1
   source_gen: ^1.2.6
-  route_map:
-    path: ../route_map
-
-
-
-
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-flutter:
+flutter: null
