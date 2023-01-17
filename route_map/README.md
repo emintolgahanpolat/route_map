@@ -39,8 +39,12 @@ Not: Kök dizini belirtmek için "/" kullanınız. Kök dizinden bağımsız say
 
         @RouteMap(name: "/ara", fullScreenDialog: true)
         class SearchPage extends StatefulWidget {}
+4. Sayfa arası yönlendrimelerde veri taşımanın daha kolay yolu için yönlendirilecek sınıf nesnesinden yararlanabilirsiniz. Navigator sınıfının tüm fonksiyonlarını kullanabilirsiniz.
+        
+        DetailPage(id: "0",name: "push",isShow: false).push(context);
+        DetailPage(id: "0",name: "push",isShow: false).popAndPush(context);
 
-4. Sayfalar arası yönlendirme. Yönlendirme esnasında değer göndermek için arguments alanı kullanılabilir.
+5. Sayfalar arası yönlendirme. Yönlendirme esnasında değer göndermek için arguments alanı kullanılabilir.
 
            Navigator.of(context)
                     .pushNamed(RouteMaps.detailPage, arguments: "value");
@@ -48,7 +52,7 @@ Not: Kök dizini belirtmek için "/" kullanınız. Kök dizinden bağımsız say
            Navigator.of(context)
                     .pushNamed(RouteMaps.detailPage, arguments: {"val1":"Easy","val2":"Route"});
 
-5. Arguments ile gelen veriyi okuma.
+6. Arguments ile gelen veriyi okuma.
             
             String value = context.routeArgs();
 
