@@ -1,6 +1,6 @@
 name: route_map
 description: Create route map quickly by annotation.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/emintolgahanpolat/route_map
 
 environment:
