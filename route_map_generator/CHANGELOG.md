@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Dart docs added
+* Example added
 ## 0.0.2
 
 * English and Turkish version of readme 
