@@ -1,3 +1,6 @@
+## 0.0.5
+
+* Fixed dependency version
 ## 0.0.4
 
 * Fixed dependency version
