@@ -334,19 +334,19 @@ packages:
     source: hosted
     version: "1.2.1"
   route_map:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      path: "../route_map"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: route_map
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   route_map_generator:
     dependency: "direct dev"
     description:
-      path: "../route_map_generator"
+      path: "../../route_map_generator"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.2"
   shelf:
     dependency: transitive
     description:
