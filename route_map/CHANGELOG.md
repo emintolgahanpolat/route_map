@@ -1,3 +1,6 @@
+## 0.0.4
+
+* Fixed dependency version
 ## 0.0.3
 
 * Dart docs added
