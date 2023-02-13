@@ -74,7 +74,7 @@ class RouteModel {
   });
 }
 
-extension HomePageExtension on HomePage {
+class HomePageRoute {
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -129,7 +129,7 @@ extension HomePageExtension on HomePage {
           .restorablePushReplacementNamed(RouteMaps.home);
 }
 
-extension RootPageExtension on RootPage {
+class RootPageRoute {
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -184,7 +184,15 @@ extension RootPageExtension on RootPage {
           .restorablePushReplacementNamed(RouteMaps.root);
 }
 
-extension DetailPageExtension on DetailPage {
+class DetailPageRoute {
+  final String id;
+  final String name;
+  final bool? isShow;
+  DetailPageRoute({
+    required this.id,
+    required this.name,
+    this.isShow,
+  });
   Object get _args => {
         "id": id,
         "name": name,
@@ -268,7 +276,7 @@ extension DetailPageExtension on DetailPage {
       );
 }
 
-extension SearchPageExtension on SearchPage {
+class SearchPageRoute {
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
@@ -323,7 +331,11 @@ extension SearchPageExtension on SearchPage {
           .restorablePushReplacementNamed(RouteMaps.ara);
 }
 
-extension SettingsPageExtension on SettingsPage {
+class SettingsPageRoute {
+  final String? name;
+  SettingsPageRoute({
+    this.name,
+  });
   Object get _args => {
         "name": name,
       };

@@ -1,9 +1,22 @@
 import 'package:change_case/change_case.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 
-void buildNavigatorExtensions(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
   for (var page in jsonData) {
-    buffer.write("extension ${page.clazz}Extension on ${page.clazz}{");
+    buffer.write("class ${page.clazz}Route {");
+    if (page.params != null && page.params!.isNotEmpty) {
+      page.params?.forEach((param) {
+        buffer.write("final ${param.type} ${param.name};");
+      });
+      buffer.writeln("${page.clazz}Route({");
+      page.params?.forEach((param) {
+        if (!param.type!.contains("?")) {
+          buffer.write("required ");
+        }
+        buffer.write("this.${param.name},");
+      });
+      buffer.writeln("});");
+    }
 
     if (page.params != null && page.params!.isNotEmpty) {
       buffer.write(" Object get _args => {");

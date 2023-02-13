@@ -17,6 +17,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         .read('generateForDir')
         .listValue
         .map((e) => e.toStringValue());
+
     final dirPattern = generateForDir.length > 1
         ? '{${generateForDir.join(',')}}'
         : '${generateForDir.first}';
@@ -110,7 +111,11 @@ class RouteModel {
 }
 """);
 
-    buildNavigatorExtensions(buffer, jsonData);
+    if (annotation.read('typeSafe').isBool &&
+        annotation.read('typeSafe').boolValue) {
+      buildTypeSafeNavigator(buffer, jsonData);
+    }
+
     return buffer.toString();
   }
 }

@@ -1,3 +1,6 @@
+## 0.0.6
+
+* Type Safe added
 ## 0.0.5
 
 * Fixed dependency version

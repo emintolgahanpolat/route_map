@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
 
                 // DetailPage.newInstance("1", "2").show(context);
 
-                const DetailPage(
+                DetailPageRoute(
                   id: "0",
                   name: "push",
                   isShow: false,

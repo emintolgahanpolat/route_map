@@ -15,7 +15,9 @@ class RouteMap {
 class RouteMapInit {
   /// Only files exist in provided directories will be processed
   final List<String> generateForDir;
+  final bool typeSafe;
   const RouteMapInit({
     this.generateForDir = const ['lib'],
+    this.typeSafe = true,
   });
 }

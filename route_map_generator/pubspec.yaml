@@ -1,6 +1,6 @@
 name: route_map_generator
 description: Create route map quickly by annotation.
-version: 0.0.5
+version: 0.0.6
 homepage: https://github.com/emintolgahanpolat/route_map
 # publish_to: 'none'
 
@@ -24,6 +24,6 @@ dev_dependencies:
 flutter: null
 
 
-dependency_overrides:
-  route_map:
-    path: ../route_map/
+# dependency_overrides:
+#   route_map:
+#     path: ../route_map/

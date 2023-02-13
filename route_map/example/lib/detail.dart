@@ -48,7 +48,7 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("Add")),
           ElevatedButton(
               onPressed: () async {
-                const DetailPage(id: "1", name: "push")
+                DetailPageRoute(id: "1", name: "push")
                     .push(context)
                     .then((value) {
                   print("push");
@@ -57,13 +57,13 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("push")),
           ElevatedButton(
               onPressed: () async {
-                const DetailPage(id: "2", name: "restorablePush")
+                DetailPageRoute(id: "2", name: "restorablePush")
                     .restorablePush(context);
               },
               child: const Text("restorablePushNamed")),
           ElevatedButton(
               onPressed: () async {
-                const DetailPage(id: "3", name: "popAndPush")
+                DetailPageRoute(id: "3", name: "popAndPush")
                     .popAndPush(context)
                     .then((value) {
                   print("popAndPush");
@@ -72,7 +72,7 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("popAndPush")),
           ElevatedButton(
               onPressed: () async {
-                const DetailPage(id: "4", name: "pushReplacement")
+                DetailPageRoute(id: "4", name: "pushReplacement")
                     .pushReplacement(context)
                     .then((value) {
                   print("pushReplacement");
@@ -81,7 +81,7 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("pushReplacement")),
           ElevatedButton(
               onPressed: () async {
-                const DetailPage(id: "5", name: "restorablePushReplacement")
+                DetailPageRoute(id: "5", name: "restorablePushReplacement")
                     .restorablePushReplacement(context);
               },
               child: const Text("restorablePushReplacement"))
