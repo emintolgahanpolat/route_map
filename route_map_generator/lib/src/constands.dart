@@ -1,107 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// RouteMapConfigGenerator
-// **************************************************************************
-
-import 'package:flutter/material.dart';
-import 'package:example/home.dart';
-import 'package:example/root.dart';
-import 'package:example/detail.dart';
-import 'package:example/search.dart';
-import 'package:example/settings.dart';
-
-class RouteMaps {
-  static String home = "home";
-  static String root = "/";
-  static String detailPage = "/detail_page";
-  static String ara = "/ara";
-  static String settings = "settings";
-}
-
-final Map<String, RouteModel> _routes = {
-  RouteMaps.home: RouteModel(
-    (_) => const HomePage(),
-  ),
-  RouteMaps.root: RouteModel(
-    (_) => const RootPage(),
-  ),
-  RouteMaps.detailPage: RouteModel(
-    (c) => DetailPage(
-      id: c.routeArgs()?["id"],
-      name: c.routeArgs()?["name"],
-      isShow: c.routeArgs()?["isShow"],
-    ),
-  ),
-  RouteMaps.ara: RouteModel(
-    (_) => const SearchPage(),
-    fullscreenDialog: true,
-  ),
-  RouteMaps.settings: RouteModel(
-    (c) => SettingsPage(
-      name: c.routeArgs()?["name"],
-    ),
-    fullscreenDialog: true,
-  ),
-};
-Route? $onGenerateRoute(RouteSettings routeSettings) {
-  RouteModel? route = _routes[routeSettings.name];
-  if (route == null) {
-    return null;
-  }
-  return MaterialPageRoute(
-      builder: route.builder,
-      settings: routeSettings,
-      fullscreenDialog: route.fullscreenDialog);
-}
-
-class HomePageRoute extends BaseRoute {
-  @override
-  String get routeName => RouteMaps.home;
-}
-
-class RootPageRoute extends BaseRoute {
-  @override
-  String get routeName => RouteMaps.root;
-}
-
-class DetailPageRoute extends BaseRoute {
-  final String id;
-  final String name;
-  final bool? isShow;
-  DetailPageRoute({
-    required this.id,
-    required this.name,
-    this.isShow,
-  });
-  @override
-  String get routeName => RouteMaps.detailPage;
-  @override
-  Object? get args => {
-        "id": id,
-        "name": name,
-        "isShow": isShow,
-      };
-}
-
-class SearchPageRoute extends BaseRoute {
-  @override
-  String get routeName => RouteMaps.ara;
-}
-
-class SettingsPageRoute extends BaseRoute {
-  final String? name;
-  SettingsPageRoute({
-    this.name,
-  });
-  @override
-  String get routeName => RouteMaps.settings;
-  @override
-  Object? get args => {
-        "name": name,
-      };
-}
-
+String baseRouteClass = """
 class BaseRoute {
   late String routeName;
   Object? args;
@@ -182,7 +79,9 @@ class BaseRoute {
         arguments: args,
       );
 }
+""";
 
+String routeSettingsExtensiton = """
 extension RouteSettingsExtension on RouteSettings {
   T? routeArgs<T>() => arguments as T;
 }
@@ -192,7 +91,9 @@ extension BuildContextExtension on BuildContext {
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
   T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
 }
+""";
 
+String routeModelClass = """
 class RouteModel {
   WidgetBuilder builder;
   bool fullscreenDialog;
@@ -201,3 +102,15 @@ class RouteModel {
     this.fullscreenDialog = false,
   });
 }
+""";
+
+String routeBuilderBody = """
+  RouteModel? route = _routes[routeSettings.name];
+  if (route == null) {
+    return null;
+  }
+  return MaterialPageRoute(
+      builder: route.builder,
+      settings: routeSettings,
+      fullscreenDialog: route.fullscreenDialog);
+""";

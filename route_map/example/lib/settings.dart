@@ -11,6 +11,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
+      body: ListView(children: [Text(name ?? "Name null")]),
     );
   }
 }

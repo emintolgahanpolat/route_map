@@ -24,6 +24,6 @@ dev_dependencies:
 flutter: null
 
 
-# dependency_overrides:
-#   route_map:
-#     path: ../route_map/
+dependency_overrides:
+  route_map:
+    path: ../route_map/
