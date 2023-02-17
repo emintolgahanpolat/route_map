@@ -70,9 +70,9 @@ class SearchPage extends StatefulWidget {}
 
 4. You can take advantage of the class object to be redirected when passing data between pages. You can use all the functions of the standart Navigator class.
 ```dart
-DetailPage(id: "0",name: "push").push(context);
+DetailPageRoute(id: "0",name: "push").push(context);
 
-DetailPage(id: "0",name: "push").popAndPush(context);
+DetailPageRoute(id: "0",name: "push").popAndPush(context);
 ```
 5. Redirection between pages using standart Navigator class
 >**The arguments field can be used to send values during routing.**
