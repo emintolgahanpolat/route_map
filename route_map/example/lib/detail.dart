@@ -15,12 +15,6 @@ class DetailPage extends StatefulWidget {
   State<DetailPage> createState() => _DetailPageState();
 }
 
-extension DetailPageExtension on DetailPage {
-  static DetailPage newInstance(String id, String name, {bool? isShow}) {
-    return DetailPage(id: id, name: name, isShow: isShow);
-  }
-}
-
 class _DetailPageState extends State<DetailPage> {
   int _counter = 0;
   @override

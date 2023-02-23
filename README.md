@@ -46,7 +46,23 @@ import 'route_map.config.dart';
         @RouteMapInit()
         Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSettings);
 ```
-2. Define the route builder in the  `MaterialApp` widget
+
+2. Redirection changes the location to a new one based on application state. For example, redirection can be used to display a sign-in screen if the user is not logged in.
+
+```dart
+import 'route_map.config.dart';
+
+        @RouteMapInit()
+        Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSettings,redirect:(){
+                bool isLogin = false;
+                if(isLogin){
+                   return RouteMap.login;
+                }
+           return null;
+        });
+```
+
+3. Define the route builder in the  `MaterialApp` widget
    
 ```dart
 MaterialApp(
@@ -55,7 +71,7 @@ MaterialApp(
 );
 ```
 
-3. Annotate your pages with `@RouteMap` and let the generator do the work. 
+4. Annotate your pages with `@RouteMap` and let the generator do the work. 
 >Note: Use "/" to specify the root directory. To create a root-independent page, there must be no "/" at the beginning.
 ```dart
 @RouteMap(name: "splash")
@@ -68,7 +84,7 @@ class HomePage extends StatefulWidget {}
 class SearchPage extends StatefulWidget {}
 ```
 
-4. You can take advantage of the class object to be redirected when passing data between pages. You can use all the functions of the standart Navigator class.
+5. You can take advantage of the class object to be redirected when passing data between pages. You can use all the functions of the standart Navigator class.
 ```dart
 DetailPageRoute(id: "0",name: "push").push(context);
 
