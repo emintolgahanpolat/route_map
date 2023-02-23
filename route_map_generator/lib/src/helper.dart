@@ -92,7 +92,8 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
 }
 
 void buildRouteGenerator(StringBuffer buffer, String displayName) {
-  buffer.writeln("Route? \$$displayName(RouteSettings routeSettings) {");
+  buffer.writeln(
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function()? redirect}) {");
   buffer.writeln(routeBuilderBody);
   buffer.writeln("}");
 }

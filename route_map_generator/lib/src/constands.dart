@@ -105,7 +105,7 @@ class RouteModel {
 """;
 
 String routeBuilderBody = """
-  RouteModel? route = _routes[routeSettings.name];
+   RouteModel? route = _routes[redirect?.call() ?? routeSettings.name];
   if (route == null) {
     return null;
   }

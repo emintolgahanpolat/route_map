@@ -44,8 +44,9 @@ final Map<String, RouteModel> _routes = {
     fullscreenDialog: true,
   ),
 };
-Route? $onGenerateRoute(RouteSettings routeSettings) {
-  RouteModel? route = _routes[routeSettings.name];
+Route? $onGenerateRoute(RouteSettings routeSettings,
+    {String? Function()? redirect}) {
+  RouteModel? route = _routes[redirect?.call() ?? routeSettings.name];
   if (route == null) {
     return null;
   }
