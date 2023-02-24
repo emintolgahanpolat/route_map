@@ -5,4 +5,6 @@ import 'route_map.routes.dart';
 
 @RouteMapInit()
 Route? onGenerateRoute(RouteSettings routeSettings) =>
-    $onGenerateRoute(routeSettings);
+    $onGenerateRoute(routeSettings, redirect: () {
+      return null;
+    });

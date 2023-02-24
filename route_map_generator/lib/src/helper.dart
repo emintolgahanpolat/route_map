@@ -1,9 +1,11 @@
 import 'package:change_case/change_case.dart';
+import 'package:route_map_generator/src/constands.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 
 void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
   for (var page in jsonData) {
-    buffer.write("class ${page.clazz}Route {");
+    buffer.write("class ${page.clazz}Route extends BaseRoute {");
+
     if (page.params != null && page.params!.isNotEmpty) {
       page.params?.forEach((param) {
         buffer.write("final ${param.type} ${param.name};");
@@ -17,94 +19,81 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
       });
       buffer.writeln("});");
     }
+    buffer.writeln("@override");
+    buffer.write("String get routeName => ");
+    if (page.name == "/") {
+      buffer.write("RouteMaps.root");
+    } else {
+      buffer
+          .write("RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()}");
+    }
+    buffer.write(";");
 
     if (page.params != null && page.params!.isNotEmpty) {
-      buffer.write(" Object get _args => {");
+      buffer.writeln("@override");
+      buffer.write("Object? get args => {");
       page.params?.forEach((param) {
         buffer.write(" \"${param.name}\": ${param.name},");
       });
       buffer.write("};");
     }
-    // pushNamed START
-    buffer.write(
-        "Future<T?> push<T extends Object?>(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).pushNamed(");
-    _buildBody(buffer, page);
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // pushNamed END
-
-    // pushReplacementNamed START
-    buffer.write(
-        "Future<T?> pushReplacement<T extends Object?, TO extends Object?>(BuildContext context,{bool rootNavigator = false,TO? result,}) =>  Navigator.of(context,rootNavigator:rootNavigator).pushReplacementNamed(");
-    _buildBody(buffer, page);
-    buffer.writeln(",result:result");
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // pushReplacementNamed END
-
-    // popAndPushNamed START
-    buffer.write(
-        "Future<T?> popAndPush<T extends Object?, TO extends Object?>(BuildContext context,{bool rootNavigator = false,TO? result,}) =>  Navigator.of(context,rootNavigator:rootNavigator).popAndPushNamed(");
-    _buildBody(buffer, page);
-    buffer.writeln(",result:result");
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // popAndPushNamed END
-
-    // pushNamedAndRemoveUntil START
-    buffer.write(
-        "Future<T?> pushAndRemoveUntil<T extends Object?>(BuildContext context,bool Function(Route<dynamic>) predicate,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).pushNamedAndRemoveUntil(");
-    _buildBody(buffer, page);
-    buffer.write(",predicate");
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // pushNamedAndRemoveUntil END
-
-    // restorablePushNamed START
-    buffer.write(
-        "String restorablePush(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePushNamed(");
-    _buildBody(buffer, page);
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // restorablePushNamed END
-
-    // restorablePushNamedAndRemoveUntil START
-    buffer.write(
-        "String restorablePushAndRemoveUntil<T extends Object?>(BuildContext context,bool Function(Route<dynamic>) predicate,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePushNamedAndRemoveUntil(");
-    _buildBody(buffer, page);
-    buffer.write(",predicate");
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // restorablePushNamedAndRemoveUntil END
-
-    // restorablePopAndPushNamed START
-    buffer.write(
-        "String restorablePopAndPush(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePopAndPushNamed(");
-    _buildBody(buffer, page);
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
-    // restorablePopAndPushNamed END
-    // restorablePushReplacementNamed START
-    buffer.write(
-        "String restorablePushReplacement(BuildContext context,{bool rootNavigator = false,}) =>  Navigator.of(context,rootNavigator:rootNavigator).restorablePushReplacementNamed(");
-    _buildBody(buffer, page);
-    _buildArgs(buffer, page);
-    buffer.writeln(");");
     buffer.writeln("}");
-    // restorablePushReplacementNamed END
+  }
+  buffer.write(baseRouteClass);
+}
+
+void buildImports(StringBuffer buffer, List<RouteConfig> jsonData) {
+  buffer.writeln("import 'package:flutter/material.dart';");
+  for (var element in jsonData) {
+    buffer.writeln(element.import);
   }
 }
 
-_buildBody(StringBuffer buffer, RouteConfig page) {
-  if (page.name == "/") {
-    buffer.write("RouteMaps.root");
-  } else {
-    buffer.write("RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()}");
+void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
+  buffer.writeln("class RouteMaps{");
+  for (var element in jsonData) {
+    if (element.name == "/") {
+      buffer.write("static String root = \"/\";");
+    } else {
+      buffer.write(
+          "static String ${element.name.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
+    }
   }
+  buffer.writeln("}");
 }
 
-_buildArgs(StringBuffer buffer, RouteConfig page) {
-  if (page.params != null && page.params!.isNotEmpty) {
-    buffer.writeln(",arguments:_args,");
+void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
+  buffer.writeln("final Map<String, RouteModel> _routes = {");
+  for (var page in jsonData) {
+    if (page.name == "/") {
+      buffer.writeln('RouteMaps.root : RouteModel(');
+    } else {
+      buffer.writeln(
+          'RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
+    }
+    if (page.params == null || page.params!.isEmpty) {
+      buffer.writeln(" (_) => const ${page.clazz}(),");
+    } else {
+      buffer.writeln(" (c) =>");
+      buffer.writeln("${page.clazz}(");
+      (page.params?.forEach((param) {
+        buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
+      }));
+      buffer.writeln("),");
+    }
+
+    if (page.fullScreenDialog) {
+      buffer.writeln("  fullscreenDialog: true,");
+    }
+    buffer.writeln("),");
   }
+
+  buffer.writeln("};");
+}
+
+void buildRouteGenerator(StringBuffer buffer, String displayName) {
+  buffer.writeln(
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function()? redirect}) {");
+  buffer.writeln(routeBuilderBody);
+  buffer.writeln("}");
 }

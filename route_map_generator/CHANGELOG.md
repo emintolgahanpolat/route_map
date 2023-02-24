@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Readme updated
+* Redirection changes the location to a new one based on application state.
 ## 0.0.6
 
 * Type Safe added

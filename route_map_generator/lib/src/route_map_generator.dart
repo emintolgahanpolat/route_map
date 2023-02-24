@@ -37,19 +37,8 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
 }
 
 class ModelVisitor extends SimpleElementVisitor<void> {
-  // 2
-  late String className;
   final fields = <String, dynamic>{};
 
-  // 3
-  @override
-  void visitConstructorElement(ConstructorElement element) {
-    final elementReturnType = element.type.returnType.toString();
-    // 4
-    className = elementReturnType.replaceFirst('*', '');
-  }
-
-  // 5
   @override
   void visitFieldElement(FieldElement element) {
     final elementType = element.type.toString();

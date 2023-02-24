@@ -44,7 +44,12 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.of(context).pushNamed("Unknown");
               },
-              child: const Text("Unknown"))
+              child: const Text("Unknown")),
+          ElevatedButton(
+              onPressed: () {
+                SettingsPageRoute(name: "Deneme").push(context);
+              },
+              child: const Text("Settings"))
         ],
       ),
     );

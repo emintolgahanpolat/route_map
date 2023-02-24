@@ -46,14 +46,29 @@ import 'route_map.config.dart';
 @RouteMapInit()
 Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSettings);
 ```
-2. `MaterialApp` widget içerisinde route oluşturucuyu tanımlayalım
+
+2. Yönlendirme, uygulama durumuna göre konumu yenisiyle değiştirir. Örneğin, kullanıcı oturum açmamışsa bir oturum açma ekranını görüntülemek için yeniden yönlendirme kullanılabilir.
+
+```dart
+import 'route_map.config.dart';
+
+        @RouteMapInit()
+        Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSettings,redirect:(){
+                bool isLogin = false;
+                if(isLogin){
+                   return RouteMap.login;
+                }
+           return null;
+        });
+```
+3. `MaterialApp` widget içerisinde route oluşturucuyu tanımlayalım
 ```dart        
 MaterialApp(
         initialRoute: RouteMaps.splash, // başlangıç sayfasını bildirir.
         onGenerateRoute: onGenerateRoute
 );
 ```
-3. Sayfalarınıza `@RouteMap` ile açıklama ekleyin.
+4. Sayfalarınıza `@RouteMap` ile açıklama ekleyin.
 >Not: Kök dizini belirtmek için "/" kullanınız. Kök dizinden bağımsız sayfa oluşturmak için başında "/" bulunmamalıdır.
 ```dart
 @RouteMap(name: "splash")
@@ -65,13 +80,13 @@ class HomePage extends StatefulWidget {}
 @RouteMap(name: "/ara", fullScreenDialog: true)
 class SearchPage extends StatefulWidget {}
 ```
-4. Sayfa arası yönlendrimelerde veri taşımanın daha kolay yolu için yönlendirilecek sınıf nesnesinden yararlanabilirsiniz. Navigator sınıfının tüm fonksiyonlarını kullanabilirsiniz.
+5. Sayfa arası yönlendrimelerde veri taşımanın daha kolay yolu için yönlendirilecek sınıf nesnesinden yararlanabilirsiniz. Navigator sınıfının tüm fonksiyonlarını kullanabilirsiniz.
 ```dart  
-DetailPage(id: "0",name: "push",isShow: false).push(context);
+DetailPageRoute(id: "0",name: "push",isShow: false).push(context);
 
-DetailPage(id: "0",name: "push",isShow: false).popAndPush(context);
+DetailPageRoute(id: "0",name: "push",isShow: false).popAndPush(context);
 ```
-5. Standart Navigator kullanarak sayfalar arası yönlendirme
+6. Standart Navigator kullanarak sayfalar arası yönlendirme
    >**Yönlendirme esnasında değer göndermek için arguments alanı kullanılabilir.**
 ```dart
 Navigator.of(context)
@@ -80,7 +95,7 @@ Navigator.of(context)
 Navigator.of(context)
         .pushNamed(RouteMaps.detailPage, arguments: {"val1":"Easy","val2":"Route"});
 ```
-1. Önceki ekrandan gönderilen verileri `routeArgs()` ile okuma
+7. Önceki ekrandan gönderilen verileri `routeArgs()` ile okuma
 ```dart
 String value = context.routeArgs();
 
