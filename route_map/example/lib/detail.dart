@@ -5,11 +5,9 @@ import 'package:route_map/route_map.dart';
 @RouteMap()
 class DetailPage extends StatefulWidget {
   final String id;
-  final String abc;
   final String name;
   final bool? isShow;
-  const DetailPage(this.id, this.abc,
-      {Key? key, required this.name, this.isShow})
+  const DetailPage(this.id, {Key? key, required this.name, this.isShow})
       : super(key: key);
 
   @override
