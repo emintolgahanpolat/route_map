@@ -77,7 +77,11 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
       buffer.writeln(" (c) =>");
       buffer.writeln("${page.clazz}(");
       (page.params?.forEach((param) {
-        buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
+        if (param.isPositional!) {
+          buffer.writeln("c.routeArgs()?[\"${param.name}\"],");
+        } else {
+          buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
+        }
       }));
       buffer.writeln("),");
     }
