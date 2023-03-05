@@ -28,9 +28,15 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
           RouteConfig.fromJson(jsonDecode(await buildStep.readAsString(id)));
       jsonData.add(json);
     }
-
+    final injectableArgConfigFiles = Glob("$dirPattern/**.arg.json");
+    final jsonArgData = <String>[];
+    await for (final id in buildStep.findAssets(injectableArgConfigFiles)) {
+      final String json = await buildStep.readAsString(id);
+      jsonArgData.add(json);
+    }
     var buffer = StringBuffer();
     buildImports(buffer, jsonData);
+    buildArgImports(buffer, jsonArgData);
     buildRoutes(buffer, jsonData);
     buildRouteMap(buffer, jsonData);
     buildRouteGenerator(buffer, element.displayName);

@@ -49,6 +49,13 @@ void buildImports(StringBuffer buffer, List<RouteConfig> jsonData) {
   }
 }
 
+void buildArgImports(StringBuffer buffer, List<String> jsonData) {
+  buffer.writeln("/// model");
+  for (var element in jsonData) {
+    buffer.writeln(element);
+  }
+}
+
 void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("class RouteMaps{");
   for (var element in jsonData) {

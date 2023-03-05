@@ -90,7 +90,7 @@ DetailPageRoute(id: "0",name: "push").push(context);
 
 DetailPageRoute(id: "0",name: "push").popAndPush(context);
 ```
-5. Redirection between pages using standart Navigator class
+6. Redirection between pages using standart Navigator class
 >**The arguments field can be used to send values during routing.**
 ```dart
 Navigator.of(context)
@@ -99,13 +99,21 @@ Navigator.of(context)
 Navigator.of(context)
         .pushNamed(RouteMaps.detailPage, arguments: {"val1":"Easy","val2":"Route"});
 ```
-6. Reading the values with `routeArgs()` passed from previous screen via Navigator.
+7. Reading the values with `routeArgs()` passed from previous screen via Navigator.
 ```dart
 String value = context.routeArgs();
 
 String val1 = context.routeArgs()["val1"];
 
 String val2 = context.routeArgs()["val2"];
+```
+8. If a custom model is used, it must be marked with @RouteMapArg() .
+```dart
+@RouteMapArg()
+class CustomModel {
+  String name;
+  CustomModel({required this.name});
+}
 ```
 
 ## Run the generator 
