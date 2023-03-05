@@ -1,3 +1,7 @@
+## 0.0.9
+* Added Positional Constructor support
+* Custom model import problem fixed
+
 ## 0.0.7
 
 * Readme updated

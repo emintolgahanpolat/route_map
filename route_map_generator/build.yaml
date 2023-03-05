@@ -5,6 +5,16 @@ targets:
         enabled: true
 
 builders:
+
+  route_map_arg_builder:
+    import: "package:route_map_generator/route_map_generator.dart"
+    builder_factories: ["routeMapArgBuilder"]
+    build_extensions: { ".dart": [".arg.json"] }
+    auto_apply: dependents
+    runs_before: ["route_map_generator|route_map_config_builder|route_map_generator|route_map_builder"]
+    build_to: cache
+
+
   route_map_builder:
     import: "package:route_map_generator/route_map_generator.dart"
     builder_factories: ["routeMapBuilder"]

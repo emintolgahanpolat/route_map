@@ -28,9 +28,9 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.detailPage: RouteModel(
     (c) => DetailPage(
-      id: c.routeArgs()?["id"],
-      name: c.routeArgs()?["name"],
+      c.routeArgs()?["id"],
       isShow: c.routeArgs()?["isShow"],
+      name: c.routeArgs()?["name"],
     ),
   ),
   RouteMaps.ara: RouteModel(
@@ -68,20 +68,20 @@ class RootPageRoute extends BaseRoute {
 
 class DetailPageRoute extends BaseRoute {
   final String id;
-  final String name;
   final bool? isShow;
+  final String name;
   DetailPageRoute({
     required this.id,
-    required this.name,
     this.isShow,
+    required this.name,
   });
   @override
   String get routeName => RouteMaps.detailPage;
   @override
   Object? get args => {
         "id": id,
-        "name": name,
         "isShow": isShow,
+        "name": name,
       };
 }
 

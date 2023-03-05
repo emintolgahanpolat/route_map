@@ -103,6 +103,14 @@ String val1 = context.routeArgs()["val1"];
 
 String val2 = context.routeArgs()["val2"];
 ```
+8. Özel bir model kullanılıyorsa, @RouteMapArg() ile işaretlenmelidir.
+```dart
+@RouteMapArg()
+class CustomModel {
+  String name;
+  CustomModel({required this.name});
+}
+```
 
 ## Oluşturucuyu çalıştırın 
 Düzenlemeler için dosyaların sistemini izlemek ve gerekirse yeniden oluşturmak için **[watch]** bayrağını kullanın.

@@ -383,17 +383,17 @@ packages:
     dependency: transitive
     description:
       name: route_map
-      sha256: fcd35b83a4cc3ffe8e64a9f5c1506d5315b981eb17a45e3bd5ac09688c920b5f
+      sha256: "3099ced6d05450863d8fabf1de1a157271befa2feb71b6bf44526bdea3ce0de6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.6"
+    version: "0.0.8"
   route_map_generator:
     dependency: "direct dev"
     description:
       path: "../../route_map_generator"
       relative: true
     source: path
-    version: "0.0.6"
+    version: "0.0.8"
   shelf:
     dependency: transitive
     description:

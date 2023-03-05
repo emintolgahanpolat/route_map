@@ -49,6 +49,13 @@ void buildImports(StringBuffer buffer, List<RouteConfig> jsonData) {
   }
 }
 
+void buildArgImports(StringBuffer buffer, List<String> jsonData) {
+  buffer.writeln("/// model");
+  for (var element in jsonData) {
+    buffer.writeln(element);
+  }
+}
+
 void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("class RouteMaps{");
   for (var element in jsonData) {
@@ -77,7 +84,11 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
       buffer.writeln(" (c) =>");
       buffer.writeln("${page.clazz}(");
       (page.params?.forEach((param) {
-        buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
+        if (param.isPositional!) {
+          buffer.writeln("c.routeArgs()?[\"${param.name}\"],");
+        } else {
+          buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
+        }
       }));
       buffer.writeln("),");
     }

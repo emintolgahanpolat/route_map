@@ -19,16 +19,13 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
       name = annotation.read("name").stringValue;
     }
 
-    List<Param>? params = [];
     final visitor = ModelVisitor();
     element.visitChildren(visitor);
-    for (final field in visitor.fields.entries) {
-      params.add(Param(type: field.value, name: field.key));
-    }
+
     var rc = RouteConfig(
         import: importPath,
         name: name,
-        params: params,
+        params: visitor.elementList,
         clazz: element.name!,
         fullScreenDialog: annotation.read("fullScreenDialog").boolValue);
 
@@ -38,11 +35,17 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
 
 class ModelVisitor extends SimpleElementVisitor<void> {
   final fields = <String, dynamic>{};
+  final List<Param> elementList = [];
 
   @override
-  void visitFieldElement(FieldElement element) {
-    final elementType = element.type.toString();
-    // 7
-    fields[element.name] = elementType.replaceFirst('*', '');
+  void visitConstructorElement(ConstructorElement element) {
+    for (var item in element.type.parameters) {
+      if (item.name != "key") {
+        elementList.add(Param(
+            isPositional: item.isPositional,
+            name: item.name,
+            type: item.type.toString()));
+      }
+    }
   }
 }
