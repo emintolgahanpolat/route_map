@@ -383,10 +383,10 @@ packages:
     dependency: transitive
     description:
       name: route_map
-      sha256: "8da2ed8b319a51e21fe42d6c91a8f7fd42556ec968e62829703444ffc474ce4d"
+      sha256: "3099ced6d05450863d8fabf1de1a157271befa2feb71b6bf44526bdea3ce0de6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.7"
+    version: "0.0.8"
   route_map_generator:
     dependency: "direct dev"
     description:

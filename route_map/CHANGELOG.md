@@ -1,4 +1,4 @@
-## 0.0.8
+## 0.0.9
 * Added Positional Constructor support
 * Custom model import problem fixed
 
