@@ -1,3 +1,4 @@
+import 'package:example/custom_model.dart';
 import 'package:example/detail.dart';
 import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +33,26 @@ class _HomePageState extends State<HomePage> {
                 //     id: "1", name: "2", rootNavigator: true);
 
                 // DetailPage.newInstance("1", "2").show(context);
-
-                DetailPageRoute(
-                  id: "0",
-                  name: "push",
-                  isShow: false,
-                ).push(context);
+                Navigator.pushNamed(
+                  context,
+                  "/detail/1234/deneme/tolga/?isShow=true",
+                  arguments: CustomModel(name: 'test'),
+                );
+                // context.go(
+                //     Uri(
+                //       path: "/detail/1234",
+                //       queryParameters: {
+                //         "id": "1",
+                //         "name": "2",
+                //         "isShow": "true",
+                //       },
+                //     ),
+                //     arguments: CustomModel(name: 'deneme'));
+                // DetailPageRoute(
+                //   id: "0",
+                //   name: "push",
+                //   isShow: false,
+                // ).push(context);
               },
               child: const Text("detailPage")),
           ElevatedButton(

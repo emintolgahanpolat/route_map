@@ -69,6 +69,21 @@ void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("}");
 }
 
+void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
+  buffer.writeln("final Map<String, String> _pathRoutes = {");
+  for (var element in jsonData) {
+    if (element.path != null) {
+      if (element.path == "/") {
+        buffer.write("\"/\": RouteMaps.root,");
+      } else {
+        buffer.write(
+            "\"${element.path}\": RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()},");
+      }
+    }
+  }
+  buffer.writeln("};");
+}
+
 void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("final Map<String, RouteModel> _routes = {");
   for (var page in jsonData) {
@@ -104,7 +119,7 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
 
 void buildRouteGenerator(StringBuffer buffer, String displayName) {
   buffer.writeln(
-      "Route? \$$displayName(RouteSettings routeSettings,{String? Function()? redirect}) {");
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) {");
   buffer.writeln(routeBuilderBody);
   buffer.writeln("}");
 }

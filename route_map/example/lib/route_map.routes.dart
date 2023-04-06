@@ -11,6 +11,9 @@ import 'package:example/detail.dart';
 import 'package:example/search.dart';
 import 'package:example/settings.dart';
 
+/// model
+import 'package:example/custom_model.dart';
+
 class RouteMaps {
   static String home = "home";
   static String root = "/";
@@ -19,6 +22,10 @@ class RouteMaps {
   static String settings = "settings";
 }
 
+final Map<String, String> _pathRoutes = {
+  "/detail/:id/:name": RouteMaps.detailPage,
+  "/settings/:name": RouteMaps.settings,
+};
 final Map<String, RouteModel> _routes = {
   RouteMaps.home: RouteModel(
     (_) => const HomePage(),
@@ -29,6 +36,7 @@ final Map<String, RouteModel> _routes = {
   RouteMaps.detailPage: RouteModel(
     (c) => DetailPage(
       c.routeArgs()?["id"],
+      customModel: c.routeArgs()?["customModel"],
       isShow: c.routeArgs()?["isShow"],
       name: c.routeArgs()?["name"],
     ),
@@ -45,15 +53,28 @@ final Map<String, RouteModel> _routes = {
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
-    {String? Function()? redirect}) {
-  RouteModel? route = _routes[redirect?.call() ?? routeSettings.name];
+    {String? Function(String routeName)? redirect}) {
+  String routeName = routeSettings.name ?? "";
+  List? pathRoute = _namedRoute(routeName);
+  if (pathRoute != null && routeName != "/") {
+    routeName = pathRoute[1]!;
+  }
+  RouteModel? route = _routes[redirect?.call(routeName) ?? routeName];
   if (route == null) {
     return null;
   }
+
   return MaterialPageRoute(
-      builder: route.builder,
-      settings: routeSettings,
-      fullscreenDialog: route.fullscreenDialog);
+    builder: route.builder,
+    settings: RouteSettings(name: routeSettings.name, arguments: {
+      ...?pathRoute?[2],
+      ...?pathRoute?[3],
+      if (routeSettings.arguments is Map<String, dynamic>)
+        ...(routeSettings.arguments as Map<String, dynamic>),
+      'extra': routeSettings.arguments,
+    }),
+    fullscreenDialog: route.fullscreenDialog,
+  );
 }
 
 class HomePageRoute extends BaseRoute {
@@ -68,10 +89,12 @@ class RootPageRoute extends BaseRoute {
 
 class DetailPageRoute extends BaseRoute {
   final String id;
+  final CustomModel? customModel;
   final bool? isShow;
   final String name;
   DetailPageRoute({
     required this.id,
+    this.customModel,
     this.isShow,
     required this.name,
   });
@@ -80,6 +103,7 @@ class DetailPageRoute extends BaseRoute {
   @override
   Object? get args => {
         "id": id,
+        "customModel": customModel,
         "isShow": isShow,
         "name": name,
       };
@@ -201,4 +225,58 @@ class RouteModel {
     this.builder, {
     this.fullscreenDialog = false,
   });
+}
+
+List? _namedRoute(String path) {
+  bool found = false;
+  Map<String, dynamic> params = {};
+  Map<String, dynamic> query = {};
+
+  // check for query parameters
+  int queryIndex = path.indexOf('/?');
+  if (queryIndex != -1) {
+    String queryString = path.substring(queryIndex + 2);
+    path = path.substring(0, queryIndex);
+    List<String> queryParts = queryString.split('&');
+    for (String queryPart in queryParts) {
+      List<String> queryParam = queryPart.split('=');
+      if (queryParam.length == 2) {
+        query[queryParam[0]] = queryParam[1];
+      }
+    }
+  }
+  for (String key in _pathRoutes.keys) {
+    List<String> pathParts = path.split('/');
+    List<String> keyParts = key.split('/');
+
+    if (pathParts.length == keyParts.length) {
+      bool match = true;
+
+      for (int i = 0; i < pathParts.length; i++) {
+        if (keyParts[i].startsWith(':')) {
+          params[keyParts[i].substring(1)] = pathParts[i];
+        } else if (pathParts[i] != keyParts[i]) {
+          match = false;
+          break;
+        }
+      }
+
+      if (match) {
+        found = true;
+        return [
+          key,
+          _pathRoutes[key],
+          params.isNotEmpty ? params : null,
+          query.isNotEmpty ? query : null,
+        ];
+      } else {
+        params.clear();
+      }
+    }
+  }
+
+  if (!found) {
+    return null;
+  }
+  return null;
 }

@@ -1,13 +1,16 @@
+import 'package:example/custom_model.dart';
 import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
-@RouteMap()
+@RouteMap(path: "/detail/:id/:name")
 class DetailPage extends StatefulWidget {
   final String id;
   final String name;
   final bool? isShow;
-  const DetailPage(this.id, {Key? key, required this.name, this.isShow})
+  final CustomModel? customModel;
+  const DetailPage(this.id,
+      {Key? key, required this.name, this.isShow, this.customModel})
       : super(key: key);
 
   @override
@@ -24,6 +27,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: ListView(
         children: [
+          Text(widget.customModel?.name ?? "null"),
           Text(widget.id),
           Text(widget.name),
           Text(widget.isShow.toString()),

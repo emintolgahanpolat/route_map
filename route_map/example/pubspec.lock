@@ -382,10 +382,9 @@ packages:
   route_map:
     dependency: "direct main"
     description:
-      name: route_map
-      sha256: "59715c0fde3e5e9c494946f90790fed35f3c88bea109f361186eca7d607bb533"
-      url: "https://pub.dev"
-    source: hosted
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.9"
   route_map_generator:
     dependency: "direct dev"
