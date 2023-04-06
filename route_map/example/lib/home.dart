@@ -27,44 +27,114 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView(
         children: [
-          ElevatedButton(
-              onPressed: () {
-                // RouteMaps.detailPageNavigate(context,
-                //     id: "1", name: "2", rootNavigator: true);
-
-                // DetailPage.newInstance("1", "2").show(context);
-                Navigator.pushNamed(
-                  context,
-                  "/detail/1234/deneme/tolga/?isShow=true",
-                  arguments: CustomModel(name: 'test'),
-                );
-                // context.go(
-                //     Uri(
-                //       path: "/detail/1234",
-                //       queryParameters: {
-                //         "id": "1",
-                //         "name": "2",
-                //         "isShow": "true",
-                //       },
-                //     ),
-                //     arguments: CustomModel(name: 'deneme'));
-                // DetailPageRoute(
-                //   id: "0",
-                //   name: "push",
-                //   isShow: false,
-                // ).push(context);
-              },
-              child: const Text("detailPage")),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed("Unknown");
-              },
-              child: const Text("Unknown")),
-          ElevatedButton(
-              onPressed: () {
-                SettingsPageRoute(name: "Deneme").push(context);
-              },
-              child: const Text("Settings"))
+          ListTile(
+            onTap: () {
+              DetailPageRoute(
+                id: "0",
+                name: "push",
+                isShow: false,
+              ).push(context);
+            },
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (c) => const AlertDialog(
+                        content: Text("""
+ DetailPageRoute(
+                id: "0",
+                name: "push",
+                isShow: false,
+              ).push(context);
+"""),
+                      ));
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Detail Page"),
+            subtitle: const Text('Type Safe Route'),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "/detail/1234/deneme/tolga/?isShow=true",
+                arguments: CustomModel(name: 'test'),
+              );
+            },
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (c) => const AlertDialog(
+                        content: Text("""
+ Navigator.pushNamed(
+                context,
+                "/detail/1234/deneme/tolga/?isShow=true",
+                arguments: CustomModel(name: 'test'),
+              );
+"""),
+                      ));
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Detail Page"),
+            subtitle: const Text("Uri Route"),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "detailPage",
+                arguments: {
+                  "id": "1234",
+                  "name": "deneme",
+                  "isShow": true,
+                  "customModel": CustomModel(name: 'test'),
+                },
+              );
+            },
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (c) => const AlertDialog(
+                        content: Text("""
+  Navigator.pushNamed(
+                context,
+                "detailPage",
+                arguments: {
+                  "id": "1234",
+                  "name": "deneme",
+                  "isShow": true,
+                  "customModel": CustomModel(name: 'test'),
+                },
+              );
+"""),
+                      ));
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Detail Page"),
+            subtitle: const Text("Naming Route"),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "Unknown",
+              );
+            },
+            onLongPress: () {
+              showDialog(
+                  context: context,
+                  builder: (c) => const AlertDialog(
+                        content: Text("""
+ Navigator.pushNamed(
+                context,
+                "404",
+              );
+"""),
+                      ));
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Unknown"),
+            subtitle: const Text("Unknown Route"),
+          ),
         ],
       ),
     );
