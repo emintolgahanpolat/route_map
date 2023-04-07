@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                "/detail/1234/deneme/tolga/?isShow=true",
+                "/detail/1234/tolga/?isShow=true",
                 arguments: CustomModel(name: 'test'),
               );
             },
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                         content: Text("""
  Navigator.pushNamed(
                 context,
-                "/detail/1234/deneme/tolga/?isShow=true",
+                "/detail/1234/tolga/?isShow=true",
                 arguments: CustomModel(name: 'test'),
               );
 """),
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                "detailPage",
+                "/detail_page",
                 arguments: {
                   "id": "1234",
                   "name": "deneme",
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         content: Text("""
   Navigator.pushNamed(
                 context,
-                "detailPage",
+              "/detail_page",
                 arguments: {
                   "id": "1234",
                   "name": "deneme",

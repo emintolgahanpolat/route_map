@@ -99,10 +99,20 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
       buffer.writeln(" (c) =>");
       buffer.writeln("${page.clazz}(");
       (page.params?.forEach((param) {
-        if (param.isPositional!) {
+        if (!param.isPositional!) {
+          buffer.write("${param.name}:");
+        }
+        if (param.type == "String" || param.type == "String?") {
           buffer.writeln("c.routeArgs()?[\"${param.name}\"],");
+        } else if (param.type == "bool" || param.type == "bool?") {
+          buffer.writeln(" c.routeArgs()?[\"${param.name}\"]  == \"true\",");
+        } else if (param.type == "int" || param.type == "int?") {
+          buffer.writeln("int.parse(c.routeArgs()?[\"${param.name}\"]),");
+        } else if (param.type == "double" || param.type == "double?") {
+          buffer.writeln("double.parse(c.routeArgs()?[\"${param.name}\"]),");
         } else {
-          buffer.writeln("${param.name}: c.routeArgs()?[\"${param.name}\"],");
+          buffer.writeln(
+              " c.routeArgs()?[\"${param.name}\"] ?? c.routeArgs()?[\"extra\"],");
         }
       }));
       buffer.writeln("),");

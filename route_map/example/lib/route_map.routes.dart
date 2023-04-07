@@ -36,8 +36,8 @@ final Map<String, RouteModel> _routes = {
   RouteMaps.detailPage: RouteModel(
     (c) => DetailPage(
       c.routeArgs()?["id"],
-      customModel: c.routeArgs()?["customModel"],
-      isShow: c.routeArgs()?["isShow"],
+      customModel: c.routeArgs()?["customModel"] ?? c.routeArgs()?["extra"],
+      isShow: c.routeArgs()?["isShow"] == "true",
       name: c.routeArgs()?["name"],
     ),
   ),
@@ -69,8 +69,8 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
     settings: RouteSettings(name: routeSettings.name, arguments: {
       ...?pathRoute?[2],
       ...?pathRoute?[3],
-      if (routeSettings.arguments is Map<String, dynamic>)
-        ...(routeSettings.arguments as Map<String, dynamic>),
+      if (routeSettings.arguments is Map<String, Object?>)
+        ...(routeSettings.arguments as Map<String, Object?>),
       'extra': routeSettings.arguments,
     }),
     fullscreenDialog: route.fullscreenDialog,

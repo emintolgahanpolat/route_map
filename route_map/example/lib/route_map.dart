@@ -4,5 +4,10 @@ import 'package:route_map/route_map.dart';
 import 'route_map.routes.dart';
 
 @RouteMapInit()
-Route? onGenerateRoute(RouteSettings routeSettings) =>
-    $onGenerateRoute(routeSettings);
+Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(
+      routeSettings,
+      redirect: (routeName) {
+        print(routeName);
+        return null;
+      },
+    );
