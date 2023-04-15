@@ -1,10 +1,18 @@
 import 'package:example/custom_model.dart';
-import 'package:example/detail.dart';
+import 'package:example/home_vm.dart';
 import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:route_map/route_map.dart';
 
-@RouteMap(name: "home")
+Widget homeBuilder(Widget child) {
+  return ChangeNotifierProvider(
+    create: (_) => HomeViewModel(),
+    child: child,
+  );
+}
+
+@RouteMap(name: "home", builder: homeBuilder)
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -32,6 +40,7 @@ class _HomePageState extends State<HomePage> {
               DetailPageRoute(
                 id: "0",
                 name: "push",
+                customModel: CustomModel(name: 'test 123'),
                 isShow: false,
               ).push(context);
             },
@@ -135,6 +144,21 @@ class _HomePageState extends State<HomePage> {
             title: const Text("Unknown"),
             subtitle: const Text("Unknown Route"),
           ),
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: context.read<HomeViewModel>().decrementCounter,
+                  child: const Text("Decrement")),
+              Expanded(
+                  child: Text(
+                context.watch<HomeViewModel>().counter.toString(),
+                textAlign: TextAlign.center,
+              )),
+              ElevatedButton(
+                  onPressed: context.read<HomeViewModel>().incrementCounter,
+                  child: const Text("İncrement")),
+            ],
+          )
         ],
       ),
     );
