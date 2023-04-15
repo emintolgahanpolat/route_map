@@ -121,8 +121,9 @@ String routeBuilderBody = """
       ...?pathRoute?[2],
       ...?pathRoute?[3],
       if (routeSettings.arguments is Map<String, dynamic>)
-        ...(routeSettings.arguments as Map<String, dynamic>),
-      'extra': routeSettings.arguments,
+        ...(routeSettings.arguments as Map<String, dynamic>)
+      else
+        'extra': routeSettings.arguments,
     }),
     fullscreenDialog: route.fullscreenDialog,
   );

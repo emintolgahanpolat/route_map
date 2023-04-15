@@ -31,7 +31,7 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
 
     if (page.params != null && page.params!.isNotEmpty) {
       buffer.writeln("@override");
-      buffer.write("Object? get args => {");
+      buffer.write("Map<String,dynamic>? get args => {");
       page.params?.forEach((param) {
         buffer.write(" \"${param.name}\": ${param.name},");
       });

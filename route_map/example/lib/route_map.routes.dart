@@ -69,9 +69,10 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
     settings: RouteSettings(name: routeSettings.name, arguments: {
       ...?pathRoute?[2],
       ...?pathRoute?[3],
-      if (routeSettings.arguments is Map<String, Object?>)
-        ...(routeSettings.arguments as Map<String, Object?>),
-      'extra': routeSettings.arguments,
+      if (routeSettings.arguments is Map<String, dynamic>)
+        ...(routeSettings.arguments as Map<String, dynamic>)
+      else
+        'extra': routeSettings.arguments,
     }),
     fullscreenDialog: route.fullscreenDialog,
   );
@@ -101,7 +102,7 @@ class DetailPageRoute extends BaseRoute {
   @override
   String get routeName => RouteMaps.detailPage;
   @override
-  Object? get args => {
+  Map<String, dynamic>? get args => {
         "id": id,
         "customModel": customModel,
         "isShow": isShow,
@@ -122,7 +123,7 @@ class SettingsPageRoute extends BaseRoute {
   @override
   String get routeName => RouteMaps.settings;
   @override
-  Object? get args => {
+  Map<String, dynamic>? get args => {
         "name": name,
       };
 }
