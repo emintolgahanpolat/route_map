@@ -27,9 +27,7 @@ final Map<String, String> _pathRoutes = {
   "/settings/:name": RouteMaps.settings,
 };
 final Map<String, RouteModel> _routes = {
-  RouteMaps.home: RouteModel(
-    (_) => const HomePage(),
-  ),
+  RouteMaps.home: RouteModel((_) => homeBuilder(const HomePage())),
   RouteMaps.root: RouteModel(
     (_) => const RootPage(),
   ),

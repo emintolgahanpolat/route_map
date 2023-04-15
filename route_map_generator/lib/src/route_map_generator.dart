@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
@@ -23,6 +24,11 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
     if (annotation.read("path").isString) {
       path = annotation.read("path").stringValue;
     }
+    String? builder;
+    var obj = annotation.read("builder");
+    if (!obj.isNull) {
+      builder = obj.objectValue.toFunctionValue()?.name;
+    }
 
     final visitor = ModelVisitor();
     element.visitChildren(visitor);
@@ -33,6 +39,7 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
         path: path,
         params: visitor.elementList,
         clazz: element.name!,
+        builder: builder,
         fullScreenDialog: annotation.read("fullScreenDialog").boolValue);
 
     return jsonEncode(rc.toJson());

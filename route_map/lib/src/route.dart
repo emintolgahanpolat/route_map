@@ -8,7 +8,14 @@ class RouteMap {
   /// fullscreen modal dialog. On iOS, those routes animate from the bottom to the
   /// top rather than horizontally.
   final bool fullScreenDialog;
-  const RouteMap({this.name, this.path, this.fullScreenDialog = false});
+
+  final Function? builder;
+  const RouteMap({
+    this.name,
+    this.path,
+    this.fullScreenDialog = false,
+    this.builder,
+  });
 }
 
 /// Marks a top-level function as an initializer function

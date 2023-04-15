@@ -94,9 +94,16 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
           'RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
     }
     if (page.params == null || page.params!.isEmpty) {
-      buffer.writeln(" (_) => const ${page.clazz}(),");
+      if (page.builder != null) {
+        buffer.writeln("(_) => ${page.builder}( const ${page.clazz}())");
+      } else {
+        buffer.writeln(" (_) => const ${page.clazz}(),");
+      }
     } else {
       buffer.writeln(" (c) =>");
+      if (page.builder != null) {
+        buffer.writeln(" ${page.builder}(");
+      }
       buffer.writeln("${page.clazz}(");
       (page.params?.forEach((param) {
         if (!param.isPositional!) {
@@ -115,6 +122,9 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
               " c.routeArgs()?[\"${param.name}\"] ?? c.routeArgs()?[\"extra\"],");
         }
       }));
+      if (page.builder != null) {
+        buffer.writeln(")");
+      }
       buffer.writeln("),");
     }
 
