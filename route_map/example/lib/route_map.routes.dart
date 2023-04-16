@@ -64,14 +64,17 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
 
   return MaterialPageRoute(
     builder: route.builder,
-    settings: RouteSettings(name: routeSettings.name, arguments: {
-      ...?pathRoute?[2],
-      ...?pathRoute?[3],
-      if (routeSettings.arguments is Map<String, dynamic>)
-        ...(routeSettings.arguments as Map<String, dynamic>)
-      else
-        'extra': routeSettings.arguments,
-    }),
+    settings: RouteSettings(
+      name: routeSettings.name,
+      arguments: {
+        ...?pathRoute?[2],
+        ...?pathRoute?[3],
+        if (routeSettings.arguments is Map<String, dynamic>)
+          ...(routeSettings.arguments as Map<String, dynamic>)
+        else
+          'extra': routeSettings.arguments,
+      },
+    ),
     fullscreenDialog: route.fullscreenDialog,
   );
 }
