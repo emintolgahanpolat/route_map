@@ -25,7 +25,7 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
       buffer.write("RouteMaps.root");
     } else {
       buffer
-          .write("RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()}");
+          .write("RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()}");
     }
     buffer.write(";");
 
@@ -63,7 +63,7 @@ void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
       buffer.write("static String root = \"/\";");
     } else {
       buffer.write(
-          "static String ${element.name.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
+          "static String ${element.clazz.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
     }
   }
   buffer.writeln("}");
@@ -77,7 +77,7 @@ void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
         buffer.write("\"/\": RouteMaps.root,");
       } else {
         buffer.write(
-            "\"${element.path}\": RouteMaps.${element.name.replaceFirst("/", "").toCamelCase()},");
+            "\"${element.path}\": RouteMaps.${element.clazz.replaceFirst("/", "").toCamelCase()},");
       }
     }
   }
@@ -91,7 +91,7 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
       buffer.writeln('RouteMaps.root : RouteModel(');
     } else {
       buffer.writeln(
-          'RouteMaps.${page.name.replaceFirst("/", "").toCamelCase()} : RouteModel(');
+          'RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()} : RouteModel(');
     }
     if (page.params == null || page.params!.isEmpty) {
       if (page.builder != null) {

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(useMaterial3: true),
       onGenerateRoute: onGenerateRoute,
-      initialRoute: RouteMaps.root,
+      initialRoute: RouteMaps.homePage,
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
             builder: (_) => Scaffold(

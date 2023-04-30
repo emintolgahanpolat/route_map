@@ -15,19 +15,19 @@ import 'package:example/settings.dart';
 import 'package:example/custom_model.dart';
 
 class RouteMaps {
-  static String home = "home";
-  static String root = "/";
+  static String homePage = "/";
+  static String root = "test";
   static String detailPage = "/detail_page";
-  static String ara = "/ara";
-  static String settings = "settings";
+  static String searchPage = "/ara";
+  static String settingsPage = "settings";
 }
 
 final Map<String, String> _pathRoutes = {
   "/detail/:id/:name": RouteMaps.detailPage,
-  "/settings/:name": RouteMaps.settings,
+  "/settings/:name": RouteMaps.settingsPage,
 };
 final Map<String, RouteModel> _routes = {
-  RouteMaps.home: RouteModel((_) => homeBuilder(const HomePage())),
+  RouteMaps.homePage: RouteModel((_) => homeBuilder(const HomePage())),
   RouteMaps.root: RouteModel(
     (_) => const RootPage(),
   ),
@@ -39,11 +39,11 @@ final Map<String, RouteModel> _routes = {
       name: c.routeArgs()?["name"],
     ),
   ),
-  RouteMaps.ara: RouteModel(
+  RouteMaps.searchPage: RouteModel(
     (_) => const SearchPage(),
     fullscreenDialog: true,
   ),
-  RouteMaps.settings: RouteModel(
+  RouteMaps.settingsPage: RouteModel(
     (c) => SettingsPage(
       name: c.routeArgs()?["name"],
     ),
@@ -64,24 +64,21 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
 
   return MaterialPageRoute(
     builder: route.builder,
-    settings: RouteSettings(
-      name: routeSettings.name,
-      arguments: {
-        ...?pathRoute?[2],
-        ...?pathRoute?[3],
-        if (routeSettings.arguments is Map<String, dynamic>)
-          ...(routeSettings.arguments as Map<String, dynamic>)
-        else
-          'extra': routeSettings.arguments,
-      },
-    ),
+    settings: RouteSettings(name: routeSettings.name, arguments: {
+      ...?pathRoute?[2],
+      ...?pathRoute?[3],
+      if (routeSettings.arguments is Map<String, dynamic>)
+        ...(routeSettings.arguments as Map<String, dynamic>)
+      else
+        'extra': routeSettings.arguments,
+    }),
     fullscreenDialog: route.fullscreenDialog,
   );
 }
 
 class HomePageRoute extends BaseRoute {
   @override
-  String get routeName => RouteMaps.home;
+  String get routeName => RouteMaps.homePage;
 }
 
 class RootPageRoute extends BaseRoute {
@@ -113,7 +110,7 @@ class DetailPageRoute extends BaseRoute {
 
 class SearchPageRoute extends BaseRoute {
   @override
-  String get routeName => RouteMaps.ara;
+  String get routeName => RouteMaps.searchPage;
 }
 
 class SettingsPageRoute extends BaseRoute {
@@ -122,7 +119,7 @@ class SettingsPageRoute extends BaseRoute {
     this.name,
   });
   @override
-  String get routeName => RouteMaps.settings;
+  String get routeName => RouteMaps.settingsPage;
   @override
   Map<String, dynamic>? get args => {
         "name": name,
