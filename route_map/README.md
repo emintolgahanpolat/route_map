@@ -26,9 +26,9 @@ align="center" src="https://img.shields.io/pub/v/route_map.svg?" alt="pub versio
 -  [Bottom navigation bar](https://medium.com/@emintolgahanpolat/flutter-bottom-navigation-bar-with-multiple-navigators-676eacdc0611)
 
 
-![Bottom navigation bar](/route_map/example/art/bottom_nav_bar.gif "Bottom navigation bar")
+![Bottom navigation bar](https://github.com/emintolgahanpolat/route_map/blob/main/route_map/example/art/bottom_nav_bar.gif?raw=true "Bottom navigation bar")
 
-![web](/route_map/example/art/web.gif "web")
+![web](https://github.com/emintolgahanpolat/route_map/blob/main/route_map/example/art/web.gif?raw=true "web")
 ---  
 ## Installation
 
