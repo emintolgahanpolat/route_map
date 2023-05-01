@@ -14,9 +14,19 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
       Element element, ConstantReader annotation, BuildStep buildStep) {
     String importPath = "import '${buildStep.inputId.uri.toString()}';";
     String name = "/${element.name!.toConstantCase().toLowerCase()}";
+    String? path;
 
     if (annotation.read("name").isString) {
       name = annotation.read("name").stringValue;
+    }
+
+    if (annotation.read("path").isString) {
+      path = annotation.read("path").stringValue;
+    }
+    String? builder;
+    var obj = annotation.read("builder");
+    if (!obj.isNull) {
+      builder = obj.objectValue.toFunctionValue()?.name;
     }
 
     final visitor = ModelVisitor();
@@ -25,8 +35,10 @@ class RouteMapGenerator extends GeneratorForAnnotation<RouteMap> {
     var rc = RouteConfig(
         import: importPath,
         name: name,
+        path: path,
         params: visitor.elementList,
         clazz: element.name!,
+        builder: builder,
         fullScreenDialog: annotation.read("fullScreenDialog").boolValue);
 
     return jsonEncode(rc.toJson());

@@ -1,3 +1,6 @@
+## 0.0.10
+* Added path route support
+* Added Customized builder
 ## 0.0.9
 * Added Positional Constructor support
 * Custom model import problem fixed

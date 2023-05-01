@@ -22,7 +22,13 @@ align="center" src="https://img.shields.io/pub/v/route_map.svg?" alt="pub versio
   - [Run the generator](#run-the-generator)
   - [Problems with the generation?](#problems-with-the-generation)
   - [Support the Library](#support-the-library)
+## Tutorial 
+-  [Bottom navigation bar](https://medium.com/@emintolgahanpolat/flutter-bottom-navigation-bar-with-multiple-navigators-676eacdc0611)
 
+
+![Bottom navigation bar](/route_map/example/art/bottom_nav_bar.gif "Bottom navigation bar")
+
+![web](/route_map/example/art/web.gif "web")
 ---  
 ## Installation
 
@@ -82,6 +88,9 @@ class HomePage extends StatefulWidget {}
 
 @RouteMap(name: "/search", fullScreenDialog: true)
 class SearchPage extends StatefulWidget {}
+
+@RouteMap(name: "/detail", path:"/detail/:id/:name")
+class DetailPage extends StatefulWidget {}
 ```
 
 5. You can take advantage of the class object to be redirected when passing data between pages. You can use all the functions of the standart Navigator class.
@@ -90,7 +99,7 @@ DetailPageRoute(id: "0",name: "push").push(context);
 
 DetailPageRoute(id: "0",name: "push").popAndPush(context);
 ```
-5. Redirection between pages using standart Navigator class
+6. Redirection between pages using standart Navigator class
 >**The arguments field can be used to send values during routing.**
 ```dart
 Navigator.of(context)
@@ -99,15 +108,43 @@ Navigator.of(context)
 Navigator.of(context)
         .pushNamed(RouteMaps.detailPage, arguments: {"val1":"Easy","val2":"Route"});
 ```
-6. Reading the values with `routeArgs()` passed from previous screen via Navigator.
+7. Reading the values with `routeArgs()` passed from previous screen via Navigator.
 ```dart
 String value = context.routeArgs();
 
 String val1 = context.routeArgs()["val1"];
 
 String val2 = context.routeArgs()["val2"];
-```
 
+
+```
+8. @RouteMapArg() attribute should be used for custom model.
+```dart
+@RouteMapArg()
+class CustomModel {
+  String name;
+  CustomModel({required this.name});
+}
+```
+9. Customized builder is available. For example, you might want to wrap your page with ChangeNotifierProvider.
+```dart
+Widget homeBuilder(Widget child) {
+  return ChangeNotifierProvider(
+    create: (_) => HomeViewModel(),
+    child: child,
+  );
+}
+
+@RouteMap(name: "home", builder: homeBuilder)
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+```
 ## Run the generator 
 Use the **[watch]** flag to watch the files' system for edits and rebuild as necessary.
 ```terminal  

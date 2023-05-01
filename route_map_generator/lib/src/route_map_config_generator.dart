@@ -38,6 +38,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
     buildImports(buffer, jsonData);
     buildArgImports(buffer, jsonArgData);
     buildRoutes(buffer, jsonData);
+    buildPathRoutes(buffer, jsonData);
     buildRouteMap(buffer, jsonData);
     buildRouteGenerator(buffer, element.displayName);
 
@@ -49,6 +50,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
 // write extension
     buffer.writeln(routeSettingsExtensiton);
     buffer.writeln(routeModelClass);
+    buffer.writeln(namedRouteFunction);
     return buffer.toString();
   }
 }
