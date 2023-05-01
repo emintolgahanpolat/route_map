@@ -33,7 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.0.5
-  route_map: ^0.0.8
+  route_map: ^0.0.10
   url_strategy: ^0.2.0
 
 dev_dependencies:
