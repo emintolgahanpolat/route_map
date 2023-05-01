@@ -11,8 +11,8 @@ align="center" src="https://img.shields.io/pub/v/route_map.svg?" alt="pub versio
 <p>  
 
 ## README Translation
-- [English](README.md)
-- [Türkçe](README.tr.md)
+- [English](https://github.com/emintolgahanpolat/route_map/blob/main/route_map/README.md)
+- [Türkçe](https://github.com/emintolgahanpolat/route_map/blob/main/route_map/README.tr.md)
 ## Table of Contents
 - [Route Map](#route-map)
   - [README Translation](#readme-translation)
