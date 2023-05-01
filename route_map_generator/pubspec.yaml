@@ -8,13 +8,13 @@ environment:
   sdk: '>=2.17.0 <3.0.0'
   flutter: ">=1.17.0"
 dependencies:
-  analyzer: ^5.2.0
+  analyzer: ^5.11.1
   build: ^2.3.1
   change_case: ^1.1.0
   flutter:
     sdk: flutter
   glob: ^2.1.1
-  route_map: ^0.0.9
+  route_map: ^0.0.10
   source_gen: ^1.2.6
 
 dev_dependencies:
