@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
-import 'package:route_map/route_map.dart';
+import 'package:route_map/src/route.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:change_case/change_case.dart';

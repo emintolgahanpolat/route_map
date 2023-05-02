@@ -39,11 +39,13 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
     }
     buffer.writeln("}");
   }
-  buffer.write(baseRouteClass);
+  // buffer.write(baseRouteClass);
 }
 
 void buildImports(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("import 'package:flutter/material.dart';");
+  buffer.writeln("import 'package:route_map/route_map.dart';");
+
   for (var element in jsonData) {
     buffer.writeln(element.import);
   }

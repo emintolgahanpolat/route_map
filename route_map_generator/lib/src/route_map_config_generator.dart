@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:glob/glob.dart';
-import 'package:route_map/route_map.dart';
-import 'package:route_map_generator/src/constands.dart';
+import 'package:route_map/src/route.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 import 'package:route_map_generator/src/helper.dart';
 import 'package:source_gen/source_gen.dart';
@@ -47,10 +46,6 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
       buildTypeSafeNavigator(buffer, jsonData);
     }
 
-// write extension
-    buffer.writeln(routeSettingsExtensiton);
-    buffer.writeln(routeModelClass);
-    buffer.writeln(namedRouteFunction);
     return buffer.toString();
   }
 }
