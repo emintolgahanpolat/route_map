@@ -1,3 +1,6 @@
+## 0.0.11
+* Readme updated
+* Code optimization
 ## 0.0.10
 * Added path route support
 * Added Customized builder
