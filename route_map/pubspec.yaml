@@ -1,7 +1,7 @@
 name: route_map
 description: Route Map is a convenient code generator for Navigator 2.0. Inspired by injectable.
-version: 0.0.10
-homepage: https://github.com/emintolgahanpolat/route_map
+version: 0.0.11
+repository: https://github.com/emintolgahanpolat/route_map
 
 environment:
   sdk: '>=2.17.0 <3.0.0'

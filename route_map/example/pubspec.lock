@@ -414,7 +414,7 @@ packages:
       path: "../../route_map_generator"
       relative: true
     source: path
-    version: "0.0.10"
+    version: "0.0.11"
   shelf:
     dependency: transitive
     description:
