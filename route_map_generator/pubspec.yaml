@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   glob: ^2.1.1
-  route_map: ^0.0.10
+  route_map: ^0.0.11
   source_gen: ^1.2.6
 
 dev_dependencies:
