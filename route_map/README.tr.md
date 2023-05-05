@@ -62,9 +62,9 @@ Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSet
 import 'route_map.config.dart';
 
         @RouteMapInit()
-        Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSettings,redirect:(){
+        Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(routeSettings,redirect:(path){
                 bool isLogin = false;
-                if(isLogin){
+                if(isLogin && RouteMaps.homePage == path){
                    return RouteMap.login;
                 }
            return null;
