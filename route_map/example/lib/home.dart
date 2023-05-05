@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             onTap: () {
               DetailPageRoute(
-                id: "0",
+                id: 0,
                 name: "push",
                 customModel: CustomModel(name: 'test 123'),
                 isShow: false,
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.pushNamed(
                 context,
                 "/detail/1234/tolga/?isShow=true",
-                arguments: CustomModel(name: 'test'),
+                arguments: {"customModel": CustomModel(name: 'test')},
               );
             },
             onLongPress: () {

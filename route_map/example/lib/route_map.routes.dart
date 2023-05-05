@@ -12,7 +12,7 @@ import 'package:example/detail.dart';
 import 'package:example/search.dart';
 import 'package:example/settings.dart';
 
-/// model
+/// Type Safe Extra Arg Classes
 import 'package:example/custom_model.dart';
 
 class RouteMaps {
@@ -23,10 +23,12 @@ class RouteMaps {
   static String settingsPage = "settings";
 }
 
+Map<String, String> get pathRoutes => _pathRoutes;
 final Map<String, String> _pathRoutes = {
   "/detail/:id/:name": RouteMaps.detailPage,
   "/settings/:name": RouteMaps.settingsPage,
 };
+Map<String, RouteModel> get routes => _routes;
 final Map<String, RouteModel> _routes = {
   RouteMaps.homePage: RouteModel((_) => homeBuilder(const HomePage())),
   RouteMaps.root: RouteModel(
@@ -34,10 +36,10 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.detailPage: RouteModel(
     (c) => DetailPage(
-      c.routeArgs()?["id"],
-      customModel: c.routeArgs()?["customModel"] ?? c.routeArgs()?["extra"],
-      isShow: c.routeArgs()?["isShow"] == "true",
-      name: c.routeArgs()?["name"],
+      c.routeArgsWithKey<int>("id")!,
+      customModel: c.routeArgsWithKey<CustomModel?>("customModel"),
+      isShow: c.routeArgsWithKey<bool?>("isShow"),
+      name: c.routeArgsWithKey<String>("name")!,
     ),
   ),
   RouteMaps.searchPage: RouteModel(
@@ -46,36 +48,19 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.settingsPage: RouteModel(
     (c) => SettingsPage(
-      name: c.routeArgs()?["name"],
+      name: c.routeArgsWithKey<String?>("name"),
     ),
     fullscreenDialog: true,
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
-    {String? Function(String routeName)? redirect}) {
-  String routeName = routeSettings.name ?? "";
-  final pathRoute = namedRoute(_pathRoutes, routeName);
-  if (pathRoute != null && routeName != "/") {
-    routeName = pathRoute[1]!;
-  }
-  RouteModel? route = _routes[redirect?.call(routeName) ?? routeName];
-  if (route == null) {
-    return null;
-  }
-
-  return MaterialPageRoute(
-    builder: route.builder,
-    settings: RouteSettings(name: routeSettings.name, arguments: {
-      ...?pathRoute?[2],
-      ...?pathRoute?[3],
-      if (routeSettings.arguments is Map<String, dynamic>)
-        ...(routeSettings.arguments as Map<String, dynamic>)
-      else
-        'extra': routeSettings.arguments,
-    }),
-    fullscreenDialog: route.fullscreenDialog,
-  );
-}
+        {String? Function(String routeName)? redirect}) =>
+    mOnGenerateRoute(
+      routeSettings,
+      routes,
+      pathRoutes: pathRoutes,
+      redirect: redirect,
+    );
 
 class HomePageRoute extends BaseRoute {
   @override
@@ -88,7 +73,7 @@ class RootPageRoute extends BaseRoute {
 }
 
 class DetailPageRoute extends BaseRoute {
-  final String id;
+  final int id;
   final CustomModel? customModel;
   final bool? isShow;
   final String name;
