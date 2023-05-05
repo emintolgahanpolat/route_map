@@ -1,5 +1,6 @@
 import 'package:example/route_map.dart';
 import 'package:example/route_map.routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -15,7 +16,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        materialTapTargetSize: kIsWeb ? MaterialTapTargetSize.padded : null,
+      ),
       onGenerateRoute: onGenerateRoute,
       initialRoute: RouteMaps.root,
       onUnknownRoute: (settings) {

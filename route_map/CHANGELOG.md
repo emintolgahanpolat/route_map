@@ -1,3 +1,5 @@
+## 0.0.12
+* Code optimization
 ## 0.0.11
 * Readme updated
 * Code optimization
