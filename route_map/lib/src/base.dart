@@ -90,6 +90,8 @@ extension BuildContextExtension on BuildContext {
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
   T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
   T? routeArgsWithKey<T>(String key) => _typeConverter<T>(routeArgs()?[key]);
+  T? routeArgsWithKeyExperimental<T>(String key) =>
+      _typeConverter<T>(routeArgs()?[key]);
 }
 
 class RouteModel {
@@ -193,6 +195,7 @@ Route? mOnGenerateRoute(
   );
 }
 
+// TODO: add support for nested routes
 T? _typeConverter<T>(dynamic value) {
   if (value == null) {
     return null;
@@ -206,9 +209,9 @@ T? _typeConverter<T>(dynamic value) {
     } else if (T.toString() == "bool?") {
       return value == "true" as dynamic ? true as T? : false as T?;
     } else if (T.toString() == "int?") {
-      return double.parse(value) as T?;
+      return int.tryParse(value) as T?;
     } else if (T.toString() == "double?") {
-      return value as T?;
+      return double.tryParse(value) as T?;
     } else if (T.toString() == "String?") {
       return value as T?;
     }

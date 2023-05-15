@@ -87,7 +87,8 @@ void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("};");
 }
 
-void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildRouteMap(
+    StringBuffer buffer, List<RouteConfig> jsonData, bool hasPathRoutes) {
   buffer.writeln("Map<String, RouteModel> get routes => _routes;");
   buffer.writeln("final Map<String, RouteModel> _routes = {");
   for (var page in jsonData) {
@@ -113,7 +114,14 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
         if (!param.isPositional!) {
           buffer.write("${param.name}:");
         }
-        buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
+
+        if (hasPathRoutes) {
+          buffer.write(
+              "c.routeArgsWithKeyExperimental<${param.type}>(\"${param.name}\")");
+        } else {
+          buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
+        }
+
         if (!param.type!.contains("?")) {
           buffer.write("!");
         }

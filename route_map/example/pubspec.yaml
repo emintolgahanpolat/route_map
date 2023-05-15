@@ -33,20 +33,20 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.0.5
-  route_map: ^0.0.12
+  route_map: ^0.0.13
   url_strategy: ^0.2.0
 
 dev_dependencies:
-  build_runner: ^2.3.2
-  flutter_lints: ^2.0.0
+  build_runner: ^2.4.4
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   route_map_generator:
     path: ../../route_map_generator/
 
-# dependency_overrides:
-#   route_map:
-#     path: ../
+dependency_overrides:
+  route_map:
+    path: ../
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
