@@ -154,6 +154,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 ```
+
+## **Yardıma ihtiyacım var**
+
+URL tabanlı sayfa yönlendirmesi hala deneyseldir. Tür dönüştürmeleriyle ilgili sorunlar var ve henüz kapsamlı bir şekilde test edilmedi.
+
+**URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.**
 ## Oluşturucuyu çalıştırın 
 Düzenlemeler için dosyaların sistemini izlemek ve gerekirse yeniden oluşturmak için **[watch]** bayrağını kullanın.
 ```terminal  

@@ -1,5 +1,4 @@
 import 'package:change_case/change_case.dart';
-import 'package:route_map_generator/src/constands.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 
 void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
@@ -51,8 +50,9 @@ void buildImports(StringBuffer buffer, List<RouteConfig> jsonData) {
   }
 }
 
+// Type Safe Extra Arg imports
 void buildArgImports(StringBuffer buffer, List<String> jsonData) {
-  buffer.writeln("/// model");
+  buffer.writeln("/// Type Safe Extra Arg Classes");
   for (var element in jsonData) {
     buffer.writeln(element);
   }
@@ -72,6 +72,7 @@ void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
 }
 
 void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
+  buffer.writeln("Map<String, String> get pathRoutes => _pathRoutes;");
   buffer.writeln("final Map<String, String> _pathRoutes = {");
   for (var element in jsonData) {
     if (element.path != null) {
@@ -86,7 +87,9 @@ void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("};");
 }
 
-void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildRouteMap(
+    StringBuffer buffer, List<RouteConfig> jsonData, bool hasPathRoutes) {
+  buffer.writeln("Map<String, RouteModel> get routes => _routes;");
   buffer.writeln("final Map<String, RouteModel> _routes = {");
   for (var page in jsonData) {
     if (page.name == "/") {
@@ -111,18 +114,31 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
         if (!param.isPositional!) {
           buffer.write("${param.name}:");
         }
-        if (param.type == "String" || param.type == "String?") {
-          buffer.writeln("c.routeArgs()?[\"${param.name}\"],");
-        } else if (param.type == "bool" || param.type == "bool?") {
-          buffer.writeln(" c.routeArgs()?[\"${param.name}\"]  == \"true\",");
-        } else if (param.type == "int" || param.type == "int?") {
-          buffer.writeln("int.parse(c.routeArgs()?[\"${param.name}\"]),");
-        } else if (param.type == "double" || param.type == "double?") {
-          buffer.writeln("double.parse(c.routeArgs()?[\"${param.name}\"]),");
+
+        if (hasPathRoutes) {
+          buffer.write(
+              "c.routeArgsWithKeyExperimental<${param.type}>(\"${param.name}\")");
         } else {
-          buffer.writeln(
-              " c.routeArgs()?[\"${param.name}\"] ?? c.routeArgs()?[\"extra\"],");
+          buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
         }
+
+        if (!param.type!.contains("?")) {
+          buffer.write("!");
+        }
+
+        buffer.writeln(",");
+        // if (param.type == "String" || param.type == "String?") {
+        //   buffer.writeln("c.routeArgs()?[\"${param.name}\"],");
+        // } else if (param.type == "bool" || param.type == "bool?") {
+        //   buffer.writeln(" c.routeArgs()?[\"${param.name}\"]  == \"true\",");
+        // } else if (param.type == "int" || param.type == "int?") {
+        //   buffer.writeln("int.parse(c.routeArgs()?[\"${param.name}\"]),");
+        // } else if (param.type == "double" || param.type == "double?") {
+        //   buffer.writeln("double.parse(c.routeArgs()?[\"${param.name}\"]),");
+        // } else {
+        //   buffer.writeln(
+        //       " c.routeArgs()?[\"${param.name}\"] ?? c.routeArgs()?[\"extra\"],");
+        // }
       }));
       if (page.builder != null) {
         buffer.writeln(")");
@@ -139,9 +155,13 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("};");
 }
 
-void buildRouteGenerator(StringBuffer buffer, String displayName) {
+void buildRouteGenerator(
+    StringBuffer buffer, String displayName, List<RouteConfig> jsonData) {
   buffer.writeln(
-      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) {");
-  buffer.writeln(routeBuilderBody);
-  buffer.writeln("}");
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) =>mOnGenerateRoute(routeSettings, routes,");
+  if (jsonData.any((element) => element.path != null)) {
+    buffer.writeln("pathRoutes: pathRoutes,");
+  }
+  buffer.writeln("redirect: redirect,");
+  buffer.writeln(");");
 }

@@ -145,6 +145,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 ```
+
+
+
+
+## **I need help.**
+
+URL-based page redirection is still experimental. There are issues regarding type conversions, and it hasn't been thoroughly tested yet.
+
+**I need assistance with type conversions in URL-based page redirection. It supports int, double, string, and bool.**
+
 ## Run the generator 
 Use the **[watch]** flag to watch the files' system for edits and rebuild as necessary.
 ```terminal  

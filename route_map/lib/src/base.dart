@@ -89,6 +89,9 @@ extension BuildContextExtension on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
   T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
+  T? routeArgsWithKey<T>(String key) => _typeConverter<T>(routeArgs()?[key]);
+  T? routeArgsWithKeyExperimental<T>(String key) =>
+      _typeConverter<T>(routeArgs()?[key]);
 }
 
 class RouteModel {
@@ -152,4 +155,66 @@ List? namedRoute(Map<String, String> pathRoutes, String path) {
     return null;
   }
   return null;
+}
+
+Route? mOnGenerateRoute(
+    RouteSettings routeSettings, Map<String, RouteModel> routes,
+    {Map<String, String>? pathRoutes,
+    String? Function(String routeName)? redirect}) {
+  String routeName = routeSettings.name ?? "";
+  Map<String, Object?> args = {};
+  if (pathRoutes != null) {
+    final pathRoute = namedRoute(pathRoutes, routeName);
+    if (pathRoute != null && routeName != "/") {
+      routeName = pathRoute[1]!;
+      Map<String, dynamic>? args1 = pathRoute[2];
+      if (args1 != null) {
+        args.addAll(args1);
+      }
+      Map<String, dynamic>? args2 = pathRoute[3];
+      if (args2 != null) {
+        args.addAll(args2);
+      }
+    }
+  }
+  if (routeSettings.arguments is Map<String, dynamic>) {
+    args.addAll(routeSettings.arguments as Map<String, dynamic>);
+  } else {
+    args.addAll({"extra": routeSettings.arguments});
+  }
+
+  RouteModel? route = routes[redirect?.call(routeName) ?? routeName];
+  if (route == null) {
+    return null;
+  }
+
+  return MaterialPageRoute(
+    builder: route.builder,
+    settings: RouteSettings(name: routeSettings.name, arguments: args),
+    fullscreenDialog: route.fullscreenDialog,
+  );
+}
+
+// TODO: add support for nested routes
+T? _typeConverter<T>(dynamic value) {
+  if (value == null) {
+    return null;
+  } else if (value is String) {
+    if (T == int) {
+      return int.parse(value) as T;
+    } else if (T == double) {
+      return double.parse(value) as T;
+    } else if (T == bool) {
+      return value == "true" as dynamic ? true as T : false as T;
+    } else if (T.toString() == "bool?") {
+      return value == "true" as dynamic ? true as T? : false as T?;
+    } else if (T.toString() == "int?") {
+      return int.tryParse(value) as T?;
+    } else if (T.toString() == "double?") {
+      return double.tryParse(value) as T?;
+    } else if (T.toString() == "String?") {
+      return value as T?;
+    }
+  }
+  return value as T;
 }

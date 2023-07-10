@@ -26,7 +26,7 @@ class RouteMapInit {
   final bool typeSafe;
   const RouteMapInit({
     this.generateForDir = const ['lib'],
-    this.typeSafe = true,
+    this.typeSafe = false,
   });
 }
 

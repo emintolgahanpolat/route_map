@@ -8,4 +8,5 @@ export 'src/base.dart'
         RouteSettingsExtension,
         BuildContextExtension,
         RouteModel,
-        namedRoute;
+        namedRoute,
+        mOnGenerateRoute;
