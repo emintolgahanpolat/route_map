@@ -7,12 +7,16 @@ import 'package:route_map/route_map.dart';
 class DetailPage extends StatefulWidget {
   final int id;
   final String name;
+  final String testDefaultValue;
+  final int testDefaultIntValue;
   final bool? isShow;
   final CustomModel? customModel;
   final CustomModel2? customModel2;
   const DetailPage(this.id,
       {Key? key,
       required this.name,
+      this.testDefaultValue = "deneme",
+      this.testDefaultIntValue = 0,
       this.isShow,
       this.customModel,
       this.customModel2})
@@ -32,6 +36,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: ListView(
         children: [
+          Text("Default Value: ${widget.testDefaultValue}"),
           Text("Custom Model: ${widget.customModel?.name}"),
           Text("Custom Model 2: ${widget.customModel2?.name}"),
           Text("id : ${widget.id}"),

@@ -20,10 +20,14 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
     if (page.params != null && page.params!.isNotEmpty) {
       buffer.writeln("${page.clazz}Route({");
       page.params?.forEach((param) {
-        if (!param.type!.contains("?")) {
+        if (param.isRequired == true) {
           buffer.write("required ");
         }
-        buffer.write(" ${param.type} ${param.name},");
+        if (param.defaultValue == null) {
+          buffer.write(" ${param.type} ${param.name},");
+        } else {
+          buffer.write(" ${param.type} ${param.name} = ${param.defaultValue},");
+        }
       });
       buffer.writeln(
           "}):super(RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()},");
@@ -57,10 +61,14 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
       });
       buffer.writeln("${page.clazz}Args({");
       page.params?.forEach((param) {
-        if (!param.type!.contains("?")) {
+        if (param.isRequired == true) {
           buffer.write("required ");
         }
-        buffer.write("this.${param.name},");
+        if (param.defaultValue == null) {
+          buffer.write("this.${param.name},");
+        } else {
+          buffer.write("this.${param.name} = ${param.defaultValue},");
+        }
       });
       buffer.writeln("});");
 

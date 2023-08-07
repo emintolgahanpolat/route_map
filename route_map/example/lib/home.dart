@@ -100,6 +100,8 @@ class _HomePageState extends State<HomePage> {
                   "name": "deneme",
                   "isShow": true,
                   "customModel": CustomModel(name: 'test'),
+                  "customModel2": CustomModel2(name: 'test'),
+                  "testDefaultValue": null
                 },
               );
             },

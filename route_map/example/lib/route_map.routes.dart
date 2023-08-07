@@ -51,6 +51,10 @@ final Map<String, RouteModel> _routes = {
           c.routeArgsWithKeyExperimental<CustomModel2?>("customModel2"),
       isShow: c.routeArgsWithKeyExperimental<bool?>("isShow"),
       name: c.routeArgsWithKeyExperimental<String>("name")!,
+      testDefaultIntValue:
+          c.routeArgsWithKeyExperimental<int>("testDefaultIntValue")!,
+      testDefaultValue:
+          c.routeArgsWithKeyExperimental<String>("testDefaultValue")!,
     ),
   ),
   RouteMaps.searchPage: RouteModel(
@@ -110,6 +114,8 @@ class DetailPageRoute extends BaseRoute {
     CustomModel2? customModel2,
     bool? isShow,
     required String name,
+    int testDefaultIntValue = 0,
+    String testDefaultValue = "deneme",
   }) : super(RouteMaps.detailPage,
             args: DetailPageArgs(
               id: id,
@@ -117,6 +123,8 @@ class DetailPageRoute extends BaseRoute {
               customModel2: customModel2,
               isShow: isShow,
               name: name,
+              testDefaultIntValue: testDefaultIntValue,
+              testDefaultValue: testDefaultValue,
             ).map);
   static const String name = RouteMaps.detailPage;
 }
@@ -127,12 +135,16 @@ class DetailPageArgs {
   final CustomModel2? customModel2;
   final bool? isShow;
   final String name;
+  final int testDefaultIntValue;
+  final String testDefaultValue;
   DetailPageArgs({
     required this.id,
     this.customModel,
     this.customModel2,
     this.isShow,
     required this.name,
+    this.testDefaultIntValue = 0,
+    this.testDefaultValue = "deneme",
   });
   Map<String, dynamic>? get map => {
         "id": id,
@@ -140,6 +152,8 @@ class DetailPageArgs {
         "customModel2": customModel2,
         "isShow": isShow,
         "name": name,
+        "testDefaultIntValue": testDefaultIntValue,
+        "testDefaultValue": testDefaultValue,
       };
 }
 

@@ -55,14 +55,24 @@ class RouteConfig extends RouteMapConfig {
 
 class Param {
   bool? isPositional;
+  bool? isRequired;
+  String? defaultValue;
   String? type;
   String? name;
   String? importPath;
 
-  Param({this.isPositional, this.type, this.name, this.importPath});
+  Param(
+      {this.isPositional,
+      this.isRequired,
+      this.defaultValue,
+      this.type,
+      this.name,
+      this.importPath});
 
   factory Param.fromJson(Map<String, dynamic> json) => Param(
         isPositional: json['isPositional'] as bool?,
+        isRequired: json['isRequired'] as bool?,
+        defaultValue: json['defaultValue'] as String?,
         type: json['type'] as String?,
         name: json['name'] as String?,
         importPath: json['importPath'] as String?,
@@ -70,6 +80,8 @@ class Param {
 
   Map<String, dynamic> toJson() => {
         "isPositional": isPositional,
+        "isRequired": isRequired,
+        "defaultValue": defaultValue,
         "type": type,
         "name": name,
         "importPath": importPath

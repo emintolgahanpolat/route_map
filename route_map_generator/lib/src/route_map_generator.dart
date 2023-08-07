@@ -55,6 +55,8 @@ class ModelVisitor extends SimpleElementVisitor<void> {
       if (item.name != "key") {
         var param = Param(
           isPositional: item.isPositional,
+          isRequired: item.isRequired,
+          defaultValue: item.defaultValueCode,
           name: item.name,
           type: item.type.toString(),
         );
