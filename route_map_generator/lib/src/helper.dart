@@ -79,15 +79,20 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
 void buildImports(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("import 'package:flutter/material.dart';");
   buffer.writeln("import 'package:route_map/route_map.dart';");
+  var imports = jsonData.map((element) => element.import).toList();
+  var paramsImport = jsonData
+      .expand((element) => [...?element.params].map((e) => e.importPath ?? ""))
+      .toList();
 
-  for (var element in jsonData) {
-    buffer.writeln(element.import);
+  var uniqueItems = {...imports, ...paramsImport}.toList();
+
+  for (var item in uniqueItems) {
+    buffer.writeln(item);
   }
 }
 
 // Type Safe Extra Arg imports
 void buildArgImports(StringBuffer buffer, List<String> jsonData) {
-  buffer.writeln("/// Type Safe Extra Arg Classes");
   for (var element in jsonData) {
     buffer.writeln(element);
   }
@@ -193,7 +198,7 @@ void buildRouteMap(
 void buildRouteGenerator(
     StringBuffer buffer, String displayName, List<RouteConfig> jsonData) {
   buffer.writeln(
-      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) =>mOnGenerateRoute(routeSettings, routes,");
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) => onGenerateRouteWithRoutesSettings(routeSettings, routes,");
   if (jsonData.any((element) => element.path != null)) {
     buffer.writeln("pathRoutes: pathRoutes,");
   }

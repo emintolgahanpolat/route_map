@@ -12,8 +12,6 @@ import 'package:example/detail2.dart';
 import 'package:example/detail.dart';
 import 'package:example/search.dart';
 import 'package:example/settings.dart';
-
-/// Type Safe Extra Arg Classes
 import 'package:example/custom_model.dart';
 
 class RouteMaps {
@@ -49,6 +47,8 @@ final Map<String, RouteModel> _routes = {
     (c) => DetailPage(
       c.routeArgsWithKeyExperimental<int>("id")!,
       customModel: c.routeArgsWithKeyExperimental<CustomModel?>("customModel"),
+      customModel2:
+          c.routeArgsWithKeyExperimental<CustomModel2?>("customModel2"),
       isShow: c.routeArgsWithKeyExperimental<bool?>("isShow"),
       name: c.routeArgsWithKeyExperimental<String>("name")!,
     ),
@@ -66,7 +66,7 @@ final Map<String, RouteModel> _routes = {
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
         {String? Function(String routeName)? redirect}) =>
-    mOnGenerateRoute(
+    onGenerateRouteWithRoutesSettings(
       routeSettings,
       routes,
       pathRoutes: pathRoutes,
@@ -107,12 +107,14 @@ class DetailPageRoute extends BaseRoute {
   DetailPageRoute({
     required int id,
     CustomModel? customModel,
+    CustomModel2? customModel2,
     bool? isShow,
     required String name,
   }) : super(RouteMaps.detailPage,
             args: DetailPageArgs(
               id: id,
               customModel: customModel,
+              customModel2: customModel2,
               isShow: isShow,
               name: name,
             ).map);
@@ -122,17 +124,20 @@ class DetailPageRoute extends BaseRoute {
 class DetailPageArgs {
   final int id;
   final CustomModel? customModel;
+  final CustomModel2? customModel2;
   final bool? isShow;
   final String name;
   DetailPageArgs({
     required this.id,
     this.customModel,
+    this.customModel2,
     this.isShow,
     required this.name,
   });
   Map<String, dynamic>? get map => {
         "id": id,
         "customModel": customModel,
+        "customModel2": customModel2,
         "isShow": isShow,
         "name": name,
       };

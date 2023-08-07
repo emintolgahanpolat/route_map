@@ -57,15 +57,21 @@ class Param {
   bool? isPositional;
   String? type;
   String? name;
+  String? importPath;
 
-  Param({this.isPositional, this.type, this.name});
+  Param({this.isPositional, this.type, this.name, this.importPath});
 
   factory Param.fromJson(Map<String, dynamic> json) => Param(
-        isPositional: json['isPositional'] as bool,
-        type: json['type'] as String,
-        name: json['name'] as String,
+        isPositional: json['isPositional'] as bool?,
+        type: json['type'] as String?,
+        name: json['name'] as String?,
+        importPath: json['importPath'] as String?,
       );
 
-  Map<String, dynamic> toJson() =>
-      {"isPositional": isPositional, "type": type, "name": name};
+  Map<String, dynamic> toJson() => {
+        "isPositional": isPositional,
+        "type": type,
+        "name": name,
+        "importPath": importPath
+      };
 }

@@ -53,10 +53,16 @@ class ModelVisitor extends SimpleElementVisitor<void> {
   void visitConstructorElement(ConstructorElement element) {
     for (var item in element.type.parameters) {
       if (item.name != "key") {
-        elementList.add(Param(
-            isPositional: item.isPositional,
-            name: item.name,
-            type: item.type.toString()));
+        var param = Param(
+          isPositional: item.isPositional,
+          name: item.name,
+          type: item.type.toString(),
+        );
+        if (item.type.element!.library!.identifier != "dart:core") {
+          param.importPath =
+              "import '${item.type.element!.library!.identifier}';";
+        }
+        elementList.add(param);
       }
     }
   }

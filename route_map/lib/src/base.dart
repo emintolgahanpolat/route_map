@@ -158,10 +158,12 @@ List? namedRoute(Map<String, String> pathRoutes, String path) {
   return null;
 }
 
-Route? mOnGenerateRoute(
-    RouteSettings routeSettings, Map<String, RouteModel> routes,
-    {Map<String, String>? pathRoutes,
-    String? Function(String name)? redirect}) {
+Route<dynamic>? onGenerateRouteWithRoutesSettings(
+  RouteSettings routeSettings,
+  Map<String, RouteModel> routes, {
+  Map<String, String>? pathRoutes,
+  String? Function(String name)? redirect,
+}) {
   String name = routeSettings.name ?? "";
   Map<String, Object?> args = {};
   if (pathRoutes != null) {
@@ -200,22 +202,18 @@ Route? mOnGenerateRoute(
 T? _typeConverter<T>(dynamic value) {
   if (value == null) {
     return null;
-  } else if (value is String) {
-    if (T == int) {
-      return int.parse(value) as T;
-    } else if (T == double) {
-      return double.parse(value) as T;
-    } else if (T == bool) {
-      return value == "true" as dynamic ? true as T : false as T;
-    } else if (T.toString() == "bool?") {
-      return value == "true" as dynamic ? true as T? : false as T?;
-    } else if (T.toString() == "int?") {
-      return int.tryParse(value) as T?;
-    } else if (T.toString() == "double?") {
-      return double.tryParse(value) as T?;
-    } else if (T.toString() == "String?") {
-      return value as T?;
+  } else if (value is T) {
+    return value;
+  } else if (T == int) {
+    return int.tryParse(value.toString()) as T?;
+  } else if (T == double) {
+    return double.tryParse(value.toString()) as T?;
+  } else if (T == bool) {
+    if (value.toString().toLowerCase() == "true") {
+      return true as T;
+    } else if (value.toString().toLowerCase() == "false") {
+      return false as T;
     }
   }
-  return value as T;
+  return null;
 }

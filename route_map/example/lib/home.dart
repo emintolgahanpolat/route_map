@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
                 id: 0,
                 name: "push",
                 customModel: CustomModel(name: 'test 123'),
+                customModel2: CustomModel2(name: 'CustomModel2 123'),
                 isShow: false,
               ).push(context);
             },
@@ -66,7 +67,10 @@ class _HomePageState extends State<HomePage> {
               Navigator.pushNamed(
                 context,
                 "/detail/1234/tolga/?isShow=true",
-                arguments: {"customModel": CustomModel(name: 'test')},
+                arguments: {
+                  "customModel": CustomModel(name: 'CustomModel'),
+                  "customModel2": CustomModel2(name: 'CustomModel2')
+                },
               );
             },
             onLongPress: () {

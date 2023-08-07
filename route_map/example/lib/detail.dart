@@ -9,8 +9,13 @@ class DetailPage extends StatefulWidget {
   final String name;
   final bool? isShow;
   final CustomModel? customModel;
+  final CustomModel2? customModel2;
   const DetailPage(this.id,
-      {Key? key, required this.name, this.isShow, this.customModel})
+      {Key? key,
+      required this.name,
+      this.isShow,
+      this.customModel,
+      this.customModel2})
       : super(key: key);
 
   @override
@@ -28,6 +33,7 @@ class _DetailPageState extends State<DetailPage> {
       body: ListView(
         children: [
           Text("Custom Model: ${widget.customModel?.name}"),
+          Text("Custom Model 2: ${widget.customModel2?.name}"),
           Text("id : ${widget.id}"),
           Text("name : ${widget.name}"),
           Text("isShow : ${widget.isShow}"),

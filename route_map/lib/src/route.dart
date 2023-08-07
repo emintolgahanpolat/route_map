@@ -29,8 +29,3 @@ class RouteMapInit {
     this.typeSafe = false,
   });
 }
-
-/// Marks a class as an route arg
-class RouteMapArg {
-  const RouteMapArg();
-}
