@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class BaseRoute {
-  late String routeName;
-  Object? args;
+  final String _name;
+  final Object? args;
+  BaseRoute(this._name, {this.args});
   Future<T?> push<T extends Object?>(
     BuildContext context, {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushNamed(
-        routeName,
+        _name,
         arguments: args,
       );
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
@@ -17,7 +18,7 @@ class BaseRoute {
     TO? result,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).pushReplacementNamed(
-        routeName,
+        _name,
         result: result,
         arguments: args,
       );
@@ -27,7 +28,7 @@ class BaseRoute {
     TO? result,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).popAndPushNamed(
-        routeName,
+        _name,
         result: result,
         arguments: args,
       );
@@ -38,7 +39,7 @@ class BaseRoute {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .pushNamedAndRemoveUntil(
-        routeName,
+        _name,
         predicate,
         arguments: args,
       );
@@ -47,7 +48,7 @@ class BaseRoute {
     bool rootNavigator = false,
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator).restorablePushNamed(
-        routeName,
+        _name,
         arguments: args,
       );
   String restorablePushAndRemoveUntil<T extends Object?>(
@@ -57,7 +58,7 @@ class BaseRoute {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .restorablePushNamedAndRemoveUntil(
-        routeName,
+        _name,
         predicate,
         arguments: args,
       );
@@ -67,7 +68,7 @@ class BaseRoute {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .restorablePopAndPushNamed(
-        routeName,
+        _name,
         arguments: args,
       );
   String restorablePushReplacement(
@@ -76,7 +77,7 @@ class BaseRoute {
   }) =>
       Navigator.of(context, rootNavigator: rootNavigator)
           .restorablePushReplacementNamed(
-        routeName,
+        _name,
         arguments: args,
       );
 }
@@ -160,13 +161,13 @@ List? namedRoute(Map<String, String> pathRoutes, String path) {
 Route? mOnGenerateRoute(
     RouteSettings routeSettings, Map<String, RouteModel> routes,
     {Map<String, String>? pathRoutes,
-    String? Function(String routeName)? redirect}) {
-  String routeName = routeSettings.name ?? "";
+    String? Function(String name)? redirect}) {
+  String name = routeSettings.name ?? "";
   Map<String, Object?> args = {};
   if (pathRoutes != null) {
-    final pathRoute = namedRoute(pathRoutes, routeName);
-    if (pathRoute != null && routeName != "/") {
-      routeName = pathRoute[1]!;
+    final pathRoute = namedRoute(pathRoutes, name);
+    if (pathRoute != null && name != "/") {
+      name = pathRoute[1]!;
       Map<String, dynamic>? args1 = pathRoute[2];
       if (args1 != null) {
         args.addAll(args1);
@@ -183,7 +184,7 @@ Route? mOnGenerateRoute(
     args.addAll({"extra": routeSettings.arguments});
   }
 
-  RouteModel? route = routes[redirect?.call(routeName) ?? routeName];
+  RouteModel? route = routes[redirect?.call(name) ?? name];
   if (route == null) {
     return null;
   }

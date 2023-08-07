@@ -3,23 +3,42 @@ import 'package:route_map_generator/src/model/route_config.dart';
 
 void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
   for (var page in jsonData) {
-    buffer.write("class ${page.clazz}Route extends BaseRoute {");
-
     if (page.params != null && page.params!.isNotEmpty) {
-      page.params?.forEach((param) {
-        buffer.write("final ${param.type} ${param.name};");
-      });
+      buffer.write("class ${page.clazz}Route extends BaseRoute {");
+    } else {
+      buffer.write("class ${page.clazz}Route extends BaseRoute {");
+
+      buffer.write("${page.clazz}Route():super(");
+      if (page.name == "/") {
+        buffer.write("RouteMaps.root");
+      } else {
+        buffer.write(
+            "RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()}");
+      }
+      buffer.write(");");
+    }
+    if (page.params != null && page.params!.isNotEmpty) {
       buffer.writeln("${page.clazz}Route({");
       page.params?.forEach((param) {
         if (!param.type!.contains("?")) {
           buffer.write("required ");
         }
-        buffer.write("this.${param.name},");
+        buffer.write(" ${param.type} ${param.name},");
       });
-      buffer.writeln("});");
+      buffer.writeln(
+          "}):super(RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()},");
+      if (page.params != null && page.params!.isNotEmpty) {
+        buffer.writeln("args: ");
+        buffer.write("${page.clazz}Args (");
+        page.params?.forEach((param) {
+          buffer.write("${param.name}:${param.name},");
+        });
+        buffer.writeln(").map");
+      }
+      buffer.writeln(");");
     }
-    buffer.writeln("@override");
-    buffer.write("String get routeName => ");
+
+    buffer.write("static const String name = ");
     if (page.name == "/") {
       buffer.write("RouteMaps.root");
     } else {
@@ -28,15 +47,31 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
     }
     buffer.write(";");
 
+    buffer.writeln("}");
+
     if (page.params != null && page.params!.isNotEmpty) {
-      buffer.writeln("@override");
-      buffer.write("Map<String,dynamic>? get args => {");
+      buffer.write("class ${page.clazz}Args {");
+
+      page.params?.forEach((param) {
+        buffer.write("final ${param.type} ${param.name};");
+      });
+      buffer.writeln("${page.clazz}Args({");
+      page.params?.forEach((param) {
+        if (!param.type!.contains("?")) {
+          buffer.write("required ");
+        }
+        buffer.write("this.${param.name},");
+      });
+      buffer.writeln("});");
+
+      buffer.write("Map<String,dynamic>? get map => {");
       page.params?.forEach((param) {
         buffer.write(" \"${param.name}\": ${param.name},");
       });
       buffer.write("};");
+
+      buffer.writeln("}");
     }
-    buffer.writeln("}");
   }
   // buffer.write(baseRouteClass);
 }
@@ -62,10 +97,10 @@ void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
   buffer.writeln("class RouteMaps{");
   for (var element in jsonData) {
     if (element.name == "/") {
-      buffer.write("static String root = \"/\";");
+      buffer.write("static const String root = \"/\";");
     } else {
       buffer.write(
-          "static String ${element.clazz.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
+          "static const String ${element.clazz.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
     }
   }
   buffer.writeln("}");

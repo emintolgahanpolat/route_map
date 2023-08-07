@@ -17,12 +17,12 @@ import 'package:example/settings.dart';
 import 'package:example/custom_model.dart';
 
 class RouteMaps {
-  static String homePage = "home";
-  static String root = "/";
-  static String detail2Page = "/detail2_page";
-  static String detailPage = "/detail_page";
-  static String searchPage = "/ara";
-  static String settingsPage = "settings";
+  static const String homePage = "home";
+  static const String root = "/";
+  static const String detail2Page = "/detail2_page";
+  static const String detailPage = "/detail_page";
+  static const String searchPage = "/ara";
+  static const String settingsPage = "settings";
 }
 
 /// URL tabanlı sayfa yönlendirmesi hala deneyseldir. Tür dönüştürmeleriyle ilgili sorunlar var ve henüz kapsamlı bir şekilde test edilmedi.
@@ -74,43 +74,63 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
     );
 
 class HomePageRoute extends BaseRoute {
-  @override
-  String get routeName => RouteMaps.homePage;
+  HomePageRoute() : super(RouteMaps.homePage);
+  static const String name = RouteMaps.homePage;
 }
 
 class RootPageRoute extends BaseRoute {
-  @override
-  String get routeName => RouteMaps.root;
+  RootPageRoute() : super(RouteMaps.root);
+  static const String name = RouteMaps.root;
 }
 
 class Detail2PageRoute extends BaseRoute {
-  final CustomModel customModel;
   Detail2PageRoute({
+    required CustomModel customModel,
+  }) : super(RouteMaps.detail2Page,
+            args: Detail2PageArgs(
+              customModel: customModel,
+            ).map);
+  static const String name = RouteMaps.detail2Page;
+}
+
+class Detail2PageArgs {
+  final CustomModel customModel;
+  Detail2PageArgs({
     required this.customModel,
   });
-  @override
-  String get routeName => RouteMaps.detail2Page;
-  @override
-  Map<String, dynamic>? get args => {
+  Map<String, dynamic>? get map => {
         "customModel": customModel,
       };
 }
 
 class DetailPageRoute extends BaseRoute {
+  DetailPageRoute({
+    required int id,
+    CustomModel? customModel,
+    bool? isShow,
+    required String name,
+  }) : super(RouteMaps.detailPage,
+            args: DetailPageArgs(
+              id: id,
+              customModel: customModel,
+              isShow: isShow,
+              name: name,
+            ).map);
+  static const String name = RouteMaps.detailPage;
+}
+
+class DetailPageArgs {
   final int id;
   final CustomModel? customModel;
   final bool? isShow;
   final String name;
-  DetailPageRoute({
+  DetailPageArgs({
     required this.id,
     this.customModel,
     this.isShow,
     required this.name,
   });
-  @override
-  String get routeName => RouteMaps.detailPage;
-  @override
-  Map<String, dynamic>? get args => {
+  Map<String, dynamic>? get map => {
         "id": id,
         "customModel": customModel,
         "isShow": isShow,
@@ -119,19 +139,26 @@ class DetailPageRoute extends BaseRoute {
 }
 
 class SearchPageRoute extends BaseRoute {
-  @override
-  String get routeName => RouteMaps.searchPage;
+  SearchPageRoute() : super(RouteMaps.searchPage);
+  static const String name = RouteMaps.searchPage;
 }
 
 class SettingsPageRoute extends BaseRoute {
-  final String? name;
   SettingsPageRoute({
+    String? name,
+  }) : super(RouteMaps.settingsPage,
+            args: SettingsPageArgs(
+              name: name,
+            ).map);
+  static const String name = RouteMaps.settingsPage;
+}
+
+class SettingsPageArgs {
+  final String? name;
+  SettingsPageArgs({
     this.name,
   });
-  @override
-  String get routeName => RouteMaps.settingsPage;
-  @override
-  Map<String, dynamic>? get args => {
+  Map<String, dynamic>? get map => {
         "name": name,
       };
 }
