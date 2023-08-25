@@ -1,6 +1,6 @@
 name: route_map_generator
 description: Create route map quickly by annotation.
-version: 0.0.14
+version: 0.0.15
 repository: https://github.com/emintolgahanpolat/route_map
 # publish_to: 'none'
 
@@ -8,14 +8,14 @@ environment:
   sdk: '>=2.17.0 <3.0.0'
   flutter: ">=1.17.0"
 dependencies:
-  analyzer: ^6.1.0
-  build: ^2.4.1
+  analyzer: ">=5.12.0"
+  build: ^2.4.0
   change_case: ^1.1.0
   flutter:
     sdk: flutter
-  glob: ^2.1.2
-  route_map: ^0.0.14
-  source_gen: ^1.4.0
+  glob: ^2.1.1
+  route_map: ^0.0.15
+  source_gen: ^1.3.2
 
 dev_dependencies:
   flutter_lints: ^2.0.1
