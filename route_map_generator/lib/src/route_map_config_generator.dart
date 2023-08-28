@@ -39,7 +39,11 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         annotation.read('typeSafe').boolValue) {
       buildArgImports(buffer, jsonArgData);
     }
-    buildRoutes(buffer, jsonData);
+
+    String replaceInRouteName =
+        annotation.read('replaceInRouteName').stringValue;
+
+    buildRoutes(buffer, jsonData, replaceInRouteName);
     if (jsonData.any((element) => element.path != null)) {
       buffer.writeln("""
   /// URL tabanlı sayfa yönlendirmesi hala deneyseldir. Tür dönüştürmeleriyle ilgili sorunlar var ve henüz kapsamlı bir şekilde test edilmedi.
@@ -47,16 +51,15 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
   /// URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.
 
 """);
-      buildPathRoutes(buffer, jsonData);
+      buildPathRoutes(buffer, jsonData, replaceInRouteName);
     }
 
-    buildRouteMap(
-        buffer, jsonData, jsonData.any((element) => element.path != null));
+    buildRouteMap(buffer, jsonData, replaceInRouteName);
     buildRouteGenerator(buffer, element.displayName, jsonData);
 
     if (annotation.read('typeSafe').isBool &&
         annotation.read('typeSafe').boolValue) {
-      buildTypeSafeNavigator(buffer, jsonData);
+      buildTypeSafeNavigator(buffer, jsonData, replaceInRouteName);
     }
 
     return buffer.toString();

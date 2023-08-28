@@ -4,12 +4,12 @@ import 'package:route_map/route_map.dart';
 
 import 'route_map.routes.dart';
 
-@RouteMapInit(typeSafe: true)
+@RouteMapInit(typeSafe: true, replaceInRouteName: "Page|Screen|Ekran,Route")
 Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(
       routeSettings,
       redirect: (routeName) {
         if (kIsWeb && routeName == RouteMaps.root) {
-          return RouteMaps.homePage;
+          return RouteMaps.homeRoute;
         }
         print(routeName);
         return null;

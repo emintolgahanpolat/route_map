@@ -24,8 +24,13 @@ class RouteMapInit {
   /// Only files exist in provided directories will be processed
   final List<String> generateForDir;
   final bool typeSafe;
+
+  /// defaults to 'Page|Screen,Route', ignored if a route name is provided.
+  final String? replaceInRouteName;
+
   const RouteMapInit({
     this.generateForDir = const ['lib'],
     this.typeSafe = false,
+    this.replaceInRouteName = 'Page|Screen,Route',
   });
 }

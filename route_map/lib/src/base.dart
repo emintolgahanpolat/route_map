@@ -90,7 +90,7 @@ extension BuildContextExtension on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
   T? routeArgs<T>() => ModalRoute.of(this)?.settings.arguments as T;
-  T? routeArgsWithKey<T>(String key) => _typeConverter<T>(routeArgs()?[key]);
+  T? routeArgsWithKey<T>(String key) => routeArgs()?[key];
   T? routeArgsWithKeyExperimental<T>(String key) =>
       _typeConverter<T>(routeArgs()?[key]);
 }

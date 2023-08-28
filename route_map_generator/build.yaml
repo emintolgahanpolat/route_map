@@ -1,12 +1,12 @@
 targets:
   $default:
     builders:
-      route_map_generator|route_map_builder:
+      route_map_generator:
         enabled: true
 
 builders:
 
-  route_map_builder:
+  route_map_generator:
     import: "package:route_map_generator/route_map_generator.dart"
     builder_factories: ["routeMapBuilder"]
     build_extensions: { ".dart": [".map.json"] }

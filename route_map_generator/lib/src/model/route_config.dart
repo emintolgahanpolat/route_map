@@ -1,7 +1,26 @@
+import 'package:change_case/change_case.dart';
+
 class RouteMapConfig {
   final String import;
   final String clazz;
   const RouteMapConfig({required this.import, required this.clazz});
+
+  /// Resolves the route name
+  String getClazzName([String? replacementInRouteName]) {
+    String nameToUse;
+    if (replacementInRouteName != null &&
+        replacementInRouteName.split(',').length == 2) {
+      var parts = replacementInRouteName.split(',');
+      if (parts[0].split("|").any((e) => clazz.contains(e))) {
+        nameToUse = clazz.replaceAll(RegExp(parts[0]), parts[1]);
+      } else {
+        nameToUse = "${clazz}Route";
+      }
+    } else {
+      nameToUse = "${clazz}Route";
+    }
+    return nameToUse.trim().toPascalCase();
+  }
 
   factory RouteMapConfig.fromJson(Map<String, dynamic> json) => RouteMapConfig(
         import: json['import'] as String,

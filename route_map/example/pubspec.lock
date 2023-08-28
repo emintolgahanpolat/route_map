@@ -406,14 +406,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.15"
+    version: "0.0.16"
   route_map_generator:
     dependency: "direct dev"
     description:
       path: "../../route_map_generator"
       relative: true
     source: path
-    version: "0.0.15"
+    version: "0.0.16"
   shelf:
     dependency: transitive
     description:

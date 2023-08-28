@@ -1,24 +1,27 @@
 import 'package:change_case/change_case.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 
-void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
+    String replaceInRouteName) {
   for (var page in jsonData) {
     if (page.params != null && page.params!.isNotEmpty) {
-      buffer.write("class ${page.clazz}Route extends BaseRoute {");
+      buffer.write(
+          "class ${page.getClazzName(replaceInRouteName)} extends BaseRoute {");
     } else {
-      buffer.write("class ${page.clazz}Route extends BaseRoute {");
+      buffer.write(
+          "class ${page.getClazzName(replaceInRouteName)} extends BaseRoute {");
 
-      buffer.write("${page.clazz}Route():super(");
+      buffer.write("${page.getClazzName(replaceInRouteName)}():super(");
       if (page.name == "/") {
         buffer.write("RouteMaps.root");
       } else {
         buffer.write(
-            "RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()}");
+            "RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()}");
       }
       buffer.write(");");
     }
     if (page.params != null && page.params!.isNotEmpty) {
-      buffer.writeln("${page.clazz}Route({");
+      buffer.writeln("${page.getClazzName(replaceInRouteName)}({");
       page.params?.forEach((param) {
         if (param.isRequired == true) {
           buffer.write("required ");
@@ -26,16 +29,21 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
         if (param.defaultValue == null) {
           buffer.write(" ${param.type} ${param.name},");
         } else {
-          buffer.write(" ${param.type} ${param.name} = ${param.defaultValue},");
+          buffer.write(" ${param.type}? ${param.name},");
         }
       });
       buffer.writeln(
-          "}):super(RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()},");
+          "}):super(RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()},");
       if (page.params != null && page.params!.isNotEmpty) {
         buffer.writeln("args: ");
-        buffer.write("${page.clazz}Args (");
+        buffer.write("${page.getClazzName(replaceInRouteName)}Args (");
         page.params?.forEach((param) {
-          buffer.write("${param.name}:${param.name},");
+          if (param.defaultValue == null) {
+            buffer.write("${param.name}:${param.name},");
+          } else {
+            buffer.write(
+                "${param.name}: ${param.name} ?? ${param.defaultValue},");
+          }
         });
         buffer.writeln(").map");
       }
@@ -46,20 +54,20 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData) {
     if (page.name == "/") {
       buffer.write("RouteMaps.root");
     } else {
-      buffer
-          .write("RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()}");
+      buffer.write(
+          "RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()}");
     }
     buffer.write(";");
 
     buffer.writeln("}");
 
     if (page.params != null && page.params!.isNotEmpty) {
-      buffer.write("class ${page.clazz}Args {");
+      buffer.write("class ${page.getClazzName(replaceInRouteName)}Args {");
 
       page.params?.forEach((param) {
         buffer.write("final ${param.type} ${param.name};");
       });
-      buffer.writeln("${page.clazz}Args({");
+      buffer.writeln("${page.getClazzName(replaceInRouteName)}Args({");
       page.params?.forEach((param) {
         if (param.isRequired == true) {
           buffer.write("required ");
@@ -106,20 +114,22 @@ void buildArgImports(StringBuffer buffer, List<String> jsonData) {
   }
 }
 
-void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
+    String replaceInRouteName) {
   buffer.writeln("class RouteMaps{");
   for (var element in jsonData) {
     if (element.name == "/") {
       buffer.write("static const String root = \"/\";");
     } else {
       buffer.write(
-          "static const String ${element.clazz.replaceFirst("/", "").toCamelCase()} = \"${element.name}\";");
+          "static const String ${element.getClazzName(replaceInRouteName).toCamelCase()} = \"${element.name}\";");
     }
   }
   buffer.writeln("}");
 }
 
-void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
+void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
+    String replaceInRouteName) {
   buffer.writeln("Map<String, String> get pathRoutes => _pathRoutes;");
   buffer.writeln("final Map<String, String> _pathRoutes = {");
   for (var element in jsonData) {
@@ -128,15 +138,15 @@ void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData) {
         buffer.write("\"/\": RouteMaps.root,");
       } else {
         buffer.write(
-            "\"${element.path}\": RouteMaps.${element.clazz.replaceFirst("/", "").toCamelCase()},");
+            "\"${element.path}\": RouteMaps.${element.getClazzName(replaceInRouteName).toCamelCase()},");
       }
     }
   }
   buffer.writeln("};");
 }
 
-void buildRouteMap(
-    StringBuffer buffer, List<RouteConfig> jsonData, bool hasPathRoutes) {
+void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
+    String replaceInRouteName) {
   buffer.writeln("Map<String, RouteModel> get routes => _routes;");
   buffer.writeln("final Map<String, RouteModel> _routes = {");
   for (var page in jsonData) {
@@ -144,7 +154,7 @@ void buildRouteMap(
       buffer.writeln('RouteMaps.root : RouteModel(');
     } else {
       buffer.writeln(
-          'RouteMaps.${page.clazz.replaceFirst("/", "").toCamelCase()} : RouteModel(');
+          'RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()} : RouteModel(');
     }
     if (page.params == null || page.params!.isEmpty) {
       if (page.builder != null) {
@@ -163,15 +173,18 @@ void buildRouteMap(
           buffer.write("${param.name}:");
         }
 
-        if (hasPathRoutes) {
+        if (page.path != null) {
           buffer.write(
               "c.routeArgsWithKeyExperimental<${param.type}>(\"${param.name}\")");
         } else {
           buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
         }
 
-        if (!param.type!.contains("?")) {
+        if (!param.type!.contains("?") && param.defaultValue == null) {
           buffer.write("!");
+        }
+        if (param.defaultValue != null) {
+          buffer.write("?? ${param.defaultValue}");
         }
 
         buffer.writeln(",");

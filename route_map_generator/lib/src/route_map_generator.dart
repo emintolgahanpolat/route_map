@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/element/visitor.dart';
 import 'package:build/build.dart';
 import 'package:route_map/src/route.dart';
@@ -49,6 +50,28 @@ class ModelVisitor extends SimpleElementVisitor<void> {
   final fields = <String, dynamic>{};
   final List<Param> elementList = [];
 
+  String? processType(DartType type) {
+    if (type.element != null && type.element!.library != null) {
+      final libraryIdentifier = type.element!.library!.identifier;
+      if (libraryIdentifier != 'dart:core') {
+        return "import '$libraryIdentifier';";
+      }
+    }
+    return null;
+  }
+
+  String? processListType(DartType type) {
+    if (type is ParameterizedType && type.typeArguments.isNotEmpty) {
+      for (var argument in type.typeArguments) {
+        var importStatement = processType(argument);
+        if (importStatement != null) {
+          return importStatement;
+        }
+      }
+    }
+    return null;
+  }
+
   @override
   void visitConstructorElement(ConstructorElement element) {
     for (var item in element.type.parameters) {
@@ -60,9 +83,15 @@ class ModelVisitor extends SimpleElementVisitor<void> {
           name: item.name,
           type: item.type.toString(),
         );
-        if (item.type.element!.library!.identifier != "dart:core") {
-          param.importPath =
-              "import '${item.type.element!.library!.identifier}';";
+
+        String? importStatement;
+        if (item.type.isDartCoreList) {
+          importStatement = processListType(item.type);
+        } else {
+          importStatement = processType(item.type);
+        }
+        if (importStatement != null) {
+          param.importPath = importStatement;
         }
         elementList.add(param);
       }

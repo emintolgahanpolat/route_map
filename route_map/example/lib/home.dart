@@ -1,4 +1,5 @@
 import 'package:example/custom_model.dart';
+import 'package:example/custom_model2.dart';
 import 'package:example/home_vm.dart';
 import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
@@ -37,13 +38,24 @@ class _HomePageState extends State<HomePage> {
         children: [
           ListTile(
             onTap: () {
-              DetailPageRoute(
-                id: 0,
-                name: "push",
-                customModel: CustomModel(name: 'test 123'),
-                customModel2: CustomModel2(name: 'CustomModel2 123'),
-                isShow: false,
-              ).push(context);
+              ProfilRoute().push(context);
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Profile Page"),
+            subtitle: const Text('Type Safe Route'),
+          ),
+          ListTile(
+            onTap: () {
+              DetailRoute(
+                  id: 0,
+                  name: "push",
+                  testDefaultValue: "Emin",
+                  customModel: CustomModel(name: 'test 123'),
+                  customModel2: CustomModel2(name: 'CustomModel2 123'),
+                  isShow: false,
+                  items: [
+                    CustomModel2(name: 'CustomModel2 items'),
+                  ]).push(context);
             },
             onLongPress: () {
               showDialog(
@@ -68,8 +80,10 @@ class _HomePageState extends State<HomePage> {
                 context,
                 "/detail/1234/tolga/?isShow=true",
                 arguments: {
+                  "testDefaultValue": "Tolgahan",
                   "customModel": CustomModel(name: 'CustomModel'),
-                  "customModel2": CustomModel2(name: 'CustomModel2')
+                  "customModel2": CustomModel2(name: 'CustomModel2'),
+                  "items": [CustomModel2(name: 'CustomModel2 items')]
                 },
               );
             },
@@ -96,12 +110,13 @@ class _HomePageState extends State<HomePage> {
                 context,
                 "/detail_page",
                 arguments: {
-                  "id": "1234",
+                  "id": 1234,
                   "name": "deneme",
                   "isShow": true,
                   "customModel": CustomModel(name: 'test'),
                   "customModel2": CustomModel2(name: 'test'),
-                  "testDefaultValue": null
+                  "testDefaultValue": null,
+                  "items": [CustomModel2(name: 'CustomModel2 items')]
                 },
               );
             },
@@ -125,6 +140,18 @@ class _HomePageState extends State<HomePage> {
             },
             trailing: const Icon(Icons.chevron_right),
             title: const Text("Detail Page"),
+            subtitle: const Text("Naming Route"),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, "/detail2_page",
+                  arguments: Detail2RouteArgs(
+                    customModel: CustomModel(name: "name"),
+                    items: [],
+                  ).map);
+            },
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text("Detail 2 Page"),
             subtitle: const Text("Naming Route"),
           ),
           ListTile(

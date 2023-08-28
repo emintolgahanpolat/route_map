@@ -1,4 +1,5 @@
 import 'package:example/custom_model.dart';
+import 'package:example/custom_model2.dart';
 import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
@@ -12,6 +13,7 @@ class DetailPage extends StatefulWidget {
   final bool? isShow;
   final CustomModel? customModel;
   final CustomModel2? customModel2;
+  final List<CustomModel2>? items;
   const DetailPage(this.id,
       {Key? key,
       required this.name,
@@ -19,7 +21,8 @@ class DetailPage extends StatefulWidget {
       this.testDefaultIntValue = 0,
       this.isShow,
       this.customModel,
-      this.customModel2})
+      this.customModel2,
+      this.items})
       : super(key: key);
 
   @override
@@ -39,6 +42,7 @@ class _DetailPageState extends State<DetailPage> {
           Text("Default Value: ${widget.testDefaultValue}"),
           Text("Custom Model: ${widget.customModel?.name}"),
           Text("Custom Model 2: ${widget.customModel2?.name}"),
+          Text("items Model 2: ${widget.items?.toString()}"),
           Text("id : ${widget.id}"),
           Text("name : ${widget.name}"),
           Text("isShow : ${widget.isShow}"),
@@ -52,22 +56,20 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("Add")),
           ElevatedButton(
               onPressed: () async {
-                DetailPageRoute(id: 1, name: "push")
-                    .push(context)
-                    .then((value) {
+                DetailRoute(id: 1, name: "push").push(context).then((value) {
                   print("push");
                 });
               },
               child: const Text("push")),
           ElevatedButton(
               onPressed: () async {
-                DetailPageRoute(id: 2, name: "restorablePush")
+                DetailRoute(id: 2, name: "restorablePush")
                     .restorablePush(context);
               },
               child: const Text("restorablePushNamed")),
           ElevatedButton(
               onPressed: () async {
-                DetailPageRoute(id: 3, name: "popAndPush")
+                DetailRoute(id: 3, name: "popAndPush")
                     .popAndPush(context)
                     .then((value) {
                   print("popAndPush");
@@ -76,7 +78,7 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("popAndPush")),
           ElevatedButton(
               onPressed: () async {
-                DetailPageRoute(id: 4, name: "pushReplacement")
+                DetailRoute(id: 4, name: "pushReplacement")
                     .pushReplacement(context)
                     .then((value) {
                   print("pushReplacement");
@@ -85,7 +87,7 @@ class _DetailPageState extends State<DetailPage> {
               child: const Text("pushReplacement")),
           ElevatedButton(
               onPressed: () async {
-                DetailPageRoute(id: 5, name: "restorablePushReplacement")
+                DetailRoute(id: 5, name: "restorablePushReplacement")
                     .restorablePushReplacement(context);
               },
               child: const Text("restorablePushReplacement"))
