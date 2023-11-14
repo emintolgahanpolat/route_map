@@ -1,3 +1,5 @@
+## 0.0.17
+* fix Navigation popUntil black screen problem.
 ## 0.0.16
 * bug fix
 * Replacement In Route Name
