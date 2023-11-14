@@ -186,14 +186,15 @@ Route<dynamic>? onGenerateRouteWithRoutesSettings(
     args.addAll({"extra": routeSettings.arguments});
   }
 
-  RouteModel? route = routes[redirect?.call(name) ?? name];
+  var newName = redirect?.call(name) ?? name;
+  RouteModel? route = routes[newName];
   if (route == null) {
     return null;
   }
 
   return MaterialPageRoute(
     builder: route.builder,
-    settings: RouteSettings(name: routeSettings.name, arguments: args),
+    settings: RouteSettings(name: newName, arguments: args),
     fullscreenDialog: route.fullscreenDialog,
   );
 }
