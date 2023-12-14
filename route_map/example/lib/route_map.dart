@@ -8,8 +8,8 @@ import 'route_map.routes.dart';
 Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(
       routeSettings,
       redirect: (routeName) {
-        if (kIsWeb && routeName == RouteMaps.root) {
-          return RouteMaps.homeRoute;
+        if (kIsWeb && routeName == RootRoute.name) {
+          return HomeRoute.name;
         }
         print(routeName);
         return null;

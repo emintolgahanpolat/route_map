@@ -18,73 +18,52 @@ import 'package:example/settings.dart';
 import 'package:example/custom_model.dart';
 import 'package:example/custom_model2.dart';
 
-class RouteMaps {
-  static const String homeRoute = "home";
-  static const String profilRoute = "/profil";
-  static const String root = "/";
-  static const String detail2Route = "/detail2_page";
-  static const String testRoute = "/test_screen";
-  static const String detailRoute = "/detail_page";
-  static const String searchRoute = "/ara";
-  static const String denemeRoute = "/deneme_ekran";
-  static const String settingsRoute = "settings";
-}
-
 /// URL tabanlı sayfa yönlendirmesi hala deneyseldir. Tür dönüştürmeleriyle ilgili sorunlar var ve henüz kapsamlı bir şekilde test edilmedi.
 /// Yardıma ihtiyacım var.
 /// URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.
 
 Map<String, String> get pathRoutes => _pathRoutes;
 final Map<String, String> _pathRoutes = {
-  "/detail/:id/:name": RouteMaps.detailRoute,
-  "/settings/:name": RouteMaps.settingsRoute,
+  "/detail/:id/:name": DetailRoute.name,
+  "/settings/:name": SettingsRoute.name,
 };
 Map<String, RouteModel> get routes => _routes;
 final Map<String, RouteModel> _routes = {
-  RouteMaps.homeRoute: RouteModel((_) => homeBuilder(const HomePage())),
-  RouteMaps.profilRoute: RouteModel(
-    (_) => const Profil(),
+  HomeRoute.name: RouteModel(
+    HomeRoute.builder,
+    fullscreenDialog: HomeRoute.fullScreenDialog,
   ),
-  RouteMaps.root: RouteModel(
-    (_) => const RootPage(),
+  ProfilRoute.name: RouteModel(
+    ProfilRoute.builder,
+    fullscreenDialog: ProfilRoute.fullScreenDialog,
   ),
-  RouteMaps.detail2Route: RouteModel(
-    (c) => Detail2Page(
-      customModel: c.routeArgsWithKey<CustomModel>("customModel")!,
-      items: c.routeArgsWithKey<List<CustomModel2>>("items")!,
-    ),
+  RootRoute.name: RouteModel(
+    RootRoute.builder,
+    fullscreenDialog: RootRoute.fullScreenDialog,
   ),
-  RouteMaps.testRoute: RouteModel(
-    (_) => const TestScreen(),
+  Detail2Route.name: RouteModel(
+    Detail2Route.builder,
+    fullscreenDialog: Detail2Route.fullScreenDialog,
   ),
-  RouteMaps.detailRoute: RouteModel(
-    (c) => DetailPage(
-      c.routeArgsWithKeyExperimental<int>("id")!,
-      customModel: c.routeArgsWithKeyExperimental<CustomModel?>("customModel"),
-      customModel2:
-          c.routeArgsWithKeyExperimental<CustomModel2?>("customModel2"),
-      isShow: c.routeArgsWithKeyExperimental<bool?>("isShow"),
-      items: c.routeArgsWithKeyExperimental<List<CustomModel2>?>("items"),
-      name: c.routeArgsWithKeyExperimental<String>("name")!,
-      testDefaultIntValue:
-          c.routeArgsWithKeyExperimental<int>("testDefaultIntValue") ?? 0,
-      testDefaultValue:
-          c.routeArgsWithKeyExperimental<String>("testDefaultValue") ??
-              "deneme",
-    ),
+  TestRoute.name: RouteModel(
+    TestRoute.builder,
+    fullscreenDialog: TestRoute.fullScreenDialog,
   ),
-  RouteMaps.searchRoute: RouteModel(
-    (_) => const SearchPage(),
-    fullscreenDialog: true,
+  DetailRoute.name: RouteModel(
+    DetailRoute.builder,
+    fullscreenDialog: DetailRoute.fullScreenDialog,
   ),
-  RouteMaps.denemeRoute: RouteModel(
-    (_) => const DenemeEkran(),
+  SearchRoute.name: RouteModel(
+    SearchRoute.builder,
+    fullscreenDialog: SearchRoute.fullScreenDialog,
   ),
-  RouteMaps.settingsRoute: RouteModel(
-    (c) => SettingsPage(
-      name: c.routeArgsWithKeyExperimental<String?>("name"),
-    ),
-    fullscreenDialog: true,
+  DenemeRoute.name: RouteModel(
+    DenemeRoute.builder,
+    fullscreenDialog: DenemeRoute.fullScreenDialog,
+  ),
+  SettingsRoute.name: RouteModel(
+    SettingsRoute.builder,
+    fullscreenDialog: SettingsRoute.fullScreenDialog,
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
@@ -97,30 +76,44 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
     );
 
 class HomeRoute extends BaseRoute {
-  HomeRoute() : super(RouteMaps.homeRoute);
-  static const String name = RouteMaps.homeRoute;
+  HomeRoute() : super(name);
+  static const String name = "home";
+  static WidgetBuilder builder = (_) => homeBuilder(const HomePage());
+  static const bool fullScreenDialog = false;
 }
 
 class ProfilRoute extends BaseRoute {
-  ProfilRoute() : super(RouteMaps.profilRoute);
-  static const String name = RouteMaps.profilRoute;
+  ProfilRoute() : super(name);
+  static const String name = "/profil";
+  static WidgetBuilder builder = (_) => const Profil();
+  static const bool fullScreenDialog = false;
 }
 
 class RootRoute extends BaseRoute {
-  RootRoute() : super(RouteMaps.root);
-  static const String name = RouteMaps.root;
+  RootRoute() : super(name);
+  static const String name = "/";
+  static WidgetBuilder builder = (_) => const RootPage();
+  static const bool fullScreenDialog = false;
 }
 
 class Detail2Route extends BaseRoute {
   Detail2Route({
     required CustomModel customModel,
     required List<CustomModel2> items,
-  }) : super(RouteMaps.detail2Route,
+  }) : super(Detail2Route.name,
             args: Detail2RouteArgs(
               customModel: customModel,
               items: items,
             ).map);
-  static const String name = RouteMaps.detail2Route;
+  static const String name = "/detail2_page";
+  static WidgetBuilder builder = (c) {
+    Detail2RouteArgs args = Detail2RouteArgs.getArgs(c);
+    return Detail2Page(
+      customModel: args.customModel,
+      items: args.items,
+    );
+  };
+  static const bool fullScreenDialog = false;
 }
 
 class Detail2RouteArgs {
@@ -134,11 +127,21 @@ class Detail2RouteArgs {
         "customModel": customModel,
         "items": items,
       };
+  static Detail2RouteArgs getArgs(BuildContext context) {
+    Map<String, dynamic> args =
+        ModalRoute.of(context)!.settings.arguments! as Map<String, dynamic>;
+    return Detail2RouteArgs(
+      customModel: args["customModel"] as CustomModel,
+      items: args["items"] as List<CustomModel2>,
+    );
+  }
 }
 
 class TestRoute extends BaseRoute {
-  TestRoute() : super(RouteMaps.testRoute);
-  static const String name = RouteMaps.testRoute;
+  TestRoute() : super(name);
+  static const String name = "/test_screen";
+  static WidgetBuilder builder = (_) => const TestScreen();
+  static const bool fullScreenDialog = false;
 }
 
 class DetailRoute extends BaseRoute {
@@ -151,7 +154,7 @@ class DetailRoute extends BaseRoute {
     required String name,
     int? testDefaultIntValue,
     String? testDefaultValue,
-  }) : super(RouteMaps.detailRoute,
+  }) : super(DetailRoute.name,
             args: DetailRouteArgs(
               id: id,
               customModel: customModel,
@@ -162,7 +165,21 @@ class DetailRoute extends BaseRoute {
               testDefaultIntValue: testDefaultIntValue ?? 0,
               testDefaultValue: testDefaultValue ?? "deneme",
             ).map);
-  static const String name = RouteMaps.detailRoute;
+  static const String name = "/detail_page";
+  static WidgetBuilder builder = (c) {
+    DetailRouteArgs args = DetailRouteArgs.getArgs(c);
+    return DetailPage(
+      args.id,
+      customModel: args.customModel,
+      customModel2: args.customModel2,
+      isShow: args.isShow,
+      items: args.items,
+      name: args.name,
+      testDefaultIntValue: args.testDefaultIntValue,
+      testDefaultValue: args.testDefaultValue,
+    );
+  };
+  static const bool fullScreenDialog = false;
 }
 
 class DetailRouteArgs {
@@ -194,26 +211,51 @@ class DetailRouteArgs {
         "testDefaultIntValue": testDefaultIntValue,
         "testDefaultValue": testDefaultValue,
       };
+  static DetailRouteArgs getArgs(BuildContext context) {
+    Map<String, dynamic> args =
+        ModalRoute.of(context)!.settings.arguments! as Map<String, dynamic>;
+    return DetailRouteArgs(
+      id: args["id"] as int,
+      customModel: args["customModel"] as CustomModel?,
+      customModel2: args["customModel2"] as CustomModel2?,
+      isShow: args["isShow"] as bool?,
+      items: args["items"] as List<CustomModel2>?,
+      name: args["name"] as String,
+      testDefaultIntValue: args["testDefaultIntValue"] as int? ?? 0,
+      testDefaultValue: args["testDefaultValue"] as String? ?? "deneme",
+    );
+  }
 }
 
 class SearchRoute extends BaseRoute {
-  SearchRoute() : super(RouteMaps.searchRoute);
-  static const String name = RouteMaps.searchRoute;
+  SearchRoute() : super(name);
+  static const String name = "/ara";
+  static WidgetBuilder builder = (_) => const SearchPage();
+  static const bool fullScreenDialog = true;
 }
 
 class DenemeRoute extends BaseRoute {
-  DenemeRoute() : super(RouteMaps.denemeRoute);
-  static const String name = RouteMaps.denemeRoute;
+  DenemeRoute() : super(name);
+  static const String name = "/deneme_ekran";
+  static WidgetBuilder builder = (_) => const DenemeEkran();
+  static const bool fullScreenDialog = false;
 }
 
 class SettingsRoute extends BaseRoute {
   SettingsRoute({
     String? name,
-  }) : super(RouteMaps.settingsRoute,
+  }) : super(SettingsRoute.name,
             args: SettingsRouteArgs(
               name: name,
             ).map);
-  static const String name = RouteMaps.settingsRoute;
+  static const String name = "settings";
+  static WidgetBuilder builder = (c) {
+    SettingsRouteArgs args = SettingsRouteArgs.getArgs(c);
+    return SettingsPage(
+      name: args.name,
+    );
+  };
+  static const bool fullScreenDialog = true;
 }
 
 class SettingsRouteArgs {
@@ -224,4 +266,11 @@ class SettingsRouteArgs {
   Map<String, dynamic>? get map => {
         "name": name,
       };
+  static SettingsRouteArgs getArgs(BuildContext context) {
+    Map<String, dynamic> args =
+        ModalRoute.of(context)!.settings.arguments! as Map<String, dynamic>;
+    return SettingsRouteArgs(
+      name: args["name"] as String?,
+    );
+  }
 }

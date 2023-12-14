@@ -1,4 +1,3 @@
-import 'package:change_case/change_case.dart';
 import 'package:route_map_generator/src/model/route_config.dart';
 
 void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
@@ -11,14 +10,7 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
       buffer.write(
           "class ${page.getClazzName(replaceInRouteName)} extends BaseRoute {");
 
-      buffer.write("${page.getClazzName(replaceInRouteName)}():super(");
-      if (page.name == "/") {
-        buffer.write("RouteMaps.root");
-      } else {
-        buffer.write(
-            "RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()}");
-      }
-      buffer.write(");");
+      buffer.write("${page.getClazzName(replaceInRouteName)}():super(name);");
     }
     if (page.params != null && page.params!.isNotEmpty) {
       buffer.writeln("${page.getClazzName(replaceInRouteName)}({");
@@ -32,8 +24,8 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
           buffer.write(" ${param.type}? ${param.name},");
         }
       });
-      buffer.writeln(
-          "}):super(RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()},");
+      buffer
+          .writeln("}):super( ${page.getClazzName(replaceInRouteName)}.name,");
       if (page.params != null && page.params!.isNotEmpty) {
         buffer.writeln("args: ");
         buffer.write("${page.getClazzName(replaceInRouteName)}Args (");
@@ -50,14 +42,39 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
       buffer.writeln(");");
     }
 
-    buffer.write("static const String name = ");
     if (page.name == "/") {
-      buffer.write("RouteMaps.root");
+      buffer.write("static const String name = \"/\";");
     } else {
-      buffer.write(
-          "RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()}");
+      buffer.write("static const String name = \"${page.name}\";");
     }
-    buffer.write(";");
+
+    buffer.write(" static WidgetBuilder builder =");
+    if (page.params == null || page.params!.isEmpty) {
+      if (page.builder != null) {
+        buffer.writeln("(_) => ${page.builder}( const ${page.clazz}());");
+      } else {
+        buffer.writeln(" (_) => const ${page.clazz}();");
+      }
+    } else {
+      buffer.writeln(" (c) {");
+      if (page.builder != null) {
+        buffer.writeln(" ${page.builder}(");
+      }
+      buffer.writeln(
+          "${page.getClazzName(replaceInRouteName)}Args args = ${page.getClazzName(replaceInRouteName)}Args.getArgs(c);");
+      buffer.writeln("return ${page.clazz}(");
+      (page.params?.forEach((param) {
+        if (!param.isPositional!) {
+          buffer.write("${param.name}:");
+        }
+
+        buffer.write("args.${param.name},");
+      }));
+      buffer.writeln(");};");
+    }
+
+    buffer.writeln(
+        "static const bool fullScreenDialog = ${page.fullScreenDialog};");
 
     buffer.writeln("}");
 
@@ -86,6 +103,21 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
       });
       buffer.write("};");
 
+      buffer.write(
+          "static ${page.getClazzName(replaceInRouteName)}Args getArgs(BuildContext context) {");
+      buffer.writeln(
+          " Map<String, dynamic> args =  ModalRoute.of(context)!.settings.arguments! as Map<String, dynamic>;");
+      buffer.write("return ${page.getClazzName(replaceInRouteName)}Args(");
+      page.params?.forEach((param) {
+        if (param.defaultValue == null) {
+          buffer.write(
+              " ${param.name}: args[\"${param.name}\"] as ${param.type},");
+        } else {
+          buffer.write(
+              " ${param.name}: args[\"${param.name}\"] as ${param.type}? ?? ${param.defaultValue},");
+        }
+      });
+      buffer.writeln(");}");
       buffer.writeln("}");
     }
   }
@@ -114,20 +146,6 @@ void buildArgImports(StringBuffer buffer, List<String> jsonData) {
   }
 }
 
-void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
-    String replaceInRouteName) {
-  buffer.writeln("class RouteMaps{");
-  for (var element in jsonData) {
-    if (element.name == "/") {
-      buffer.write("static const String root = \"/\";");
-    } else {
-      buffer.write(
-          "static const String ${element.getClazzName(replaceInRouteName).toCamelCase()} = \"${element.name}\";");
-    }
-  }
-  buffer.writeln("}");
-}
-
 void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
     String replaceInRouteName) {
   buffer.writeln("Map<String, String> get pathRoutes => _pathRoutes;");
@@ -138,7 +156,7 @@ void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
         buffer.write("\"/\": RouteMaps.root,");
       } else {
         buffer.write(
-            "\"${element.path}\": RouteMaps.${element.getClazzName(replaceInRouteName).toCamelCase()},");
+            "\"${element.path}\": ${element.getClazzName(replaceInRouteName)}.name ,");
       }
     }
   }
@@ -150,66 +168,14 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
   buffer.writeln("Map<String, RouteModel> get routes => _routes;");
   buffer.writeln("final Map<String, RouteModel> _routes = {");
   for (var page in jsonData) {
-    if (page.name == "/") {
-      buffer.writeln('RouteMaps.root : RouteModel(');
-    } else {
-      buffer.writeln(
-          'RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()} : RouteModel(');
-    }
-    if (page.params == null || page.params!.isEmpty) {
-      if (page.builder != null) {
-        buffer.writeln("(_) => ${page.builder}( const ${page.clazz}())");
-      } else {
-        buffer.writeln(" (_) => const ${page.clazz}(),");
-      }
-    } else {
-      buffer.writeln(" (c) =>");
-      if (page.builder != null) {
-        buffer.writeln(" ${page.builder}(");
-      }
-      buffer.writeln("${page.clazz}(");
-      (page.params?.forEach((param) {
-        if (!param.isPositional!) {
-          buffer.write("${param.name}:");
-        }
+    buffer.writeln(
+        ' ${page.getClazzName(replaceInRouteName)}.name  : RouteModel(');
 
-        if (page.path != null) {
-          buffer.write(
-              "c.routeArgsWithKeyExperimental<${param.type}>(\"${param.name}\")");
-        } else {
-          buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
-        }
+    buffer.writeln(" ${page.getClazzName(replaceInRouteName)}.builder,");
 
-        if (!param.type!.contains("?") && param.defaultValue == null) {
-          buffer.write("!");
-        }
-        if (param.defaultValue != null) {
-          buffer.write("?? ${param.defaultValue}");
-        }
+    buffer.writeln(
+        "fullscreenDialog: ${page.getClazzName(replaceInRouteName)}.fullScreenDialog,");
 
-        buffer.writeln(",");
-        // if (param.type == "String" || param.type == "String?") {
-        //   buffer.writeln("c.routeArgs()?[\"${param.name}\"],");
-        // } else if (param.type == "bool" || param.type == "bool?") {
-        //   buffer.writeln(" c.routeArgs()?[\"${param.name}\"]  == \"true\",");
-        // } else if (param.type == "int" || param.type == "int?") {
-        //   buffer.writeln("int.parse(c.routeArgs()?[\"${param.name}\"]),");
-        // } else if (param.type == "double" || param.type == "double?") {
-        //   buffer.writeln("double.parse(c.routeArgs()?[\"${param.name}\"]),");
-        // } else {
-        //   buffer.writeln(
-        //       " c.routeArgs()?[\"${param.name}\"] ?? c.routeArgs()?[\"extra\"],");
-        // }
-      }));
-      if (page.builder != null) {
-        buffer.writeln(")");
-      }
-      buffer.writeln("),");
-    }
-
-    if (page.fullScreenDialog) {
-      buffer.writeln("  fullscreenDialog: true,");
-    }
     buffer.writeln("),");
   }
 

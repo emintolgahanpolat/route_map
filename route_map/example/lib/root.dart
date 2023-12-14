@@ -13,8 +13,8 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   final Map<String, GlobalKey<NavigatorState>> _routes = {
-    RouteMaps.homeRoute: GlobalKey<NavigatorState>(),
-    RouteMaps.searchRoute: GlobalKey<NavigatorState>()
+    HomeRoute.name: GlobalKey<NavigatorState>(),
+    SearchRoute.name: GlobalKey<NavigatorState>()
   };
 
   int currentIndex = 0;

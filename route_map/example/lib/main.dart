@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         materialTapTargetSize: kIsWeb ? MaterialTapTargetSize.padded : null,
       ),
       onGenerateRoute: onGenerateRoute,
-      initialRoute: RouteMaps.root,
+      initialRoute: RootRoute.name,
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
             builder: (_) => Scaffold(
