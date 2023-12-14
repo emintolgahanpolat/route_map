@@ -162,8 +162,8 @@ class DetailRoute extends BaseRoute {
               isShow: isShow,
               items: items,
               name: name,
-              testDefaultIntValue: testDefaultIntValue ?? 0,
-              testDefaultValue: testDefaultValue ?? "deneme",
+              testDefaultIntValue: testDefaultIntValue ?? 9999,
+              testDefaultValue: testDefaultValue ?? "testDefaultValue",
             ).map);
   static const String name = "/detail_page";
   static WidgetBuilder builder = (c) {
@@ -175,8 +175,8 @@ class DetailRoute extends BaseRoute {
       isShow: args.isShow,
       items: args.items,
       name: args.name,
-      testDefaultIntValue: args.testDefaultIntValue,
-      testDefaultValue: args.testDefaultValue,
+      testDefaultIntValue: args.testDefaultIntValue ?? 9999,
+      testDefaultValue: args.testDefaultValue ?? "testDefaultValue",
     );
   };
   static const bool fullScreenDialog = false;
@@ -189,8 +189,8 @@ class DetailRouteArgs {
   final bool? isShow;
   final List<CustomModel2>? items;
   final String name;
-  final int testDefaultIntValue;
-  final String testDefaultValue;
+  final int? testDefaultIntValue;
+  final String? testDefaultValue;
   DetailRouteArgs({
     required this.id,
     this.customModel,
@@ -198,8 +198,8 @@ class DetailRouteArgs {
     this.isShow,
     this.items,
     required this.name,
-    this.testDefaultIntValue = 0,
-    this.testDefaultValue = "deneme",
+    this.testDefaultIntValue,
+    this.testDefaultValue,
   });
   Map<String, dynamic>? get map => {
         "id": id,
@@ -221,8 +221,8 @@ class DetailRouteArgs {
       isShow: args["isShow"] as bool?,
       items: args["items"] as List<CustomModel2>?,
       name: args["name"] as String,
-      testDefaultIntValue: args["testDefaultIntValue"] as int? ?? 0,
-      testDefaultValue: args["testDefaultValue"] as String? ?? "deneme",
+      testDefaultIntValue: args["testDefaultIntValue"] as int?,
+      testDefaultValue: args["testDefaultValue"] as String?,
     );
   }
 }

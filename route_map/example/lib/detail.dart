@@ -17,8 +17,8 @@ class DetailPage extends StatefulWidget {
   const DetailPage(this.id,
       {Key? key,
       required this.name,
-      this.testDefaultValue = "deneme",
-      this.testDefaultIntValue = 0,
+      this.testDefaultValue = "testDefaultValue",
+      this.testDefaultIntValue = 9999,
       this.isShow,
       this.customModel,
       this.customModel2,
@@ -40,6 +40,7 @@ class _DetailPageState extends State<DetailPage> {
       body: ListView(
         children: [
           Text("Default Value: ${widget.testDefaultValue}"),
+          Text("Default Int Value: ${widget.testDefaultIntValue}"),
           Text("Custom Model: ${widget.customModel?.name}"),
           Text("Custom Model 2: ${widget.customModel2?.name}"),
           Text("items Model 2: ${widget.items?.toString()}"),

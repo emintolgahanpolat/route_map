@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                   "isShow": true,
                   "customModel": CustomModel(name: 'test'),
                   "customModel2": CustomModel2(name: 'test'),
-                  "testDefaultValue": null,
+                  "testDefaultValue": "Emin Tolgahan",
                   "items": [CustomModel2(name: 'CustomModel2 items')]
                 },
               );

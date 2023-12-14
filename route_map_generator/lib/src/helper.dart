@@ -67,8 +67,11 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
         if (!param.isPositional!) {
           buffer.write("${param.name}:");
         }
-
-        buffer.write("args.${param.name},");
+        if (param.defaultValue == null) {
+          buffer.write("args.${param.name},");
+        } else {
+          buffer.write("args.${param.name} ?? ${param.defaultValue} ,");
+        }
       }));
       buffer.writeln(");};");
     }
@@ -82,18 +85,18 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
       buffer.write("class ${page.getClazzName(replaceInRouteName)}Args {");
 
       page.params?.forEach((param) {
-        buffer.write("final ${param.type} ${param.name};");
+        if (param.defaultValue == null) {
+          buffer.write("final ${param.type} ${param.name};");
+        } else {
+          buffer.write("final ${param.type}? ${param.name};");
+        }
       });
       buffer.writeln("${page.getClazzName(replaceInRouteName)}Args({");
       page.params?.forEach((param) {
         if (param.isRequired == true) {
           buffer.write("required ");
         }
-        if (param.defaultValue == null) {
-          buffer.write("this.${param.name},");
-        } else {
-          buffer.write("this.${param.name} = ${param.defaultValue},");
-        }
+        buffer.write("this.${param.name},");
       });
       buffer.writeln("});");
 
@@ -114,7 +117,7 @@ void buildTypeSafeNavigator(StringBuffer buffer, List<RouteConfig> jsonData,
               " ${param.name}: args[\"${param.name}\"] as ${param.type},");
         } else {
           buffer.write(
-              " ${param.name}: args[\"${param.name}\"] as ${param.type}? ?? ${param.defaultValue},");
+              " ${param.name}: args[\"${param.name}\"] as ${param.type}?,");
         }
       });
       buffer.writeln(");}");
