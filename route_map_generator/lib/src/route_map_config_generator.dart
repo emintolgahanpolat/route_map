@@ -35,8 +35,9 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
     }
     var buffer = StringBuffer();
     buildImports(buffer, jsonData);
-    if (annotation.read('typeSafe').isBool &&
-        annotation.read('typeSafe').boolValue) {
+    var isTypeSafe = annotation.read('typeSafe').isBool &&
+        annotation.read('typeSafe').boolValue;
+    if (isTypeSafe) {
       buildArgImports(buffer, jsonArgData);
     }
 
@@ -54,7 +55,7 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
       buildPathRoutes(buffer, jsonData, replaceInRouteName);
     }
 
-    buildRouteMap(buffer, jsonData, replaceInRouteName);
+    buildRouteMap(buffer, jsonData, replaceInRouteName, isTypeSafe);
     buildRouteGenerator(buffer, element.displayName, jsonData);
 
     if (annotation.read('typeSafe').isBool &&

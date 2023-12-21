@@ -104,6 +104,72 @@ class RouteModel {
   });
 }
 
+typedef PathWidgetBuilder = Widget Function(BuildContext context, String path);
+
+class RoutePathModel {
+  PathWidgetBuilder builder;
+  bool fullscreenDialog;
+  String name;
+  RoutePathModel(
+    this.builder,
+    this.name, {
+    this.fullscreenDialog = false,
+  });
+}
+
+RoutePathModel? _findPathRoute(
+    Map<String, RoutePathModel>? pathRoutes, String path) {
+  if (pathRoutes != null) {
+    bool found = false;
+    Map<String, dynamic> params = {};
+    Map<String, dynamic> query = {};
+
+    // check for query parameters
+    int queryIndex = path.indexOf('/?');
+    if (queryIndex != -1) {
+      String queryString = path.substring(queryIndex + 2);
+      path = path.substring(0, queryIndex);
+      List<String> queryParts = queryString.split('&');
+      for (String queryPart in queryParts) {
+        List<String> queryParam = queryPart.split('=');
+        if (queryParam.length == 2) {
+          query[queryParam[0]] = queryParam[1];
+        }
+      }
+    }
+    for (String key in pathRoutes.keys) {
+      List<String> pathParts = path.split('/');
+      List<String> keyParts = key.split('/');
+
+      if (pathParts.length == keyParts.length) {
+        bool match = true;
+
+        for (int i = 0; i < pathParts.length; i++) {
+          if (keyParts[i].startsWith(':')) {
+            params[keyParts[i].substring(1)] = pathParts[i];
+          } else if (pathParts[i] != keyParts[i]) {
+            match = false;
+            break;
+          }
+        }
+
+        if (match) {
+          found = true;
+          return pathRoutes[key];
+        } else {
+          params.clear();
+        }
+      }
+    }
+
+    if (!found) {
+      return null;
+    }
+    return null;
+  }
+  return null;
+}
+
 List? namedRoute(Map<String, String> pathRoutes, String path) {
   bool found = false;
   Map<String, dynamic> params = {};
@@ -158,35 +224,61 @@ List? namedRoute(Map<String, String> pathRoutes, String path) {
   return null;
 }
 
-Route<dynamic>? onGenerateRouteWithRoutesSettings(
-  RouteSettings routeSettings,
-  Map<String, RouteModel> routes, {
-  Map<String, String>? pathRoutes,
-  String? Function(String name)? redirect,
-}) {
-  String name = routeSettings.name ?? "";
-  Map<String, Object?> args = {};
-  if (pathRoutes != null) {
-    final pathRoute = namedRoute(pathRoutes, name);
-    if (pathRoute != null && name != "/") {
-      name = pathRoute[1]!;
-      Map<String, dynamic>? args1 = pathRoute[2];
-      if (args1 != null) {
-        args.addAll(args1);
-      }
-      Map<String, dynamic>? args2 = pathRoute[3];
-      if (args2 != null) {
-        args.addAll(args2);
+Map<String, dynamic> getPathArgs(String path, String key) {
+  Map<String, dynamic> params = {};
+
+  // check for query parameters
+  int queryIndex = path.indexOf('/?');
+  if (queryIndex != -1) {
+    String queryString = path.substring(queryIndex + 2);
+    path = path.substring(0, queryIndex);
+    List<String> queryParts = queryString.split('&');
+    for (String queryPart in queryParts) {
+      List<String> queryParam = queryPart.split('=');
+      if (queryParam.length == 2) {
+        params[queryParam[0]] = queryParam[1];
       }
     }
   }
+
+  List<String> pathParts = path.split('/');
+  List<String> keyParts = key.split('/');
+
+  if (pathParts.length == keyParts.length) {
+    for (int i = 0; i < pathParts.length; i++) {
+      if (keyParts[i].startsWith(':')) {
+        params[keyParts[i].substring(1)] = pathParts[i];
+      }
+    }
+  }
+
+  return params;
+}
+
+Route<dynamic>? onGenerateRouteWithRoutesSettings(
+  RouteSettings routeSettings,
+  Map<String, RouteModel> routes, {
+  Map<String, RoutePathModel>? pathRoutes,
+  String? Function(String name)? redirect,
+}) {
+  String path = routeSettings.name ?? "";
+  Map<String, Object?> args = {};
   if (routeSettings.arguments is Map<String, dynamic>) {
     args.addAll(routeSettings.arguments as Map<String, dynamic>);
   } else {
     args.addAll({"extra": routeSettings.arguments});
   }
+  RoutePathModel? pathRoute = _findPathRoute(pathRoutes, path);
 
-  var newName = redirect?.call(name) ?? name;
+  if (pathRoute != null) {
+    var newName = redirect?.call(pathRoute!.name) ?? pathRoute!.name;
+    return MaterialPageRoute(
+      builder: (c) => pathRoute!.builder(c, path),
+      settings: RouteSettings(name: newName, arguments: args),
+      fullscreenDialog: pathRoute!.fullscreenDialog,
+    );
+  }
+  var newName = redirect?.call(path) ?? path;
   RouteModel? route = routes[newName];
   if (route == null) {
     return null;
