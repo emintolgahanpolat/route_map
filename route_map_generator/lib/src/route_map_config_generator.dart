@@ -44,15 +44,6 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
         annotation.read('replaceInRouteName').stringValue;
 
     buildRoutes(buffer, jsonData, replaceInRouteName);
-    if (jsonData.any((element) => element.path != null)) {
-      buffer.writeln("""
-  /// URL tabanlı sayfa yönlendirmesi hala deneyseldir. Tür dönüştürmeleriyle ilgili sorunlar var ve henüz kapsamlı bir şekilde test edilmedi.
-  /// Yardıma ihtiyacım var.
-  /// URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.
-
-""");
-      buildPathRoutes(buffer, jsonData, replaceInRouteName);
-    }
 
     buildRouteMap(buffer, jsonData, replaceInRouteName);
     buildRouteGenerator(buffer, element.displayName, jsonData);

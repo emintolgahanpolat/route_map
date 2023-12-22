@@ -1,3 +1,5 @@
+import 'package:example/custom_model.dart';
+import 'package:example/route_map.routes.dart';
 import 'package:flutter/material.dart';
 import 'package:route_map/route_map.dart';
 
@@ -14,6 +16,26 @@ class _ProfilState extends State<Profil> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profil'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                ProfilRoute().push<CustomModel>(context).then((value) {
+                  print(value?.name);
+                });
+              },
+              child: const Text("Next Page"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, CustomModel(name: "asdcasca"));
+              },
+              child: const Text("Back Page"),
+            )
+          ],
+        ),
       ),
     );
   }

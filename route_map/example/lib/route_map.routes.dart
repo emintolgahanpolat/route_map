@@ -30,15 +30,6 @@ class RouteMaps {
   static const String settingsRoute = "settings";
 }
 
-/// URL tabanlı sayfa yönlendirmesi hala deneyseldir. Tür dönüştürmeleriyle ilgili sorunlar var ve henüz kapsamlı bir şekilde test edilmedi.
-/// Yardıma ihtiyacım var.
-/// URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.
-
-Map<String, String> get pathRoutes => _pathRoutes;
-final Map<String, String> _pathRoutes = {
-  "/detail/:id/:name": RouteMaps.detailRoute,
-  "/settings/:name": RouteMaps.settingsRoute,
-};
 Map<String, RouteModel> get routes => _routes;
 final Map<String, RouteModel> _routes = {
   RouteMaps.homeRoute: RouteModel((_) => homeBuilder(const HomePage())),
@@ -59,18 +50,15 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.detailRoute: RouteModel(
     (c) => DetailPage(
-      c.routeArgsWithKeyExperimental<int>("id")!,
-      customModel: c.routeArgsWithKeyExperimental<CustomModel?>("customModel"),
-      customModel2:
-          c.routeArgsWithKeyExperimental<CustomModel2?>("customModel2"),
-      isShow: c.routeArgsWithKeyExperimental<bool?>("isShow"),
-      items: c.routeArgsWithKeyExperimental<List<CustomModel2>?>("items"),
-      name: c.routeArgsWithKeyExperimental<String>("name")!,
-      testDefaultIntValue:
-          c.routeArgsWithKeyExperimental<int>("testDefaultIntValue") ?? 0,
+      c.routeArgsWithKey<int>("id")!,
+      customModel: c.routeArgsWithKey<CustomModel?>("customModel"),
+      customModel2: c.routeArgsWithKey<CustomModel2?>("customModel2"),
+      isShow: c.routeArgsWithKey<bool?>("isShow"),
+      items: c.routeArgsWithKey<List<CustomModel2>?>("items"),
+      name: c.routeArgsWithKey<String>("name")!,
+      testDefaultIntValue: c.routeArgsWithKey<int>("testDefaultIntValue") ?? 0,
       testDefaultValue:
-          c.routeArgsWithKeyExperimental<String>("testDefaultValue") ??
-              "deneme",
+          c.routeArgsWithKey<String>("testDefaultValue") ?? "deneme",
     ),
   ),
   RouteMaps.searchRoute: RouteModel(
@@ -82,7 +70,7 @@ final Map<String, RouteModel> _routes = {
   ),
   RouteMaps.settingsRoute: RouteModel(
     (c) => SettingsPage(
-      name: c.routeArgsWithKeyExperimental<String?>("name"),
+      name: c.routeArgsWithKey<String?>("name"),
     ),
     fullscreenDialog: true,
   ),
@@ -92,8 +80,6 @@ Route? $onGenerateRoute(RouteSettings routeSettings,
     onGenerateRouteWithRoutesSettings(
       routeSettings,
       routes,
-      pathRoutes: pathRoutes,
-      redirect: redirect,
     );
 
 class HomeRoute extends BaseRoute {

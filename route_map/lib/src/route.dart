@@ -2,7 +2,6 @@
 class RouteMap {
   /// The data used to create the route.
   final String? name;
-  final String? path;
 
   /// The `fullscreenDialog` property specifies whether the incoming route is a
   /// fullscreen modal dialog. On iOS, those routes animate from the bottom to the
@@ -12,7 +11,6 @@ class RouteMap {
   final Function? builder;
   const RouteMap({
     this.name,
-    this.path,
     this.fullScreenDialog = false,
     this.builder,
   });

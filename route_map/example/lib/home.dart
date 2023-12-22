@@ -78,36 +78,6 @@ class _HomePageState extends State<HomePage> {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                "/detail/1234/tolga/?isShow=true",
-                arguments: {
-                  "testDefaultValue": "Tolgahan",
-                  "customModel": CustomModel(name: 'CustomModel'),
-                  "customModel2": CustomModel2(name: 'CustomModel2'),
-                  "items": [CustomModel2(name: 'CustomModel2 items')]
-                },
-              );
-            },
-            onLongPress: () {
-              showDialog(
-                  context: context,
-                  builder: (c) => const AlertDialog(
-                        content: Text("""
- Navigator.pushNamed(
-                context,
-                "/detail/1234/tolga/?isShow=true",
-                arguments: CustomModel(name: 'test'),
-              );
-"""),
-                      ));
-            },
-            trailing: const Icon(Icons.chevron_right),
-            title: const Text("Detail Page"),
-            subtitle: const Text("Uri Route"),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
                 "/detail_page",
                 arguments: {
                   "id": 1234,

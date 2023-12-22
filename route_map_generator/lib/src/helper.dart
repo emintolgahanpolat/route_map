@@ -128,23 +128,6 @@ void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
   buffer.writeln("}");
 }
 
-void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
-    String replaceInRouteName) {
-  buffer.writeln("Map<String, String> get pathRoutes => _pathRoutes;");
-  buffer.writeln("final Map<String, String> _pathRoutes = {");
-  for (var element in jsonData) {
-    if (element.path != null) {
-      if (element.path == "/") {
-        buffer.write("\"/\": RouteMaps.root,");
-      } else {
-        buffer.write(
-            "\"${element.path}\": RouteMaps.${element.getClazzName(replaceInRouteName).toCamelCase()},");
-      }
-    }
-  }
-  buffer.writeln("};");
-}
-
 void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
     String replaceInRouteName) {
   buffer.writeln("Map<String, RouteModel> get routes => _routes;");
@@ -173,12 +156,7 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
           buffer.write("${param.name}:");
         }
 
-        if (page.path != null) {
-          buffer.write(
-              "c.routeArgsWithKeyExperimental<${param.type}>(\"${param.name}\")");
-        } else {
-          buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
-        }
+        buffer.write("c.routeArgsWithKey<${param.type}>(\"${param.name}\")");
 
         if (!param.type!.contains("?") && param.defaultValue == null) {
           buffer.write("!");
@@ -219,10 +197,5 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
 void buildRouteGenerator(
     StringBuffer buffer, String displayName, List<RouteConfig> jsonData) {
   buffer.writeln(
-      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) => onGenerateRouteWithRoutesSettings(routeSettings, routes,");
-  if (jsonData.any((element) => element.path != null)) {
-    buffer.writeln("pathRoutes: pathRoutes,");
-  }
-  buffer.writeln("redirect: redirect,");
-  buffer.writeln(");");
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) => onGenerateRouteWithRoutesSettings(routeSettings, routes,);");
 }
