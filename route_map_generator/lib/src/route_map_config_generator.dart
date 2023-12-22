@@ -52,10 +52,10 @@ class RouteMapConfigGenerator extends GeneratorForAnnotation<RouteMapInit> {
   /// URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.
 
 """);
-      buildPathRoutes(buffer, jsonData, replaceInRouteName);
+      buildPathRoutes(buffer, jsonData, replaceInRouteName, isTypeSafe);
     }
 
-    buildRouteMap(buffer, jsonData, replaceInRouteName, isTypeSafe);
+    //buildRouteMap(buffer, jsonData, replaceInRouteName, isTypeSafe);
     buildRouteGenerator(buffer, element.displayName, jsonData);
 
     if (annotation.read('typeSafe').isBool &&

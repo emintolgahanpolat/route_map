@@ -34,102 +34,227 @@ class RouteMaps {
 /// Yardıma ihtiyacım var.
 /// URL tabanlı sayfa yönlendirmede tür dönüştürme konusunda yardıma ihtiyacım var. int, double, string ve bool'u destekler.
 
-Map<String, RoutePathModel> get pathRoutes => _pathRoutes;
-final Map<String, RoutePathModel> _pathRoutes = {
-  "/detail/:id/:name": RoutePathModel(
-    (c, p) {
-      Map<String, dynamic> args =
-          ModalRoute.of(c)?.settings.arguments as Map<String, dynamic>;
-      Map<String, dynamic> pathArgs = getPathArgs(p, "/detail/:id/:name");
-      args.addAll(pathArgs);
-      return DetailPage(
-        args["id"]!,
-        customModel: args["customModel"],
-        customModel2: args["customModel2"],
-        isShow: args["isShow"],
-        items: args["items"],
-        name: args["name"]!,
-        testDefaultIntValue: args["testDefaultIntValue"] ?? 0,
-        testDefaultValue: args["testDefaultValue"] ?? "deneme",
-      );
-    },
-    "/detail_page",
+Map<String, RouteMapModel> get pathRoutes => _pathRoutes;
+final Map<String, RouteMapModel> _pathRoutes = {
+  HomeRoute.name: RouteMapModel(
+    (_, arguments) => homeBuilder(const HomePage()),
+    name: "home",
   ),
-  "/settings/:name": RoutePathModel(
-    (c, p) {
-      Map<String, dynamic> args =
-          ModalRoute.of(c)?.settings.arguments as Map<String, dynamic>;
-      Map<String, dynamic> pathArgs = getPathArgs(p, "/settings/:name");
-      args.addAll(pathArgs);
-      return SettingsPage(
-        name: args["name"],
-      );
-    },
-    "settings",
-    fullscreenDialog: true,
+  ProfilRoute.name: RouteMapModel(
+    (_, arguments) => const Profil(),
+    name: "/profil",
   ),
-};
-Map<String, RouteModel> get routes => _routes;
-final Map<String, RouteModel> _routes = {
-  RouteMaps.homeRoute: RouteModel((_) => homeBuilder(const HomePage())),
-  RouteMaps.profilRoute: RouteModel(
-    (_) => const Profil(),
+  RootRoute.name: RouteMapModel(
+    (_, arguments) => const RootPage(),
+    name: "/",
   ),
-  RouteMaps.root: RouteModel(
-    (_) => const RootPage(),
-  ),
-  RouteMaps.detail2Route: RouteModel(
-    (c) {
-      Map<String, dynamic> args =
-          ModalRoute.of(c)?.settings.arguments as Map<String, dynamic>;
+  Detail2Route.name: RouteMapModel(
+    (context, arguments) {
       return Detail2Page(
-        customModel: args["customModel"]!,
-        items: args["items"]!,
+        customModel: arguments["customModel"]!,
+        items: arguments["items"]!,
       );
     },
+    name: "/detail2_page",
   ),
-  RouteMaps.testRoute: RouteModel(
-    (_) => const TestScreen(),
+  TestRoute.name: RouteMapModel(
+    (_, arguments) => const TestScreen(),
+    name: "/test_screen",
   ),
-  RouteMaps.detailRoute: RouteModel(
-    (c) {
-      Map<String, dynamic> args =
-          ModalRoute.of(c)?.settings.arguments as Map<String, dynamic>;
+  "/detail/:id/:name": RouteMapModel(
+    (context, arguments) {
+      var route = ModalRoute.of(context)!;
+      Map<String, dynamic> pathArgs =
+          getPathArgs(route.settings.name!, "/detail/:id/:name");
+      Map<String, dynamic> pathArgs2 = {};
+      pathArgs2.addAll(arguments);
+      pathArgs2["id"] = int.parse(pathArgs["id"]);
+      pathArgs2["name"] = pathArgs["name"];
+      return _pathRoutes["/detail_page"]!.builder(context, pathArgs2);
+    },
+    name: "/detail_page",
+  ),
+  DetailRoute.name: RouteMapModel(
+    (context, arguments) {
       return DetailPage(
-        args["id"]!,
-        customModel: args["customModel"],
-        customModel2: args["customModel2"],
-        isShow: args["isShow"],
-        items: args["items"],
-        name: args["name"]!,
-        testDefaultIntValue: args["testDefaultIntValue"] ?? 0,
-        testDefaultValue: args["testDefaultValue"] ?? "deneme",
+        arguments["id"]!,
+        customModel: arguments["customModel"],
+        customModel2: arguments["customModel2"],
+        isShow: arguments["isShow"],
+        items: arguments["items"],
+        name: arguments["name"]!,
+        testDefaultIntValue: arguments["testDefaultIntValue"] ?? 0,
+        testDefaultValue: arguments["testDefaultValue"] ?? "deneme",
       );
     },
+    name: "/detail_page",
   ),
-  RouteMaps.searchRoute: RouteModel(
-    (_) => const SearchPage(),
-    fullscreenDialog: true,
+  SearchRoute.name: RouteMapModel(
+    (_, arguments) => const SearchPage(),
+    name: "/ara",
+    fullScreenDialog: true,
   ),
-  RouteMaps.denemeRoute: RouteModel(
-    (_) => const DenemeEkran(),
+  DenemeRoute.name: RouteMapModel(
+    (_, arguments) => const DenemeEkran(),
+    name: "/deneme_ekran",
   ),
-  RouteMaps.settingsRoute: RouteModel(
-    (c) {
-      Map<String, dynamic> args =
-          ModalRoute.of(c)?.settings.arguments as Map<String, dynamic>;
+  "/settings/:name": RouteMapModel(
+    (context, arguments) {
+      var route = ModalRoute.of(context)!;
+      Map<String, dynamic> pathArgs =
+          getPathArgs(route.settings.name!, "/settings/:name");
+      Map<String, dynamic> pathArgs2 = {};
+      pathArgs2.addAll(arguments);
+      pathArgs2["name"] = int.parse(pathArgs["name"]);
+      return _pathRoutes["settings"]!.builder(context, pathArgs2);
+    },
+    name: "settings",
+    fullScreenDialog: true,
+  ),
+  SettingsRoute.name: RouteMapModel(
+    (context, arguments) {
       return SettingsPage(
-        name: args["name"],
+        name: arguments["name"],
       );
     },
-    fullscreenDialog: true,
+    name: "settings",
+    fullScreenDialog: true,
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
         {String? Function(String routeName)? redirect}) =>
     onGenerateRouteWithRoutesSettings(
       routeSettings,
-      routes,
-      pathRoutes: pathRoutes,
+      pathRoutes,
       redirect: redirect,
     );
+
+class HomeRoute extends BaseRoute {
+  HomeRoute() : super(RouteMaps.homeRoute);
+  static const String name = "home";
+}
+
+class ProfilRoute extends BaseRoute {
+  ProfilRoute() : super(RouteMaps.profilRoute);
+  static const String name = "/profil";
+}
+
+class RootRoute extends BaseRoute {
+  RootRoute() : super(RouteMaps.root);
+  static const String name = "/";
+}
+
+class Detail2Route extends BaseRoute {
+  Detail2Route({
+    required CustomModel customModel,
+    required List<CustomModel2> items,
+  }) : super(RouteMaps.detail2Route,
+            args: Detail2RouteArgs(
+              customModel: customModel,
+              items: items,
+            ).map);
+  static const String name = "/detail2_page";
+}
+
+class Detail2RouteArgs {
+  final CustomModel customModel;
+  final List<CustomModel2> items;
+  Detail2RouteArgs({
+    required this.customModel,
+    required this.items,
+  });
+  Map<String, dynamic>? get map => {
+        "customModel": customModel,
+        "items": items,
+      };
+}
+
+class TestRoute extends BaseRoute {
+  TestRoute() : super(RouteMaps.testRoute);
+  static const String name = "/test_screen";
+}
+
+class DetailRoute extends BaseRoute {
+  DetailRoute({
+    required int id,
+    CustomModel? customModel,
+    CustomModel2? customModel2,
+    bool? isShow,
+    List<CustomModel2>? items,
+    required String name,
+    int? testDefaultIntValue,
+    String? testDefaultValue,
+  }) : super(RouteMaps.detailRoute,
+            args: DetailRouteArgs(
+              id: id,
+              customModel: customModel,
+              customModel2: customModel2,
+              isShow: isShow,
+              items: items,
+              name: name,
+              testDefaultIntValue: testDefaultIntValue ?? 0,
+              testDefaultValue: testDefaultValue ?? "deneme",
+            ).map);
+  static const String name = "/detail_page";
+}
+
+class DetailRouteArgs {
+  final int id;
+  final CustomModel? customModel;
+  final CustomModel2? customModel2;
+  final bool? isShow;
+  final List<CustomModel2>? items;
+  final String name;
+  final int testDefaultIntValue;
+  final String testDefaultValue;
+  DetailRouteArgs({
+    required this.id,
+    this.customModel,
+    this.customModel2,
+    this.isShow,
+    this.items,
+    required this.name,
+    this.testDefaultIntValue = 0,
+    this.testDefaultValue = "deneme",
+  });
+  Map<String, dynamic>? get map => {
+        "id": id,
+        "customModel": customModel,
+        "customModel2": customModel2,
+        "isShow": isShow,
+        "items": items,
+        "name": name,
+        "testDefaultIntValue": testDefaultIntValue,
+        "testDefaultValue": testDefaultValue,
+      };
+}
+
+class SearchRoute extends BaseRoute {
+  SearchRoute() : super(RouteMaps.searchRoute);
+  static const String name = "/ara";
+}
+
+class DenemeRoute extends BaseRoute {
+  DenemeRoute() : super(RouteMaps.denemeRoute);
+  static const String name = "/deneme_ekran";
+}
+
+class SettingsRoute extends BaseRoute {
+  SettingsRoute({
+    String? name,
+  }) : super(RouteMaps.settingsRoute,
+            args: SettingsRouteArgs(
+              name: name,
+            ).map);
+  static const String name = "settings";
+}
+
+class SettingsRouteArgs {
+  final String? name;
+  SettingsRouteArgs({
+    this.name,
+  });
+  Map<String, dynamic>? get map => {
+        "name": name,
+      };
+}

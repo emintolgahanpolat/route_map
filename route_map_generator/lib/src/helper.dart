@@ -123,12 +123,12 @@ void buildRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
 }
 
 void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
-    String replaceInRouteName) {
-  buffer.writeln("Map<String, RoutePathModel> get pathRoutes => _pathRoutes;");
-  buffer.writeln("final Map<String, RoutePathModel> _pathRoutes = {");
+    String replaceInRouteName, bool isTypeSafe) {
+  buffer.writeln("Map<String, RouteMapModel> get pathRoutes => _pathRoutes;");
+  buffer.writeln("final Map<String, RouteMapModel> _pathRoutes = {");
   for (var page in jsonData) {
     if (page.path != null) {
-      buffer.write("\"${page.path}\": RoutePathModel(");
+      buffer.write("\"${page.path}\": RouteMapModel(");
 
       if (page.params == null || page.params!.isEmpty) {
         if (page.builder != null) {
@@ -137,67 +137,113 @@ void buildPathRoutes(StringBuffer buffer, List<RouteConfig> jsonData,
           buffer.writeln(" (_) => const ${page.clazz}(),");
         }
       } else {
-        buffer.writeln(" (c,p) {");
+        buffer.writeln(" (context,arguments) {");
         if (page.params != null) {
-          buffer.writeln(
-              "Map<String,dynamic> args =  ModalRoute.of(c)?.settings.arguments as Map<String, dynamic>; ");
+          buffer.writeln("var route = ModalRoute.of(context)!;");
 
           buffer.writeln(
-              "Map<String, dynamic> pathArgs = getPathArgs(p, \"${page.path}\");");
-          buffer.writeln(" args.addAll(pathArgs);");
-        }
-        buffer.writeln(" return ");
-        if (page.builder != null) {
-          buffer.writeln("${page.builder}(");
-        }
-        buffer.writeln("${page.clazz}(");
-        (page.params?.forEach((param) {
-          if (!param.isPositional!) {
-            buffer.write("${param.name}:");
+              "Map<String, dynamic> pathArgs = getPathArgs(route.settings.name!, \"${page.path}\");");
+          buffer.writeln("Map<String, dynamic> pathArgs2 = {};");
+          buffer.writeln("pathArgs2.addAll(arguments);");
+          for (var item in getPathKeys(page.path!)) {
+            buffer.writeln(
+                "pathArgs2[\"$item\"]= int.parse(pathArgs[\"$item\"]);");
           }
-          buffer.write("args[\"${param.name}\"]");
-          if (!param.type!.contains("?") && param.defaultValue == null) {
-            buffer.write("!");
-          }
-          if (param.defaultValue != null) {
-            buffer.write("?? ${param.defaultValue}");
-          }
-          buffer.writeln(",");
-        }));
-        if (page.builder != null) {
-          buffer.writeln(")");
         }
-        buffer.writeln(");");
+        buffer.writeln(
+            " return _pathRoutes[\"${page.name}\"]!.builder(context,pathArgs2);");
+
         buffer.writeln("},");
-        buffer.writeln(" \"${page.name}\",");
+
+        buffer.writeln("name: \"${page.name}\",");
+
         if (page.fullScreenDialog) {
-          buffer.writeln("  fullscreenDialog: true,");
+          buffer.writeln("fullScreenDialog: true,");
         }
+
         buffer.writeln("),");
       }
     }
+
+    if (isTypeSafe) {
+      buffer.writeln(
+          '${page.getClazzName(replaceInRouteName)}.name : RouteMapModel(');
+    } else {
+      if (page.name == "/") {
+        buffer.writeln('RouteMaps.root : RouteMapModel(');
+      } else {
+        buffer.writeln(
+            'RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()} : RouteMapModel(');
+      }
+    }
+
+    if (page.params == null || page.params!.isEmpty) {
+      if (page.builder != null) {
+        buffer.writeln(
+            "(_,arguments) => ${page.builder}( const ${page.clazz}()),");
+      } else {
+        buffer.writeln(" (_,arguments) => const ${page.clazz}(),");
+      }
+    } else {
+      if (page.params != null) {
+        buffer.writeln(" (context,arguments) {");
+      } else {
+        buffer.writeln(" (context,_) {");
+      }
+      buffer.writeln(" return ");
+      if (page.builder != null) {
+        buffer.writeln("${page.builder}(");
+      }
+      buffer.writeln("${page.clazz}(");
+      (page.params?.forEach((param) {
+        if (!param.isPositional!) {
+          buffer.write("${param.name}:");
+        }
+
+        buffer.write("arguments[\"${param.name}\"]");
+
+        if (!param.type!.contains("?") && param.defaultValue == null) {
+          buffer.write("!");
+        }
+        if (param.defaultValue != null) {
+          buffer.write("?? ${param.defaultValue}");
+        }
+
+        buffer.writeln(",");
+      }));
+      if (page.builder != null) {
+        buffer.writeln("),");
+      }
+
+      buffer.writeln(");},");
+    }
+
+    buffer.writeln("name: \"${page.name}\",");
+    if (page.fullScreenDialog) {
+      buffer.writeln("fullScreenDialog: true,");
+    }
+    buffer.writeln("),");
   }
   buffer.writeln("};");
 }
 
 void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
-    String replaceInRouteName,bool isTypeSafe) {
+    String replaceInRouteName, bool isTypeSafe) {
   buffer.writeln("Map<String, RouteModel> get routes => _routes;");
   buffer.writeln("final Map<String, RouteModel> _routes = {");
   for (var page in jsonData) {
-
-    if(isTypeSafe){
-    buffer.writeln(
-          '${page.getClazzName(replaceInRouteName)}.name : RouteModel(');
-    }else{
-       if (page.name == "/") {
-      buffer.writeln('RouteMaps.root : RouteModel(');
-    } else {
+    if (isTypeSafe) {
       buffer.writeln(
-          'RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()} : RouteModel(');
+          '${page.getClazzName(replaceInRouteName)}.name : RouteModel(');
+    } else {
+      if (page.name == "/") {
+        buffer.writeln('RouteMaps.root : RouteModel(');
+      } else {
+        buffer.writeln(
+            'RouteMaps.${page.getClazzName(replaceInRouteName).toCamelCase()} : RouteModel(');
+      }
     }
-    }
-   
+
     if (page.params == null || page.params!.isEmpty) {
       if (page.builder != null) {
         buffer.writeln("(_) => ${page.builder}( const ${page.clazz}())");
@@ -261,10 +307,22 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
 void buildRouteGenerator(
     StringBuffer buffer, String displayName, List<RouteConfig> jsonData) {
   buffer.writeln(
-      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) => onGenerateRouteWithRoutesSettings(routeSettings, routes,");
-  if (jsonData.any((element) => element.path != null)) {
-    buffer.writeln("pathRoutes: pathRoutes,");
-  }
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) => onGenerateRouteWithRoutesSettings(routeSettings, pathRoutes,");
+
   buffer.writeln("redirect: redirect,");
   buffer.writeln(");");
+}
+
+List<String> getPathKeys(String key) {
+  List<String> params = [];
+
+  List<String> keyParts = key.split('/');
+
+  for (int i = 0; i < keyParts.length; i++) {
+    if (keyParts[i].startsWith(':')) {
+      params.add(keyParts[i].substring(1));
+    }
+  }
+
+  return params;
 }

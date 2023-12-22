@@ -4,7 +4,7 @@ import 'package:route_map/route_map.dart';
 
 import 'route_map.routes.dart';
 
-@RouteMapInit(replaceInRouteName: "Page|Screen|Ekran,Route")
+@RouteMapInit(typeSafe: true, replaceInRouteName: "Page|Screen|Ekran,Route")
 Route? onGenerateRoute(RouteSettings routeSettings) => $onGenerateRoute(
       routeSettings,
       redirect: (routeName) {

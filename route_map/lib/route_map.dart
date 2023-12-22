@@ -8,7 +8,7 @@ export 'src/base.dart'
         RouteSettingsExtension,
         BuildContextExtension,
         RouteModel,
-        RoutePathModel,
+        RouteMapModel,
         namedRoute,
         getPathArgs,
         onGenerateRouteWithRoutesSettings;

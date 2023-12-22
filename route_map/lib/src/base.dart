@@ -104,21 +104,24 @@ class RouteModel {
   });
 }
 
-typedef PathWidgetBuilder = Widget Function(BuildContext context, String path);
+typedef RouteMapWidgetBuilder = Widget Function(
+  BuildContext context,
+  Map<String, dynamic> arguments,
+);
 
-class RoutePathModel {
-  PathWidgetBuilder builder;
-  bool fullscreenDialog;
-  String name;
-  RoutePathModel(
-    this.builder,
-    this.name, {
-    this.fullscreenDialog = false,
+class RouteMapModel {
+  RouteMapWidgetBuilder builder;
+  String? name;
+  bool fullScreenDialog;
+  RouteMapModel(
+    this.builder, {
+    this.name,
+    this.fullScreenDialog = false,
   });
 }
 
-RoutePathModel? _findPathRoute(
-    Map<String, RoutePathModel>? pathRoutes, String path) {
+RouteMapModel? _findPathRoute(
+    Map<String, RouteMapModel>? pathRoutes, String path) {
   if (pathRoutes != null) {
     bool found = false;
     Map<String, dynamic> params = {};
@@ -257,8 +260,7 @@ Map<String, dynamic> getPathArgs(String path, String key) {
 
 Route<dynamic>? onGenerateRouteWithRoutesSettings(
   RouteSettings routeSettings,
-  Map<String, RouteModel> routes, {
-  Map<String, RoutePathModel>? pathRoutes,
+  Map<String, RouteMapModel> pathRoutes, {
   String? Function(String name)? redirect,
 }) {
   String path = routeSettings.name ?? "";
@@ -268,26 +270,30 @@ Route<dynamic>? onGenerateRouteWithRoutesSettings(
   } else {
     args.addAll({"extra": routeSettings.arguments});
   }
-  RoutePathModel? pathRoute = _findPathRoute(pathRoutes, path);
+  RouteMapModel? pathRoute = _findPathRoute(pathRoutes, path);
 
   if (pathRoute != null) {
-    var newName = redirect?.call(pathRoute!.name) ?? pathRoute!.name;
+    var newName = redirect?.call(pathRoute.name!) ?? pathRoute.name;
+    print(pathRoute.name);
+    print(path);
     return MaterialPageRoute(
-      builder: (c) => pathRoute!.builder(c, path),
+      builder: (c) {
+        return pathRoute.builder(c, args);
+      },
       settings: RouteSettings(name: newName, arguments: args),
-      fullscreenDialog: pathRoute!.fullscreenDialog,
+      fullscreenDialog: pathRoute.fullScreenDialog,
     );
   }
   var newName = redirect?.call(path) ?? path;
-  RouteModel? route = routes[newName];
+  RouteMapModel? route = pathRoutes[newName];
   if (route == null) {
     return null;
   }
 
   return MaterialPageRoute(
-    builder: route.builder,
+    builder: (c) => route.builder(c, args),
     settings: RouteSettings(name: newName, arguments: args),
-    fullscreenDialog: route.fullscreenDialog,
+    fullscreenDialog: route.fullScreenDialog,
   );
 }
 
