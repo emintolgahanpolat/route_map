@@ -87,10 +87,6 @@ class BaseRoute {
       );
 }
 
-extension RouteSettingsExtension on RouteSettings {
-  T? routeArgs<T>() => arguments as T;
-}
-
 extension BuildContextExtension on BuildContext {
   NavigatorState navigator() => Navigator.of(this);
   NavigatorState rootNavigator() => Navigator.of(this, rootNavigator: true);
