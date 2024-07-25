@@ -10,11 +10,13 @@ class RouteMap {
   final bool fullScreenDialog;
 
   final Function? builder;
+  final Function? pageRoute;
   const RouteMap({
     this.name,
     this.path,
     this.fullScreenDialog = false,
     this.builder,
+    this.pageRoute,
   });
 }
 

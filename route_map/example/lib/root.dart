@@ -5,7 +5,7 @@ import 'package:route_map/route_map.dart';
 
 @RouteMap(name: "/")
 class RootPage extends StatefulWidget {
-  const RootPage({Key? key}) : super(key: key);
+  const RootPage({super.key});
 
   @override
   State<RootPage> createState() => _RootPageState();
@@ -27,7 +27,7 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return !await _routes[currentIndex]!.currentState!.maybePop();
+        return !await _routes[_routes.keys.toList()[currentIndex]]!.currentState!.maybePop();
       },
       child: Scaffold(
         body: TabSwitchingView(

@@ -9,4 +9,5 @@ export 'src/base.dart'
         BuildContextExtension,
         RouteModel,
         namedRoute,
-        onGenerateRouteWithRoutesSettings;
+        onGenerateRouteWithRoutesSettings,
+        RouterBuilder;

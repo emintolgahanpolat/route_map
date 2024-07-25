@@ -15,7 +15,7 @@ Widget homeBuilder(Widget child) {
 
 @RouteMap(name: "home", builder: homeBuilder)
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -38,7 +38,8 @@ class _HomePageState extends State<HomePage> {
         children: [
           ListTile(
             onTap: () {
-              ProfilRoute().push(context);
+          ProfilRoute().push(context);
+            //     context.pushTransparentRoute(Profil());
             },
             trailing: const Icon(Icons.chevron_right),
             title: const Text("Profile Page"),

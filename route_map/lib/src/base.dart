@@ -158,12 +158,13 @@ List? namedRoute(Map<String, String> pathRoutes, String path) {
   return null;
 }
 
+typedef RouterBuilder = Route<dynamic>? Function(
+    WidgetBuilder builder, RouteSettings routeSettings, bool fullscreenDial);
 Route<dynamic>? onGenerateRouteWithRoutesSettings(
-  RouteSettings routeSettings,
-  Map<String, RouteModel> routes, {
-  Map<String, String>? pathRoutes,
-  String? Function(String name)? redirect,
-}) {
+    RouteSettings routeSettings, Map<String, RouteModel> routes,
+    {Map<String, String>? pathRoutes,
+    String? Function(String name)? redirect,
+    RouterBuilder? routeBuilder}) {
   String name = routeSettings.name ?? "";
   Map<String, Object?> args = {};
   if (pathRoutes != null) {
@@ -191,7 +192,13 @@ Route<dynamic>? onGenerateRouteWithRoutesSettings(
   if (route == null) {
     return null;
   }
-
+  if (routeBuilder != null) {
+    return routeBuilder.call(
+      route.builder,
+      RouteSettings(name: newName, arguments: args),
+      route.fullscreenDialog,
+    );
+  }
   return MaterialPageRoute(
     builder: route.builder,
     settings: RouteSettings(name: newName, arguments: args),

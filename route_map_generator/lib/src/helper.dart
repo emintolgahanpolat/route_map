@@ -219,10 +219,11 @@ void buildRouteMap(StringBuffer buffer, List<RouteConfig> jsonData,
 void buildRouteGenerator(
     StringBuffer buffer, String displayName, List<RouteConfig> jsonData) {
   buffer.writeln(
-      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect}) => onGenerateRouteWithRoutesSettings(routeSettings, routes,");
+      "Route? \$$displayName(RouteSettings routeSettings,{String? Function(String routeName)? redirect, RouterBuilder? routeBuilder}) => onGenerateRouteWithRoutesSettings(routeSettings, routes,");
   if (jsonData.any((element) => element.path != null)) {
     buffer.writeln("pathRoutes: pathRoutes,");
   }
   buffer.writeln("redirect: redirect,");
+  buffer.writeln("routeBuilder: routeBuilder,");
   buffer.writeln(");");
 }

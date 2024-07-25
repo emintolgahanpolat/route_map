@@ -88,12 +88,14 @@ final Map<String, RouteModel> _routes = {
   ),
 };
 Route? $onGenerateRoute(RouteSettings routeSettings,
-        {String? Function(String routeName)? redirect}) =>
+        {String? Function(String routeName)? redirect,
+        RouterBuilder? routeBuilder}) =>
     onGenerateRouteWithRoutesSettings(
       routeSettings,
       routes,
       pathRoutes: pathRoutes,
       redirect: redirect,
+      routeBuilder: routeBuilder,
     );
 
 class HomeRoute extends BaseRoute {
