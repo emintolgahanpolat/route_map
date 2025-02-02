@@ -9,13 +9,13 @@ environment:
   sdk: '>=2.18.4 <4.0.0'
   flutter: ">=1.17.0"
 dependencies:
-  analyzer: ">=7.2.0"
+  analyzer: '>=5.12.0 < 8.0.0'
   build: ^2.4.2
   change_case: ^2.2.0
   flutter:
     sdk: flutter
   glob: ^2.1.3
-  route_map: ^0.0.17
+  route_map: ^0.0.18
   source_gen: ^2.0.0
 
 dev_dependencies:
