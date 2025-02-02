@@ -3,7 +3,7 @@ import 'package:route_map/route_map.dart';
 
 @RouteMap()
 class Profil extends StatefulWidget {
-  const Profil({Key? key}) : super(key: key);
+  const Profil({super.key});
   @override
   State<Profil> createState() => _ProfilState();
 }

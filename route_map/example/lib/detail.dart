@@ -15,15 +15,14 @@ class DetailPage extends StatefulWidget {
   final CustomModel2? customModel2;
   final List<CustomModel2>? items;
   const DetailPage(this.id,
-      {Key? key,
+      {super.key,
       required this.name,
       this.testDefaultValue = "deneme",
       this.testDefaultIntValue = 0,
       this.isShow,
       this.customModel,
       this.customModel2,
-      this.items})
-      : super(key: key);
+      this.items});
 
   @override
   State<DetailPage> createState() => _DetailPageState();

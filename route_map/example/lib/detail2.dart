@@ -7,8 +7,7 @@ import 'package:route_map/route_map.dart';
 class Detail2Page extends StatefulWidget {
   final CustomModel customModel;
   final List<CustomModel2> items;
-  const Detail2Page({Key? key, required this.customModel, required this.items})
-      : super(key: key);
+  const Detail2Page({super.key, required this.customModel, required this.items});
   @override
   State<Detail2Page> createState() => _Detail2PageState();
 }

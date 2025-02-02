@@ -6,7 +6,8 @@ import 'package:source_gen/source_gen.dart';
 Builder routeMapBuilder(BuilderOptions options) {
   return LibraryBuilder(
     RouteMapGenerator(),
-    formatOutput: (generated) => generated.replaceAll(RegExp(r'//.*|\s'), ''),
+    formatOutput: (generated, _) =>
+        generated.replaceAll(RegExp(r'//.*|\s'), ''),
     generatedExtension: '.map.json',
   );
 }

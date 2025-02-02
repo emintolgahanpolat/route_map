@@ -5,7 +5,7 @@ import 'package:route_map/route_map.dart';
 
 @RouteMap(name: "/")
 class RootPage extends StatefulWidget {
-  const RootPage({Key? key}) : super(key: key);
+  const RootPage({super.key});
 
   @override
   State<RootPage> createState() => _RootPageState();
@@ -25,8 +25,10 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
+        // ignore: collection_methods_unrelated_type
         return !await _routes[currentIndex]!.currentState!.maybePop();
       },
       child: Scaffold(

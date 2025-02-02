@@ -3,7 +3,7 @@ import 'package:route_map/route_map.dart';
 
 @RouteMap()
 class DenemeEkran extends StatefulWidget {
-  const DenemeEkran({Key? key}) : super(key: key);
+  const DenemeEkran({super.key});
   @override
   State<DenemeEkran> createState() => _DenemeEkranState();
 }

@@ -1,3 +1,5 @@
+## 0.0.18
+* updated dependencies and dart fix
 ## 0.0.17
 * fix Navigation popUntil black screen problem.
 ## 0.0.16

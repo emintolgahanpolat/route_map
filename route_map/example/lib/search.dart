@@ -3,7 +3,7 @@ import 'package:route_map/route_map.dart';
 
 @RouteMap(name: "/ara", fullScreenDialog: true)
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
