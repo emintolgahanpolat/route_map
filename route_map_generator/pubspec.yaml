@@ -24,7 +24,7 @@ dev_dependencies:
     sdk: flutter
 
 
-dependency_overrides:
-  route_map:
-    path: ../route_map/
+# dependency_overrides:
+#   route_map:
+#     path: ../route_map/
 
